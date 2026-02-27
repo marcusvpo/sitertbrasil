@@ -3,10 +3,10 @@ import { ArrowRight, Star, Phone, Mail, Instagram, CheckCircle, Trophy, Zap, Shi
 import { Button } from "@/components/ui/button";
 
 const featuredProducts = [
-  { id: 1, name: "Cross Power 2T", category: "Óleo de Motor", image: "/images/product-1.webp", badge: "MAIS VENDIDO" },
-  { id: 2, name: "Top Speed 15W50", category: "Óleo de Motor", image: "/images/product-2.webp", badge: "MAIS VENDIDO" },
-  { id: 3, name: "Racing Fork Oil", category: "Suspensão", image: "/images/product-3.webp", badge: "DESTAQUE" },
-  { id: 4, name: "Power Synt 4T", category: "Óleo de Motor", image: "/images/product-4.webp", badge: "DESTAQUE" },
+  { id: 1, name: "Cross Power 2T", category: "Óleo de Motor", badge: "MAIS VENDIDO" },
+  { id: 2, name: "Top Speed 15W50", category: "Óleo de Motor", badge: "MAIS VENDIDO" },
+  { id: 3, name: "Racing Fork Oil", category: "Suspensão", badge: "DESTAQUE" },
+  { id: 4, name: "Power Synt 4T", category: "Óleo de Motor", badge: "DESTAQUE" },
 ];
 
 const testimonials = [
@@ -21,8 +21,8 @@ const Index = () => {
       {/* Hero */}
       <section className="text-secondary-foreground relative overflow-hidden min-h-[60vh] md:min-h-[70vh] flex items-center">
         <div className="absolute inset-0">
-          <img src="/images/banner-home.jpg" alt="" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-secondary/80" />
+          <img src="/images/hero-motocross.jpg" alt="Motocross MOTOREX" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-secondary/70" />
         </div>
         <div className="container relative z-10 text-center md:text-left py-20 md:py-32">
           <div className="max-w-3xl">
@@ -64,7 +64,10 @@ const Index = () => {
             {featuredProducts.map((p) => (
               <div key={p.id} className="group bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-colors">
                 <div className="relative aspect-square bg-muted flex items-center justify-center p-6">
-                  <img src={p.image} alt={p.name} className="max-h-full max-w-full object-contain group-hover:scale-105 transition-transform duration-300" />
+                  <div className="flex flex-col items-center justify-center text-muted-foreground">
+                    <span className="font-heading text-2xl uppercase font-bold">{p.name}</span>
+                    <span className="text-xs mt-1">Imagem em breve</span>
+                  </div>
                   <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-heading uppercase tracking-wider px-2 py-1 rounded-sm">
                     {p.badge}
                   </span>
@@ -122,14 +125,13 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Reseller + Indicate */}
+      {/* Seja Revendedor */}
       <section className="bg-background">
-        <div className="grid md:grid-cols-2">
-          {/* Seja Revendedor */}
-          <div className="relative min-h-[300px] md:min-h-[400px] flex items-center justify-center overflow-hidden">
-            <img src="/images/banner-revendedor.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-secondary/60" />
-            <div className="relative z-10 text-center p-8 md:p-12 text-secondary-foreground">
+        <div className="relative w-full overflow-hidden">
+          <img src="/images/banner-revendedor.jpg" alt="Seja um Revendedor MOTOREX" className="w-full h-auto block" />
+          <div className="absolute inset-0 bg-secondary/60" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center p-8 md:p-12 text-secondary-foreground">
               <h3 className="font-heading text-3xl md:text-4xl uppercase font-bold mb-4">Seja um Revendedor</h3>
               <p className="text-secondary-foreground/80 mb-6 max-w-md mx-auto">
                 Faça parte da rede de revendedores MOTOREX no Brasil. Condições especiais e suporte completo.
@@ -139,11 +141,16 @@ const Index = () => {
               </Button>
             </div>
           </div>
-          {/* Indique Cidade */}
-          <div className="relative min-h-[300px] md:min-h-[400px] flex items-center justify-center overflow-hidden">
-            <img src="/images/banner-indique.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
-            <div className="absolute inset-0 bg-secondary/60" />
-            <div className="relative z-10 text-center p-8 md:p-12 text-secondary-foreground">
+        </div>
+      </section>
+
+      {/* Indique Cidade */}
+      <section className="bg-background">
+        <div className="relative w-full overflow-hidden">
+          <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" className="w-full h-auto block" />
+          <div className="absolute inset-0 bg-secondary/60" />
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="text-center p-8 md:p-12 text-secondary-foreground">
               <h3 className="font-heading text-3xl md:text-4xl uppercase font-bold mb-4">Indique sua Cidade</h3>
               <p className="text-secondary-foreground/80 mb-6 max-w-md mx-auto">
                 Não encontrou MOTOREX na sua região? Indique uma loja ou seja o primeiro a revender.

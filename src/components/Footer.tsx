@@ -9,7 +9,7 @@ const Footer = () => {
           {/* Logo + about */}
           <div>
             <img
-              src="/images/logo-rt-brasil.webp"
+              src="/images/logo-motorex.png"
               alt="RT Brasil"
               className="h-12 w-auto mb-4"
             />
