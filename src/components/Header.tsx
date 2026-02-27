@@ -23,7 +23,7 @@ const Header = () => {
       <div className="container flex items-center justify-between h-16 md:h-20">
         <Link to="/" className="flex-shrink-0">
           <img
-            src="/images/logo-rt-brasil.webp"
+            src="/images/logo-motorex.png"
             alt="RT Brasil - Distribuidora Oficial MOTOREX"
             className="h-10 md:h-14 w-auto"
           />
