@@ -19,9 +19,12 @@ const Index = () => {
   return (
     <>
       {/* Hero */}
-      <section className="bg-secondary text-secondary-foreground py-20 md:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-secondary via-secondary to-secondary/90" />
-        <div className="container relative z-10 text-center md:text-left">
+      <section className="text-secondary-foreground relative overflow-hidden min-h-[60vh] md:min-h-[70vh] flex items-center">
+        <div className="absolute inset-0">
+          <img src="/images/banner-home.jpg" alt="" className="w-full h-full object-cover" />
+          <div className="absolute inset-0 bg-secondary/80" />
+        </div>
+        <div className="container relative z-10 text-center md:text-left py-20 md:py-32">
           <div className="max-w-3xl">
             <span className="inline-block font-heading uppercase text-primary text-sm tracking-[0.2em] mb-4">
               Distribuidora Oficial MOTOREX no Brasil
@@ -120,24 +123,32 @@ const Index = () => {
       </section>
 
       {/* Reseller + Indicate */}
-      <section className="py-16 md:py-24 bg-background">
-        <div className="container">
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="bg-secondary text-secondary-foreground rounded-lg p-8 md:p-10">
-              <h3 className="font-heading text-2xl md:text-3xl uppercase font-bold mb-4">Seja um Revendedor</h3>
-              <p className="text-secondary-foreground/70 mb-6">
+      <section className="bg-background">
+        <div className="grid md:grid-cols-2">
+          {/* Seja Revendedor */}
+          <div className="relative min-h-[300px] md:min-h-[400px] flex items-center justify-center overflow-hidden">
+            <img src="/images/banner-revendedor.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-secondary/60" />
+            <div className="relative z-10 text-center p-8 md:p-12 text-secondary-foreground">
+              <h3 className="font-heading text-3xl md:text-4xl uppercase font-bold mb-4">Seja um Revendedor</h3>
+              <p className="text-secondary-foreground/80 mb-6 max-w-md mx-auto">
                 Faça parte da rede de revendedores MOTOREX no Brasil. Condições especiais e suporte completo.
               </p>
               <Button asChild className="font-heading uppercase tracking-wider">
                 <Link to="/seja-revendedor">Cadastre-se agora <ArrowRight className="ml-2" size={16} /></Link>
               </Button>
             </div>
-            <div className="bg-muted rounded-lg p-8 md:p-10">
-              <h3 className="font-heading text-2xl md:text-3xl uppercase font-bold mb-4">Indique sua Cidade</h3>
-              <p className="text-muted-foreground mb-6">
+          </div>
+          {/* Indique Cidade */}
+          <div className="relative min-h-[300px] md:min-h-[400px] flex items-center justify-center overflow-hidden">
+            <img src="/images/banner-indique.jpg" alt="" className="absolute inset-0 w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-secondary/60" />
+            <div className="relative z-10 text-center p-8 md:p-12 text-secondary-foreground">
+              <h3 className="font-heading text-3xl md:text-4xl uppercase font-bold mb-4">Indique sua Cidade</h3>
+              <p className="text-secondary-foreground/80 mb-6 max-w-md mx-auto">
                 Não encontrou MOTOREX na sua região? Indique uma loja ou seja o primeiro a revender.
               </p>
-              <Button asChild variant="outline" className="font-heading uppercase tracking-wider">
+              <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10">
                 <Link to="/indique-cidade">Indicar agora <ArrowRight className="ml-2" size={16} /></Link>
               </Button>
             </div>
