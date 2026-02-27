@@ -130,16 +130,14 @@ const Index = () => {
         <div className="relative w-full overflow-hidden">
           <img src="/images/banner-revendedor.jpg" alt="Seja um Revendedor MOTOREX" className="w-full h-auto block" />
           <div className="absolute inset-0 bg-secondary/60" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center p-8 md:p-12 text-secondary-foreground">
-              <h3 className="font-heading text-3xl md:text-4xl uppercase font-bold mb-4">Seja um Revendedor</h3>
-              <p className="text-secondary-foreground/80 mb-6 max-w-md mx-auto">
+      <div className="absolute inset-0 bg-secondary/40" />
+          <div className="absolute bottom-0 left-0 p-6 md:p-10 text-secondary-foreground max-w-lg">
+              <p className="text-secondary-foreground/90 mb-4 text-sm md:text-base">
                 Faça parte da rede de revendedores MOTOREX no Brasil. Condições especiais e suporte completo.
               </p>
               <Button asChild className="font-heading uppercase tracking-wider">
                 <Link to="/seja-revendedor">Cadastre-se agora <ArrowRight className="ml-2" size={16} /></Link>
               </Button>
-            </div>
           </div>
         </div>
       </section>
@@ -149,16 +147,14 @@ const Index = () => {
         <div className="relative w-full overflow-hidden">
           <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" className="w-full h-auto block" />
           <div className="absolute inset-0 bg-secondary/60" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center p-8 md:p-12 text-secondary-foreground">
-              <h3 className="font-heading text-3xl md:text-4xl uppercase font-bold mb-4">Indique sua Cidade</h3>
-              <p className="text-secondary-foreground/80 mb-6 max-w-md mx-auto">
+      <div className="absolute inset-0 bg-secondary/40" />
+          <div className="absolute bottom-0 left-0 p-6 md:p-10 text-secondary-foreground max-w-lg">
+              <p className="text-secondary-foreground/90 mb-4 text-sm md:text-base">
                 Não encontrou MOTOREX na sua região? Indique uma loja ou seja o primeiro a revender.
               </p>
-              <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-primary-foreground/40 text-primary-foreground hover:bg-primary-foreground/10">
+              <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-secondary-foreground/40 text-secondary-foreground hover:bg-secondary-foreground/10">
                 <Link to="/indique-cidade">Indicar agora <ArrowRight className="ml-2" size={16} /></Link>
               </Button>
-            </div>
           </div>
         </div>
       </section>
