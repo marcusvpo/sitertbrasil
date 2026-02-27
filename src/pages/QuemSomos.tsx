@@ -1,11 +1,10 @@
 const QuemSomos = () => (
   <>
-    <section className="relative min-h-[40vh] md:min-h-[50vh] flex items-center justify-center overflow-hidden">
-      <img src="/images/banner-quemsomos.jpg" alt="Fábrica MOTOREX na Suíça" className="absolute inset-0 w-full h-full object-cover" />
+    <section className="relative w-full overflow-hidden">
+      <img src="/images/banner-quemsomos.jpg" alt="Fábrica MOTOREX na Suíça" className="w-full h-auto block" />
       <div className="absolute inset-0 bg-secondary/40" />
-      <div className="container relative z-10 text-center text-secondary-foreground py-16">
-        <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl uppercase font-bold">Quem Somos</h1>
-        <p className="text-secondary-foreground/80 text-lg mt-3">RT Brasil — Distribuidora Oficial MOTOREX</p>
+      <div className="absolute bottom-0 left-0 p-6 md:p-10 text-secondary-foreground max-w-lg">
+        <p className="text-secondary-foreground/90 text-sm md:text-base">RT Brasil — Distribuidora Oficial MOTOREX</p>
       </div>
     </section>
     <section className="bg-secondary text-secondary-foreground py-20">
