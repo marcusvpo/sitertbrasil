@@ -11,7 +11,6 @@ const navItems = [
   { label: "Parceiros", to: "/parceiros" },
   { label: "Indique sua Cidade", to: "/indique-cidade" },
   { label: "Depoimentos", to: "/depoimentos" },
-  { label: "Central de Atendimento", to: "/central-atendimento" },
 ];
 
 const Header = () => {
@@ -19,63 +18,84 @@ const Header = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 bg-secondary border-b border-secondary/80">
-      <div className="container flex items-center justify-between h-16 md:h-20">
-        <Link to="/" className="flex-shrink-0">
+    <header className="sticky top-0 z-50 flex justify-center px-4 py-3 bg-transparent">
+      {/* Pill-shaped navbar */}
+      <div className="flex items-center w-full max-w-6xl bg-secondary rounded-full px-2 py-2 shadow-lg shadow-black/30">
+        {/* Logo circle */}
+        <Link to="/" className="flex-shrink-0 bg-primary-foreground rounded-full p-1.5 ml-1">
           <img
             src="/images/logo-motorex.png"
-            alt="RT Brasil - Distribuidora Oficial MOTOREX"
-            className="h-10 md:h-14 w-auto"
+            alt="MOTOREX"
+            className="h-7 md:h-8 w-auto"
           />
         </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden lg:flex items-center gap-1">
+        {/* Desktop nav links */}
+        <nav className="hidden lg:flex items-center justify-center flex-1 gap-1">
           {navItems.map((item) => (
             <Link
               key={item.to}
               to={item.to}
               className={cn(
-                "px-3 py-2 text-xs font-heading uppercase tracking-wider transition-colors",
+                "relative px-3 py-1.5 text-xs font-heading uppercase tracking-wider transition-all duration-300 group",
                 location.pathname === item.to
                   ? "text-primary"
-                  : "text-secondary-foreground/80 hover:text-primary"
+                  : "text-secondary-foreground/80 hover:text-primary-foreground"
               )}
             >
-              {item.label}
+              <span className="relative inline-block transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
+                {item.label}
+              </span>
             </Link>
           ))}
         </nav>
 
+        {/* CTA pill button */}
+        <Link
+          to="/central-atendimento"
+          className="hidden lg:flex items-center bg-primary-foreground text-secondary font-heading uppercase text-xs tracking-wider px-5 py-2.5 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors duration-300 mr-1"
+        >
+          Central de Atendimento
+        </Link>
+
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden text-secondary-foreground p-2"
+          className="lg:hidden text-secondary-foreground p-2 ml-auto mr-1"
           aria-label="Menu"
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <nav className="lg:hidden bg-secondary border-t border-secondary/60 pb-4">
-          {navItems.map((item) => (
+        <div className="fixed inset-0 top-16 z-40 bg-secondary/95 backdrop-blur-sm lg:hidden animate-fade-in">
+          <nav className="flex flex-col items-center justify-center gap-2 pt-12">
+            {navItems.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "font-heading uppercase text-lg tracking-wider py-3 transition-colors duration-300",
+                  location.pathname === item.to
+                    ? "text-primary"
+                    : "text-secondary-foreground/80 hover:text-primary"
+                )}
+              >
+                {item.label}
+              </Link>
+            ))}
             <Link
-              key={item.to}
-              to={item.to}
+              to="/central-atendimento"
               onClick={() => setMobileOpen(false)}
-              className={cn(
-                "block px-6 py-3 font-heading uppercase text-sm tracking-wider transition-colors",
-                location.pathname === item.to
-                  ? "text-primary bg-secondary/50"
-                  : "text-secondary-foreground/80 hover:text-primary"
-              )}
+              className="mt-4 bg-primary-foreground text-secondary font-heading uppercase text-sm tracking-wider px-8 py-3 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
             >
-              {item.label}
+              Central de Atendimento
             </Link>
-          ))}
-        </nav>
+          </nav>
+        </div>
       )}
     </header>
   );
