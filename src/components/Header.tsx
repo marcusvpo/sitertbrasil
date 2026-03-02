@@ -18,8 +18,8 @@ const Header = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 px-4 py-2">
-      <div className="container flex items-center gap-4 h-16 md:h-20 bg-secondary rounded-full px-6">
+    <header className="sticky top-0 z-50 bg-secondary">
+      <div className="container flex items-center gap-4 h-16 md:h-20">
         {/* Logo outside the pill */}
         <Link to="/" className="flex-shrink-0">
           <img
