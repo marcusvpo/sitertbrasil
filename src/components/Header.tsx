@@ -18,53 +18,54 @@ const Header = () => {
   const location = useLocation();
 
   return (
-    <header className="sticky top-0 z-50 flex justify-center px-4 py-3 bg-transparent">
-      {/* Pill-shaped navbar */}
-      <div className="flex items-center w-full max-w-6xl bg-secondary rounded-full px-2 py-2 shadow-lg shadow-black/30">
-        {/* Logo circle */}
-        <Link to="/" className="flex-shrink-0 bg-primary-foreground rounded-full p-1.5 ml-1">
+    <header className="sticky top-0 z-50 bg-secondary">
+      <div className="container flex items-center gap-4 h-16 md:h-20">
+        {/* Logo outside the pill */}
+        <Link to="/" className="flex-shrink-0">
           <img
             src="/images/logo-motorex.png"
             alt="MOTOREX"
-            className="h-7 md:h-8 w-auto"
+            className="h-10 md:h-14 w-auto"
           />
         </Link>
 
-        {/* Desktop nav links */}
-        <nav className="hidden lg:flex items-center justify-center flex-1 gap-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.to}
-              to={item.to}
-              className={cn(
-                "relative px-3 py-1.5 text-xs font-heading uppercase tracking-wider transition-all duration-300 group",
-                location.pathname === item.to
-                  ? "text-primary"
-                  : "text-secondary-foreground/80 hover:text-primary-foreground"
-              )}
-            >
-              <span className="relative inline-block transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
-                {item.label}
-              </span>
-            </Link>
-          ))}
-        </nav>
+        {/* Pill-shaped nav */}
+        <div className="hidden lg:flex items-center flex-1 bg-secondary-foreground/10 border border-secondary-foreground/20 rounded-full px-2 py-1.5">
+          <nav className="flex items-center justify-center flex-1 gap-1">
+            {navItems.map((item) => (
+              <Link
+                key={item.to}
+                to={item.to}
+                className={cn(
+                  "relative px-3 py-1.5 text-xs font-heading uppercase tracking-wider transition-all duration-300 group",
+                  location.pathname === item.to
+                    ? "text-primary"
+                    : "text-secondary-foreground/80 hover:text-primary-foreground"
+                )}
+              >
+                <span className="relative inline-block transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
+                  {item.label}
+                </span>
+              </Link>
+            ))}
+          </nav>
 
-        {/* CTA pill button */}
-        <Link
-          to="/central-atendimento"
-          className="hidden lg:flex items-center bg-primary-foreground text-secondary font-heading uppercase text-xs tracking-wider px-5 py-2.5 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors duration-300 mr-1"
-        >
-          Central de Atendimento
-        </Link>
+          {/* CTA pill */}
+          <Link
+            to="/central-atendimento"
+            className="flex items-center bg-primary-foreground text-secondary font-heading uppercase text-xs tracking-wider px-5 py-2 rounded-full hover:bg-primary hover:text-primary-foreground transition-colors duration-300"
+          >
+            Central de Atendimento
+          </Link>
+        </div>
 
         {/* Mobile hamburger */}
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden text-secondary-foreground p-2 ml-auto mr-1"
+          className="lg:hidden text-secondary-foreground p-2 ml-auto"
           aria-label="Menu"
         >
-          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
