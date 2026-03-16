@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Star, Phone, Mail, Instagram, CheckCircle, Trophy, Zap, Shield, DollarSign, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollAnimation from "@/components/ScrollAnimation";
+import { supabase } from "@/integrations/supabase/client";
+import type { Product, ProductCategory, ProductImage } from "@/types/database";
 
-const featuredProducts = [
-  { id: 1, name: "Cross Power 2T", category: "Óleo de Motor", badge: "MAIS VENDIDO" },
-  { id: 2, name: "Top Speed 15W50", category: "Óleo de Motor", badge: "MAIS VENDIDO" },
-  { id: 3, name: "Racing Fork Oil", category: "Suspensão", badge: "DESTAQUE" },
-  { id: 4, name: "Power Synt 4T", category: "Óleo de Motor", badge: "DESTAQUE" },
-];
+const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
+const getImageUrl = (path: string) =>
+  `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
 
 const testimonials = [
   { name: "André Ferreira", role: "Piloto Profissional", stars: 5, text: "Desde que comecei a usar MOTOREX, minha moto nunca teve tanta performance. Produto de qualidade incomparável." },
@@ -17,6 +17,20 @@ const testimonials = [
 ];
 
 const Index = () => {
+  const { data: featuredProducts = [] } = useQuery({
+    queryKey: ["featured-products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*, category:product_categories(*), images:product_images(*)")
+        .eq("is_active", true)
+        .eq("is_featured", true)
+        .order("sort_order")
+        .limit(4);
+      if (error) throw error;
+      return data as (Product & { category: ProductCategory | null; images: ProductImage[] })[];
+    },
+  });
   return (
     <>
       {/* Scroll Animation — clean, no overlay */}
@@ -60,24 +74,27 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((p) => (
-              <div key={p.id} className="group bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-colors">
-                <div className="relative aspect-square bg-muted flex items-center justify-center p-6">
-                  <div className="flex flex-col items-center justify-center text-muted-foreground">
-                    <span className="font-heading text-2xl uppercase font-bold">{p.name}</span>
-                    <span className="text-xs mt-1">Imagem em breve</span>
-                  </div>
-                  <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-heading uppercase tracking-wider px-2 py-1 rounded-sm">
-                    {p.badge}
-                  </span>
+              <Link key={p.id} to={`/motorex/${p.slug}`} className="group bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-colors">
+                <div className="relative aspect-square bg-muted overflow-hidden">
+                  {p.images?.[0] ? (
+                    <img src={getImageUrl(p.images[0].storage_path)} alt={p.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center w-full h-full text-muted-foreground">
+                      <span className="font-heading text-2xl uppercase font-bold">{p.name}</span>
+                    </div>
+                  )}
+                  {p.badge && (
+                    <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-heading uppercase tracking-wider px-2 py-1 rounded-sm">
+                      {p.badge}
+                    </span>
+                  )}
                 </div>
                 <div className="p-4">
-                  <span className="text-xs text-primary font-heading uppercase tracking-wider">{p.category}</span>
+                  <span className="text-xs text-primary font-heading uppercase tracking-wider">{p.category?.name}</span>
                   <h3 className="font-heading text-lg uppercase font-semibold mt-1">{p.name}</h3>
-                  <Button asChild variant="outline" size="sm" className="mt-3 w-full font-heading uppercase text-xs tracking-wider">
-                    <Link to="/motorex">Ver detalhes</Link>
-                  </Button>
+                  {p.price && <span className="font-heading text-primary font-bold text-sm mt-1 block">R$ {Number(p.price).toFixed(2)}</span>}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
