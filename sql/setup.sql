@@ -132,9 +132,8 @@ create trigger products_updated_at
   before update on public.products
   for each row execute function public.handle_updated_at();
 
--- 9. STORAGE BUCKET "products" (público)
-insert into storage.buckets (id, name, public)
-values ('products', 'products', true);
+-- 9. STORAGE BUCKET "products" (já existe, apenas garante que é público)
+update storage.buckets set public = true where id = 'products';
 
 -- 10. RLS STORAGE - qualquer um pode ler, admin pode gerenciar
 create policy "Public read products bucket"
