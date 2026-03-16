@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Phone, Mail, Instagram, CheckCircle, Trophy, Zap, Shield, DollarSign, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollAnimation from "@/components/ScrollAnimation";
 
 const featuredProducts = [
   { id: 1, name: "Cross Power 2T", category: "Óleo de Motor", badge: "MAIS VENDIDO" },
@@ -18,35 +19,21 @@ const testimonials = [
 const Index = () => {
   return (
     <>
-      {/* Hero */}
-      <section className="text-secondary-foreground relative overflow-hidden min-h-[60vh] md:min-h-[70vh] flex items-center">
-        <div className="absolute inset-0">
-          <img src="/images/hero-motocross.jpg" alt="Motocross MOTOREX" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-secondary/70" />
-        </div>
-        <div className="container relative z-10 text-center md:text-left py-20 md:py-32">
-          <div className="max-w-3xl">
-            <span className="inline-block font-heading uppercase text-primary text-sm tracking-[0.2em] mb-4">
-              Distribuidora Oficial MOTOREX no Brasil
-            </span>
-            <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold uppercase leading-[0.95] mb-6">
-              Performance Máxima Para Quem Vive o{" "}
-              <span className="text-primary">Motocross</span>
-            </h1>
-            <p className="text-secondary-foreground/70 text-lg md:text-xl max-w-xl mb-8">
-              Lubrificantes e produtos de alta tecnologia suíça para quem exige o
-              melhor da sua máquina.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button asChild size="lg" className="font-heading uppercase tracking-wider text-base">
-                <Link to="/seja-revendedor">
-                  Quero ser revendedor <ArrowRight className="ml-2" size={18} />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="font-heading uppercase tracking-wider text-base border-primary/40 text-primary hover:bg-primary/10">
-                <Link to="/motorex">Conhecer produtos MOTOREX</Link>
-              </Button>
-            </div>
+      {/* Hero - Scroll Animation */}
+      <ScrollAnimation />
+
+      {/* CTA Buttons */}
+      <section className="bg-secondary py-8">
+        <div className="container">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button asChild size="lg" className="font-heading uppercase tracking-wider text-base">
+              <Link to="/seja-revendedor">
+                Quero ser revendedor <ArrowRight className="ml-2" size={18} />
+              </Link>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="font-heading uppercase tracking-wider text-base border-primary/40 text-primary hover:bg-primary/10">
+              <Link to="/motorex">Conhecer produtos MOTOREX</Link>
+            </Button>
           </div>
         </div>
       </section>
