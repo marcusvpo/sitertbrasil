@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { ArrowRight, Star, Phone, Mail, Instagram, CheckCircle, Trophy, Zap, Shield, DollarSign, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import ScrollAnimation from "@/components/ScrollAnimation";
 
 const featuredProducts = [
   { id: 1, name: "Cross Power 2T", category: "Óleo de Motor", badge: "MAIS VENDIDO" },
