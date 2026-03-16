@@ -17,7 +17,6 @@ const ScrollAnimation = () => {
   const currentFrameRef = useRef(0);
   const rafRef = useRef<number>();
 
-  // Preload all frames
   useEffect(() => {
     const images: HTMLImageElement[] = [];
     let loaded = 0;
@@ -68,7 +67,6 @@ const ScrollAnimation = () => {
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   }, []);
 
-  // Scroll handler
   useEffect(() => {
     const handleScroll = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -92,7 +90,6 @@ const ScrollAnimation = () => {
       });
     };
 
-    // Draw first frame
     if (loadedCount >= 1) {
       drawFrame(0);
     }
@@ -109,8 +106,8 @@ const ScrollAnimation = () => {
   return (
     <div
       ref={containerRef}
-      className="relative"
-      style={{ height: `${TOTAL_FRAMES * 6}vh` }}
+      className="relative bg-secondary"
+      style={{ height: `${TOTAL_FRAMES * 5}vh` }}
     >
       <div className="sticky top-0 h-screen w-full overflow-hidden">
         <canvas
@@ -118,7 +115,7 @@ const ScrollAnimation = () => {
           className="w-full h-full"
           style={{ display: loadedCount > 0 ? "block" : "none" }}
         />
-        {/* Loading overlay */}
+        {/* Loading */}
         {loadedCount < TOTAL_FRAMES && (
           <div className="absolute inset-0 bg-secondary flex flex-col items-center justify-center z-10">
             <div className="w-48 h-1 bg-secondary-foreground/20 rounded-full overflow-hidden">
@@ -128,29 +125,10 @@ const ScrollAnimation = () => {
               />
             </div>
             <span className="text-secondary-foreground/50 text-sm mt-3 font-heading uppercase tracking-wider">
-              Carregando animação… {progress}%
+              Carregando… {progress}%
             </span>
           </div>
         )}
-        {/* Hero content overlay */}
-        <div className="absolute inset-0 bg-secondary/50 pointer-events-none" />
-        <div className="absolute inset-0 flex items-center pointer-events-none">
-          <div className="container">
-            <div className="max-w-3xl text-center md:text-left pointer-events-auto">
-              <span className="inline-block font-heading uppercase text-primary text-sm tracking-[0.2em] mb-4">
-                Distribuidora Oficial MOTOREX no Brasil
-              </span>
-              <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold uppercase leading-[0.95] mb-6 text-secondary-foreground">
-                Performance Máxima Para Quem Vive o{" "}
-                <span className="text-primary">Motocross</span>
-              </h1>
-              <p className="text-secondary-foreground/70 text-lg md:text-xl max-w-xl mb-8">
-                Lubrificantes e produtos de alta tecnologia suíça para quem exige o
-                melhor da sua máquina.
-              </p>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );
