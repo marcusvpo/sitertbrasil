@@ -17,6 +17,20 @@ const testimonials = [
 ];
 
 const Index = () => {
+  const { data: featuredProducts = [] } = useQuery({
+    queryKey: ["featured-products"],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from("products")
+        .select("*, category:product_categories(*), images:product_images(*)")
+        .eq("is_active", true)
+        .eq("is_featured", true)
+        .order("sort_order")
+        .limit(4);
+      if (error) throw error;
+      return data as (Product & { category: ProductCategory | null; images: ProductImage[] })[];
+    },
+  });
   return (
     <>
       {/* Scroll Animation — clean, no overlay */}
