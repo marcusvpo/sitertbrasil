@@ -74,24 +74,27 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredProducts.map((p) => (
-              <div key={p.id} className="group bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-colors">
-                <div className="relative aspect-square bg-muted flex items-center justify-center p-6">
-                  <div className="flex flex-col items-center justify-center text-muted-foreground">
-                    <span className="font-heading text-2xl uppercase font-bold">{p.name}</span>
-                    <span className="text-xs mt-1">Imagem em breve</span>
-                  </div>
-                  <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-heading uppercase tracking-wider px-2 py-1 rounded-sm">
-                    {p.badge}
-                  </span>
+              <Link key={p.id} to={`/motorex/${p.slug}`} className="group bg-card border border-border rounded-lg overflow-hidden hover:border-primary/50 transition-colors">
+                <div className="relative aspect-square bg-muted overflow-hidden">
+                  {p.images?.[0] ? (
+                    <img src={getImageUrl(p.images[0].storage_path)} alt={p.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                  ) : (
+                    <div className="flex flex-col items-center justify-center w-full h-full text-muted-foreground">
+                      <span className="font-heading text-2xl uppercase font-bold">{p.name}</span>
+                    </div>
+                  )}
+                  {p.badge && (
+                    <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-heading uppercase tracking-wider px-2 py-1 rounded-sm">
+                      {p.badge}
+                    </span>
+                  )}
                 </div>
                 <div className="p-4">
-                  <span className="text-xs text-primary font-heading uppercase tracking-wider">{p.category}</span>
+                  <span className="text-xs text-primary font-heading uppercase tracking-wider">{p.category?.name}</span>
                   <h3 className="font-heading text-lg uppercase font-semibold mt-1">{p.name}</h3>
-                  <Button asChild variant="outline" size="sm" className="mt-3 w-full font-heading uppercase text-xs tracking-wider">
-                    <Link to="/motorex">Ver detalhes</Link>
-                  </Button>
+                  {p.price && <span className="font-heading text-primary font-bold text-sm mt-1 block">R$ {Number(p.price).toFixed(2)}</span>}
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
