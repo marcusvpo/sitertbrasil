@@ -19,12 +19,23 @@ const testimonials = [
 const Index = () => {
   return (
     <>
-      {/* Hero - Scroll Animation */}
+      {/* Scroll Animation — clean, no overlay */}
       <ScrollAnimation />
 
-      {/* CTA Buttons */}
-      <section className="bg-secondary py-8">
-        <div className="container">
+      {/* Hero Text + CTAs */}
+      <section className="bg-secondary text-secondary-foreground py-16 md:py-24">
+        <div className="container text-center">
+          <span className="inline-block font-heading uppercase text-primary text-sm tracking-[0.2em] mb-4">
+            Distribuidora Oficial MOTOREX no Brasil
+          </span>
+          <h1 className="font-heading text-4xl md:text-6xl lg:text-7xl font-bold uppercase leading-[0.95] mb-6">
+            Performance Máxima Para Quem Vive o{" "}
+            <span className="text-primary">Motocross</span>
+          </h1>
+          <p className="text-secondary-foreground/70 text-lg md:text-xl max-w-2xl mx-auto mb-10">
+            Lubrificantes e produtos de alta tecnologia suíça para quem exige o
+            melhor da sua máquina.
+          </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button asChild size="lg" className="font-heading uppercase tracking-wider text-base">
               <Link to="/seja-revendedor">
