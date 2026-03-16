@@ -1,14 +1,14 @@
 import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Star, Phone, Mail, Instagram, CheckCircle, Trophy, Zap, Shield, DollarSign, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollAnimation from "@/components/ScrollAnimation";
+import { supabase } from "@/integrations/supabase/client";
+import type { Product, ProductCategory, ProductImage } from "@/types/database";
 
-const featuredProducts = [
-  { id: 1, name: "Cross Power 2T", category: "Óleo de Motor", badge: "MAIS VENDIDO" },
-  { id: 2, name: "Top Speed 15W50", category: "Óleo de Motor", badge: "MAIS VENDIDO" },
-  { id: 3, name: "Racing Fork Oil", category: "Suspensão", badge: "DESTAQUE" },
-  { id: 4, name: "Power Synt 4T", category: "Óleo de Motor", badge: "DESTAQUE" },
-];
+const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
+const getImageUrl = (path: string) =>
+  `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
 
 const testimonials = [
   { name: "André Ferreira", role: "Piloto Profissional", stars: 5, text: "Desde que comecei a usar MOTOREX, minha moto nunca teve tanta performance. Produto de qualidade incomparável." },
