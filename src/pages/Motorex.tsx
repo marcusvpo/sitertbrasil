@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Search, Filter, ShoppingBag } from "lucide-react";
+import AnimateOnScroll from "@/components/AnimateOnScroll";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 
 const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
@@ -57,31 +57,19 @@ const Motorex = () => {
 
   return (
     <>
-      {/* Banner */}
+      {/* Banner — clean, no overlay, no text */}
       <section className="relative w-full overflow-hidden">
         <img
           src="/images/banner-motorex.jpg"
           alt="MOTOREX - Distribuidor Oficial"
           className="w-full h-auto block"
         />
-        <div className="absolute inset-0 bg-secondary/50" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="font-heading text-4xl md:text-6xl uppercase text-secondary-foreground font-bold">
-              Produtos <span className="text-primary">MOTOREX</span>
-            </h1>
-            <p className="text-secondary-foreground/70 mt-2 text-sm md:text-base">
-              Óleos | Lubrificantes | Aditivos
-            </p>
-          </div>
-        </div>
       </section>
 
       {/* Filters */}
       <section className="bg-secondary border-b border-secondary-foreground/10 sticky top-16 md:top-20 z-30">
         <div className="container py-4">
           <div className="flex flex-col md:flex-row gap-3 md:items-center">
-            {/* Search */}
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/30" size={16} />
               <Input
@@ -92,7 +80,6 @@ const Motorex = () => {
               />
             </div>
 
-            {/* Category pills */}
             <div className="flex items-center gap-2 flex-wrap">
               <Filter size={14} className="text-secondary-foreground/30" />
               <button
@@ -120,7 +107,6 @@ const Motorex = () => {
               ))}
             </div>
 
-            {/* Volume pills */}
             {volumes.length > 0 && (
               <div className="flex items-center gap-2 flex-wrap">
                 {volumes.map((vol) => (
@@ -159,69 +145,68 @@ const Motorex = () => {
             </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
-              {filtered.map((product) => (
-                <Link
-                  key={product.id}
-                  to={`/motorex/${product.slug}`}
-                  className="group bg-secondary-foreground/5 border border-secondary-foreground/10 rounded-lg overflow-hidden hover:border-primary/40 transition-all duration-300"
-                >
-                  {/* Image */}
-                  <div className="relative aspect-square bg-secondary-foreground/5 overflow-hidden">
-                    {product.images?.[0] ? (
-                      <img
-                        src={getImageUrl(product.images[0].storage_path)}
-                        alt={product.name}
-                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        loading="lazy"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <span className="font-heading text-secondary-foreground/20 text-lg uppercase">
-                          {product.name}
-                        </span>
-                      </div>
-                    )}
-                    {product.badge && (
-                      <span className="absolute top-2 left-2 bg-primary text-primary-foreground text-[9px] font-heading uppercase tracking-wider px-2 py-0.5 rounded-sm">
-                        {product.badge}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Info */}
-                  <div className="p-3 md:p-4">
-                    {product.category && (
-                      <span className="text-primary text-[10px] font-heading uppercase tracking-wider">
-                        {product.category.name}
-                      </span>
-                    )}
-                    <h3 className="font-heading text-sm md:text-base uppercase font-semibold text-secondary-foreground mt-0.5 leading-tight">
-                      {product.name}
-                    </h3>
-                    {product.short_description && (
-                      <p className="text-secondary-foreground/50 text-xs mt-1 line-clamp-2">
-                        {product.short_description}
-                      </p>
-                    )}
-                    <div className="flex items-baseline gap-2 mt-2">
-                      {product.price && (
-                        <span className="font-heading text-primary font-bold text-sm md:text-base">
-                          R$ {Number(product.price).toFixed(2)}
-                        </span>
+              {filtered.map((product, i) => (
+                <AnimateOnScroll key={product.id} animation="fade-up" delay={(i % 4) * 80}>
+                  <Link
+                    to={`/motorex/${product.slug}`}
+                    className="group block bg-secondary-foreground/5 border border-secondary-foreground/10 rounded-lg overflow-hidden hover:border-primary/40 hover-lift hover-glow transition-all duration-300"
+                  >
+                    <div className="relative aspect-square bg-secondary-foreground/5 overflow-hidden">
+                      {product.images?.[0] ? (
+                        <img
+                          src={getImageUrl(product.images[0].storage_path)}
+                          alt={product.name}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          loading="lazy"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <span className="font-heading text-secondary-foreground/20 text-lg uppercase">
+                            {product.name}
+                          </span>
+                        </div>
                       )}
-                      {product.compare_price && (
-                        <span className="text-secondary-foreground/30 text-xs line-through">
-                          R$ {Number(product.compare_price).toFixed(2)}
+                      {product.badge && (
+                        <span className="absolute top-2 left-2 bg-primary text-primary-foreground text-[9px] font-heading uppercase tracking-wider px-2 py-0.5 rounded-sm">
+                          {product.badge}
                         </span>
-                      )}
-                      {product.volume && (
-                        <Badge variant="secondary" className="text-[9px] bg-secondary-foreground/10 text-secondary-foreground/50 border-0 ml-auto">
-                          {product.volume}
-                        </Badge>
                       )}
                     </div>
-                  </div>
-                </Link>
+
+                    <div className="p-3 md:p-4">
+                      {product.category && (
+                        <span className="text-primary text-[10px] font-heading uppercase tracking-wider">
+                          {product.category.name}
+                        </span>
+                      )}
+                      <h3 className="font-heading text-sm md:text-base uppercase font-semibold text-secondary-foreground mt-0.5 leading-tight">
+                        {product.name}
+                      </h3>
+                      {product.short_description && (
+                        <p className="text-secondary-foreground/50 text-xs mt-1 line-clamp-2">
+                          {product.short_description}
+                        </p>
+                      )}
+                      <div className="flex items-baseline gap-2 mt-2">
+                        {product.price && (
+                          <span className="font-heading text-primary font-bold text-sm md:text-base">
+                            R$ {Number(product.price).toFixed(2)}
+                          </span>
+                        )}
+                        {product.compare_price && (
+                          <span className="text-secondary-foreground/30 text-xs line-through">
+                            R$ {Number(product.compare_price).toFixed(2)}
+                          </span>
+                        )}
+                        {product.volume && (
+                          <Badge variant="secondary" className="text-[9px] bg-secondary-foreground/10 text-secondary-foreground/50 border-0 ml-auto">
+                            {product.volume}
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </Link>
+                </AnimateOnScroll>
               ))}
             </div>
           )}

@@ -1,138 +1,67 @@
 
 
-## Plano de Redesign Completo — RT Brasil / MOTOREX
+## Site RT Brasil — Distribuidora Oficial MOTOREX
 
-### Resumo
+Site institucional premium com estética motocross de alta performance, focado em geração de leads e vitrine de produtos.
 
-Reestruturar toda a experiência visual do site: reposicionar a animação scroll, remover overlays dos banners, adicionar animações profissionais (scroll-triggered fade-ins, parallax, hover effects), e completar todas as páginas pendentes (Quem Somos, Depoimentos, Central de Atendimento melhorada). Parceiros fica como placeholder conforme solicitado.
+### Etapa 1 — Fundação (Design System + Layout Base)
+- Configurar paleta de cores da marca: Preto RT #111111, Azul Ciano #009DDF, Branco #FFFFFF em variáveis CSS HSL
+- Configurar tipografia: fonte condensada bold para headlines (Oswald) + fonte legível para corpo (Inter)
+- Copiar logo RT Brasil + MOTOREX para o projeto
+- Criar componente Header com logo, menu principal (Home, Motorex, Seja um Revendedor, Quem Somos, Parceiros, Indique sua Cidade, Depoimentos, Central de Atendimento) + menu hambúrguer mobile
+- Criar componente Footer com logo, links do menu, dados de contato (WhatsApp, e-mail, endereço) e link Instagram
+- Configurar rotas para todas as 7 páginas
 
----
+### Etapa 2 — Página Home (completa)
+- **Hero principal**: fundo escuro #111111, headline forte "PERFORMANCE MÁXIMA PARA QUEM VIVE O MOTOCROSS", subheadline sobre distribuidora oficial, CTA primário "Quero ser revendedor" e CTA secundário "Conhecer produtos MOTOREX"
+- **Bloco produtos destaque**: 4 cards de best-sellers (Cross Power 2T, Top Speed 15W50, etc.) com imagem, nome, categoria, selo "MAIS VENDIDOS", botão "Ver detalhes"
+- **Bloco institucional resumido**: 2-3 parágrafos sobre RT Brasil + MOTOREX, bullet points (qualidade, performance, rendimento, preço, pronta entrega), CTA "Saiba mais"
+- **Chamada revendedores + indicação**: dois blocos lado a lado com texto e botões para cada formulário
+- **Carrossel de depoimentos**: 3-4 depoimentos com estrelas e nomes
+- **Logos de parceiros/fabricantes**: linha de logos
+- **Bloco contato rápido**: WhatsApp, e-mail, Instagram + botão "Central de Atendimento"
 
-### 1. Animações e Infraestrutura Visual
+### Etapa 3 — Página Motorex (Vitrine de Produtos)
+- Hero curto com fundo escuro + headline "LINHA COMPLETA DE LUBRIFICANTES E PRODUTOS MOTOREX"
+- Barra de filtros: categorias (Óleos de Motor, Transmissão, Suspensão, Limpeza, Corrente, Outros), filtro de volume (1L, 5L, 25L, 60L), campo de busca
+- Grade responsiva de cards de produto (3 col desktop, 2 tablet, 1 mobile) com categoria, nome, volume, selo, botão "Quero revender" e botão "Detalhes" (modal)
+- Bloco institucional MOTOREX (história, títulos FIM, qualidade)
 
-**tailwind.config.ts** — Adicionar keyframes profissionais:
-- `fade-up`: translateY(40px) + opacity 0→1
-- `fade-in-left` / `fade-in-right`: translateX(±60px) + opacity
-- `scale-in`: scale(0.9) → 1
-- `blur-in`: blur(10px) → 0 + opacity
-- `slide-up`: para contadores/números
+### Etapa 4 — Página Seja um Revendedor
+- Hero institucional com fundo claro, título e subheadline
+- Bloco institucional detalhado com texto extenso + bullets de vantagens
+- Cards "Por que escolher MOTOREX?" (qualidade, performance, rendimento, preço)
+- Bloco "Pronta entrega" (entrega 1-2 dias)
+- Formulário com campos: Nome Completo, Nome da Empresa, E-mail, WhatsApp, checkbox consentimento — validação + mensagem de sucesso
 
-**Novo componente `AnimateOnScroll.tsx`** — Wrapper com IntersectionObserver que aplica animação quando o elemento entra na viewport. Props: `animation`, `delay`, `threshold`. Reutilizável em todo o site.
+### Etapa 5 — Página Quem Somos
+- Hero com imagem de pista/loja, título "QUEM SOMOS"
+- Bloco "Sobre a RT Brasil" com texto institucional organizado
+- Bloco "Por que escolher MOTOREX?" (reutilizar componente)
+- Bloco "História e tecnologia MOTOREX" (100+ anos, títulos FIM)
+- CTAs duplos: "Quero ser revendedor" + "Indicar minha cidade"
+- Espaço para vídeo incorporado (YouTube/Vimeo)
 
----
+### Etapa 6 — Página Parceiros
+- Hero curto com título "PARCEIROS RT BRASIL"
+- Seção "Pilotos Parceiros": grade de cards com foto, nome, @Instagram, tag "Piloto", link para `/parceiros/nome-do-piloto`
+- Seção "Revendedores Parceiros": cards com nome da loja, cidade/estado, botão "Saiba mais"
+- Formulário para novos parceiros: Nome, Empresa, E-mail, Confirmação de E-mail, WhatsApp, checkbox consentimento
 
-### 2. ScrollAnimation — Redimensionar e Reposicionar
+### Etapa 7 — Páginas de Formulário (Indique sua Cidade + Central de Atendimento)
+- **Indique sua Cidade**: título, texto introdutório, formulário (Nome, WhatsApp, Nome da Cidade, Nome do Lojista, Contato do Lojista) + mensagem de sucesso
+- **Central de Atendimento**: 4 cards de contato (WhatsApp, E-mail, Instagram, Endereço com links funcionais), formulário genérico (Nome, E-mail, WhatsApp, campo de texto "Como podemos te ajudar?") + mensagem de sucesso, mapa Google Maps incorporado
 
-**ScrollAnimation.tsx**:
-- Reduzir altura de `81 * 5vh` (405vh!) para `81 * 2.5vh` (~200vh) — animação mais curta e dinâmica
-- Mudar sticky de `top-0` para `top-16 md:top-20` (compensar navbar fixa)
-- Reduzir altura do canvas sticky de `h-screen` para `h-[70vh]` com `rounded-lg` e margem lateral
-- Adicionar leve sombra/glow ao redor do canvas
+### Etapa 8 — Página Depoimentos
+- Carrossel autoplay com navegação manual (setas + dots)
+- Cada slide: texto do depoimento, nome, identificação, avaliação em estrelas (1-5)
+- 3 depoimentos iniciais (André Ferreira, Carla Nunes, João Marques) + espaço para mais
 
-**Index.tsx** — Nova estrutura da Hero:
-```text
-┌─────────────────────────────────────┐
-│  "Distribuidora Oficial MOTOREX"    │  ← tag pequena
-│  "Performance Máxima Para Quem      │  ← h1 grande
-│   Vive o Motocross"                 │
-├─────────────────────────────────────┤
-│                                     │
-│    [ SCROLL ANIMATION CANVAS ]      │  ← animação aqui, menor
-│                                     │
-├─────────────────────────────────────┤
-│  "Lubrificantes e produtos..."      │  ← subtítulo
-│  [Quero ser revendedor] [Produtos]  │  ← CTAs
-└─────────────────────────────────────┘
-```
-
----
-
-### 3. Banners — Remover Overlays, Respeitar Imagens
-
-Em **TODAS** as páginas com banners (Index, Motorex, SejaRevendedor, QuemSomos, IndiqueCidade):
-- **Remover** `bg-secondary/60` e `bg-secondary/40` overlays escuros
-- **Remover** textos/títulos sobrepostos nos banners — as imagens já têm texto
-- Manter apenas um botão CTA discreto no canto inferior com um leve gradient de baixo pra cima (`bg-gradient-to-t from-black/40 to-transparent`) apenas na faixa inferior (~80px)
-- Banner Motorex: remover o h1 "Produtos MOTOREX" de cima do banner
-
----
-
-### 4. Index.tsx — Redesign Completo
-
-Cada seção envolvida por `<AnimateOnScroll>`:
-
-- **Hero**: Título + animação + subtítulo/CTAs (conforme estrutura acima)
-- **Produtos em Destaque**: Cards com hover scale + shadow + border glow. Animação staggered (delay incremental)
-- **RT Brasil + MOTOREX (Institucional)**: Imagem com parallax leve. Lista de benefícios com ícones animados on-scroll
-- **Banners Revendedor / Indique**: Imagem limpa, sem overlay pesado, apenas gradient sutil na base com botão
-- **Depoimentos**: Cards com hover lift + animação staggered
-- **Contato Rápido**: Ícones com hover rotate + color transition
-
----
-
-### 5. Páginas Completas
-
-**QuemSomos.tsx** — Página institucional real:
-- Banner limpo (sem overlay)
-- Seção "Nossa História" com timeline vertical animada (ano + milestone)
-- Seção "MOTOREX no Mundo" com números/counters animados (100+ anos, 60+ países, etc.)
-- Seção "Nossos Valores" com grid de ícones + texto
-- CTA final para "Seja Revendedor"
-
-**Depoimentos.tsx** — Página completa:
-- Header com título estilizado
-- Grid de cards de depoimentos (dados hardcoded por ora — 6-9 depoimentos)
-- Cada card com avatar placeholder, stars, citação, nome/role
-- Animação staggered on-scroll
-- CTA "Tem um depoimento? Entre em contato"
-
-**CentralAtendimento.tsx** — Upgrade:
-- Banner/header visual (sem a foto, usar bg-secondary com pattern decorativo)
-- Cards de contato com hover animations (lift + border glow)
-- Formulário com labels estilizados, inputs com focus ring animado
-- Mapa placeholder ou seção de endereço com ícone grande
-
-**NotFound.tsx** — Redesign no estilo do site (bg-secondary, fonte Oswald, botão styled)
-
----
-
-### 6. Header — Micro-interações
-
-- Link ativo: underline animada (width 0→100%)
-- Hover: slight translateY bounce
-- Mobile menu: slide-in com stagger nos items
-
----
-
-### 7. Footer — Polish
-
-- Adicionar hover underline nos links
-- Separar seções com linhas sutis
-- Adicionar animação fade-up on-scroll
-
----
-
-### Detalhes Técnicos
-
-- **Nenhum pacote novo** — apenas Tailwind animations + IntersectionObserver nativo
-- O componente `AnimateOnScroll` usa `useRef` + `IntersectionObserver` com `threshold: 0.1` e aplica classes CSS
-- Todas as animações são CSS puras via keyframes no Tailwind config
-- Banners mantêm `w-full h-auto block` para preservar proporções originais
-- A animação ScrollAnimation mantém a lógica de canvas/frames, apenas reduz dimensões
-
-### Arquivos modificados
-1. `tailwind.config.ts` — novos keyframes
-2. `src/components/AnimateOnScroll.tsx` — novo
-3. `src/components/ScrollAnimation.tsx` — redimensionar
-4. `src/components/Header.tsx` — micro-animações
-5. `src/components/Footer.tsx` — polish
-6. `src/pages/Index.tsx` — redesign completo
-7. `src/pages/Motorex.tsx` — remover overlay do banner
-8. `src/pages/QuemSomos.tsx` — página completa
-9. `src/pages/SejaRevendedor.tsx` — remover overlay
-10. `src/pages/IndiqueCidade.tsx` — remover overlay
-11. `src/pages/Depoimentos.tsx` — página completa
-12. `src/pages/CentralAtendimento.tsx` — upgrade visual
-13. `src/pages/NotFound.tsx` — redesign
-14. `src/pages/ProductDetail.tsx` — animações nos elementos
+### Diretrizes transversais
+- Design mobile-first, totalmente responsivo
+- Seções alternando fundo escuro (#111111 com texto branco) e fundo branco (texto #111111 com destaques #009DDF)
+- Headlines em caixa alta, tipografia forte condensada
+- Componentes reutilizáveis: ProductCard, TestimonialCard, PartnerCard, ContactForm, WhyMotorexCards
+- Dados de produtos e parceiros estruturados em arrays/objetos para futura integração com backend (Supabase)
+- SEO: títulos otimizados, meta descriptions, H1 único por página
 

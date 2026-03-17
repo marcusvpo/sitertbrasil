@@ -107,28 +107,32 @@ const ScrollAnimation = () => {
     <div
       ref={containerRef}
       className="relative bg-secondary"
-      style={{ height: `${TOTAL_FRAMES * 5}vh` }}
+      style={{ height: `${TOTAL_FRAMES * 2.5}vh` }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        <canvas
-          ref={canvasRef}
-          className="w-full h-full"
-          style={{ display: loadedCount > 0 ? "block" : "none" }}
-        />
-        {/* Loading */}
-        {loadedCount < TOTAL_FRAMES && (
-          <div className="absolute inset-0 bg-secondary flex flex-col items-center justify-center z-10">
-            <div className="w-48 h-1 bg-secondary-foreground/20 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-primary transition-all duration-300 rounded-full"
-                style={{ width: `${progress}%` }}
-              />
-            </div>
-            <span className="text-secondary-foreground/50 text-sm mt-3 font-heading uppercase tracking-wider">
-              Carregando… {progress}%
-            </span>
+      <div className="sticky top-16 md:top-20 w-full overflow-hidden" style={{ height: "calc(100vh - 5rem)" }}>
+        <div className="container h-full py-4">
+          <div className="relative w-full h-full rounded-lg overflow-hidden shadow-2xl border border-secondary-foreground/10">
+            <canvas
+              ref={canvasRef}
+              className="w-full h-full"
+              style={{ display: loadedCount > 0 ? "block" : "none" }}
+            />
+            {/* Loading */}
+            {loadedCount < TOTAL_FRAMES && (
+              <div className="absolute inset-0 bg-secondary flex flex-col items-center justify-center z-10">
+                <div className="w-48 h-1 bg-secondary-foreground/20 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary transition-all duration-300 rounded-full"
+                    style={{ width: `${progress}%` }}
+                  />
+                </div>
+                <span className="text-secondary-foreground/50 text-sm mt-3 font-heading uppercase tracking-wider">
+                  Carregando… {progress}%
+                </span>
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </div>
     </div>
   );
