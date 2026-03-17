@@ -31,7 +31,6 @@ const AnimateOnScroll = ({
   delay = 0,
   threshold = 0.1,
   className = "",
-  as: Tag = "div",
 }: AnimateOnScrollProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
@@ -55,15 +54,15 @@ const AnimateOnScroll = ({
   }, [threshold]);
 
   return (
-    <Tag
-      ref={ref as any}
+    <div
+      ref={ref}
       className={`${className} ${
         isVisible ? animationClasses[animation] : "opacity-0"
       }`}
       style={{ animationDelay: delay ? `${delay}ms` : undefined }}
     >
       {children}
-    </Tag>
+    </div>
   );
 };
 
