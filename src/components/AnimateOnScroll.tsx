@@ -14,7 +14,6 @@ interface AnimateOnScrollProps {
   delay?: number;
   threshold?: number;
   className?: string;
-  as?: keyof JSX.IntrinsicElements;
 }
 
 const animationClasses: Record<Animation, string> = {
