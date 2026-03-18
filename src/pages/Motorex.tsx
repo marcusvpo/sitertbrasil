@@ -15,8 +15,10 @@ const getImageUrl = (path: string) =>
   `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
 
 const Motorex = () => {
+  const { addToCart } = useCart();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [activeVolume, setActiveVolume] = useState<string | null>(null);
   const [activeVolume, setActiveVolume] = useState<string | null>(null);
 
   const { data: categories = [] } = useQuery({
