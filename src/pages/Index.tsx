@@ -184,7 +184,7 @@ const Index = () => {
         <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" className="w-full h-auto block" />
         <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-secondary/80 to-transparent" />
         <div className="absolute bottom-0 left-0 p-6 md:p-10">
-          <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-secondary-foreground/40 text-secondary-foreground hover:bg-secondary-foreground/10">
+          <Button asChild className="font-heading uppercase tracking-wider hover-glow">
             <Link to="/indique-cidade">Indicar agora <ArrowRight className="ml-2" size={16} /></Link>
           </Button>
         </div>
