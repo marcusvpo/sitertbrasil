@@ -115,6 +115,18 @@ const Index = () => {
                         {p.badge}
                       </span>
                     )}
+                    {p.price && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          addToCart(p);
+                        }}
+                        className="absolute bottom-0 inset-x-0 bg-primary/90 backdrop-blur-sm text-primary-foreground py-2.5 flex items-center justify-center gap-2 font-heading uppercase text-xs tracking-wider translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                      >
+                        <ShoppingCart size={14} /> Adicionar
+                      </button>
+                    )}
                   </div>
                   <div className="p-4">
                     <span className="text-xs text-primary font-heading uppercase tracking-wider">{p.category?.name}</span>

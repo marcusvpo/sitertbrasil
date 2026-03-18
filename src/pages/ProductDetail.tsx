@@ -182,11 +182,42 @@ const ProductDetail = () => {
             )}
 
             <div className="flex flex-col sm:flex-row gap-3">
-              <Button asChild size="lg" className="font-heading uppercase tracking-wider flex-1">
-                <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
-                  Consultar via WhatsApp
-                </a>
-              </Button>
+              {product.price ? (
+                <>
+                  {/* Quantity selector */}
+                  <div className="flex items-center border border-secondary-foreground/20 rounded-md overflow-hidden h-11">
+                    <button
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      className="px-3 h-full text-secondary-foreground/60 hover:bg-secondary-foreground/10 transition-colors"
+                    >
+                      <Minus size={16} />
+                    </button>
+                    <span className="px-4 font-heading text-secondary-foreground">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity((q) => q + 1)}
+                      className="px-3 h-full text-secondary-foreground/60 hover:bg-secondary-foreground/10 transition-colors"
+                    >
+                      <Plus size={16} />
+                    </button>
+                  </div>
+                  <Button
+                    size="lg"
+                    className="font-heading uppercase tracking-wider flex-1 hover-glow"
+                    onClick={() => {
+                      addToCart(product, quantity);
+                      setQuantity(1);
+                    }}
+                  >
+                    <ShoppingCart size={18} className="mr-2" /> Adicionar ao Carrinho
+                  </Button>
+                </>
+              ) : (
+                <Button asChild size="lg" className="font-heading uppercase tracking-wider flex-1">
+                  <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
+                    Consultar via WhatsApp
+                  </a>
+                </Button>
+              )}
               <Button asChild variant="outline" size="lg" className="font-heading uppercase tracking-wider border-primary/40 text-primary hover:bg-primary/10">
                 <Link to="/seja-revendedor">Seja Revendedor</Link>
               </Button>
