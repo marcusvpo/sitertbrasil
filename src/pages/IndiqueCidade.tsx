@@ -15,17 +15,17 @@ const IndiqueCidade = () => {
 
   return (
     <>
-      {/* Banner — clean, no overlay */}
+      {/* Banner */}
       <section className="relative w-full overflow-hidden">
         <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" className="w-full h-auto block" />
       </section>
 
-      <section className="bg-secondary text-secondary-foreground py-16 md:py-24">
+      <section className="bg-secondary text-secondary-foreground py-10 md:py-16">
         <div className="container max-w-xl">
-          <AnimateOnScroll className="text-center mb-8">
-            <h2 className="font-heading text-2xl md:text-3xl uppercase font-bold">
-              Formulário de Indicação
-            </h2>
+          <AnimateOnScroll className="text-center mb-6">
+            <h1 className="font-heading text-[42px] md:text-[64px] uppercase font-bold leading-[0.95]">
+              Indique sua <span className="text-gradient">Cidade</span>
+            </h1>
           </AnimateOnScroll>
 
           {submitted ? (
@@ -38,7 +38,7 @@ const IndiqueCidade = () => {
             </AnimateOnScroll>
           ) : (
             <AnimateOnScroll animation="fade-up">
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="liquid-glass rounded-lg p-6 md:p-8 space-y-5">
                 <div>
                   <Label htmlFor="nome">Nome</Label>
                   <Input id="nome" name="nome" placeholder="Seu nome" required className="mt-1" />

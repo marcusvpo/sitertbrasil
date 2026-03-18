@@ -5,15 +5,15 @@ import AnimateOnScroll from "./AnimateOnScroll";
 const Footer = () => {
   return (
     <footer className="bg-secondary text-secondary-foreground border-t border-secondary-foreground/10">
-      <div className="container py-12 md:py-16">
+      <div className="container py-8 md:py-12">
         <AnimateOnScroll>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* Logo + about */}
             <div>
               <img
                 src="/images/logo-motorex.png"
                 alt="RT Brasil"
-                className="h-12 w-auto mb-4"
+                className="h-10 w-auto mb-3"
               />
               <p className="text-secondary-foreground/70 text-sm leading-relaxed">
                 Distribuidora oficial MOTOREX no Brasil. Lubrificantes de alta
@@ -23,7 +23,7 @@ const Footer = () => {
 
             {/* Nav links */}
             <div>
-              <h4 className="font-heading uppercase text-primary text-sm tracking-wider mb-4">
+              <h4 className="font-heading uppercase text-primary text-sm tracking-wider mb-3">
                 Navegação
               </h4>
               <nav className="flex flex-col gap-2 story-link">
@@ -48,24 +48,24 @@ const Footer = () => {
 
             {/* Contact */}
             <div>
-              <h4 className="font-heading uppercase text-primary text-sm tracking-wider mb-4">
+              <h4 className="font-heading uppercase text-primary text-sm tracking-wider mb-3">
                 Contato
               </h4>
-              <div className="flex flex-col gap-3 text-sm text-secondary-foreground/70">
+              <div className="flex flex-col gap-2 text-sm text-secondary-foreground/70">
                 <a
                   href="https://wa.me/5500000000000"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 hover:text-primary transition-all duration-300 hover:-translate-x-0.5"
                 >
-                  <Phone size={16} />
+                  <Phone size={14} />
                   WhatsApp
                 </a>
                 <a
                   href="mailto:contato@rtbrasil.com.br"
                   className="flex items-center gap-2 hover:text-primary transition-all duration-300 hover:-translate-x-0.5"
                 >
-                  <Mail size={16} />
+                  <Mail size={14} />
                   contato@rtbrasil.com.br
                 </a>
                 <a
@@ -74,11 +74,11 @@ const Footer = () => {
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 hover:text-primary transition-all duration-300 hover:-translate-x-0.5"
                 >
-                  <Instagram size={16} />
+                  <Instagram size={14} />
                   @rtbrasil
                 </a>
                 <div className="flex items-start gap-2">
-                  <MapPin size={16} className="mt-0.5 flex-shrink-0" />
+                  <MapPin size={14} className="mt-0.5 flex-shrink-0" />
                   <span>São Paulo, SP - Brasil</span>
                 </div>
               </div>
@@ -86,7 +86,7 @@ const Footer = () => {
           </div>
         </AnimateOnScroll>
 
-        <div className="border-t border-secondary-foreground/10 mt-10 pt-6 text-center text-xs text-secondary-foreground/50">
+        <div className="border-t border-secondary-foreground/10 mt-8 pt-4 text-center text-xs text-secondary-foreground/50">
           © {new Date().getFullYear()} RT Brasil. Todos os direitos reservados.
           Distribuidora oficial MOTOREX.
         </div>

@@ -91,6 +91,80 @@
   }
 }
 
+@layer components {
+  /* Glassmorphism */
+  .glass {
+    @apply backdrop-blur-xl border shadow-lg;
+    background: hsl(var(--secondary) / 0.7);
+    border-color: hsl(var(--primary) / 0.08);
+  }
+
+  .glass-card {
+    @apply relative overflow-hidden backdrop-blur-md border transition-all duration-500;
+    background: hsl(var(--secondary) / 0.6);
+    border-color: hsl(var(--primary) / 0.12);
+    box-shadow: 0 4px 30px hsl(var(--primary) / 0.06), inset 0 1px 0 hsl(var(--primary-foreground) / 0.04);
+  }
+
+  .glass-card:hover {
+    border-color: hsl(var(--primary) / 0.3);
+    box-shadow: 0 8px 40px hsl(var(--primary) / 0.12), inset 0 1px 0 hsl(var(--primary-foreground) / 0.06);
+  }
+
+  .glass-card::after {
+    content: '';
+    @apply absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-700;
+    background: linear-gradient(
+      105deg,
+      transparent 40%,
+      hsl(var(--primary) / 0.06) 45%,
+      hsl(var(--primary) / 0.12) 50%,
+      hsl(var(--primary) / 0.06) 55%,
+      transparent 60%
+    );
+    transform: translateX(-100%);
+  }
+
+  .glass-card:hover::after {
+    opacity: 1;
+    animation: shimmer 1.5s ease-in-out;
+  }
+
+  /* Liquid Glass */
+  .liquid-glass {
+    @apply relative backdrop-blur-xl border;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.08),
+      hsl(var(--secondary) / 0.6),
+      hsl(var(--primary) / 0.05)
+    );
+    border-color: hsl(var(--primary) / 0.15);
+    box-shadow: 0 8px 32px hsl(var(--primary) / 0.1), inset 0 0 20px hsl(var(--primary) / 0.03);
+    animation: hue-shift 8s ease-in-out infinite;
+  }
+
+  /* Clipped-Corner Button */
+  .btn-clip {
+    clip-path: polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+    border-radius: 0 !important;
+  }
+
+  /* Grain Overlay */
+  .grain-overlay {
+    @apply relative;
+  }
+
+  .grain-overlay::before {
+    content: '';
+    @apply absolute inset-0 pointer-events-none z-10;
+    opacity: 0.35;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+    background-size: 128px 128px;
+    animation: grain 0.8s steps(4) infinite;
+  }
+}
+
 @layer utilities {
   .story-link * {
     @apply relative inline-block after:content-[''] after:absolute after:w-full after:scale-x-0 after:h-0.5 after:bottom-0 after:left-0 after:bg-primary after:origin-bottom-right after:transition-transform after:duration-300 hover:after:scale-x-100 hover:after:origin-bottom-left;
@@ -106,5 +180,9 @@
 
   .text-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-[hsl(197_100%_60%)];
+  }
+
+  .pause-on-hover:hover .marquee-track {
+    animation-play-state: paused;
   }
 }
