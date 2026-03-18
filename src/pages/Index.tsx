@@ -27,6 +27,7 @@ const benefits = [
 ];
 
 const Index = () => {
+  const { addToCart } = useCart();
   const { data: featuredProducts = [] } = useQuery({
     queryKey: ["featured-products"],
     queryFn: async () => {
