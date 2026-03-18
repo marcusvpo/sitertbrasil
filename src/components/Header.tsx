@@ -68,12 +68,14 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden text-secondary-foreground p-2 ml-auto transition-transform duration-300 hover:scale-110"
-          aria-label="Menu"
-        >
+        {/* Mobile cart + hamburger */}
+        <div className="lg:hidden ml-auto flex items-center gap-1">
+          <CartIcon />
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="text-secondary-foreground p-2 transition-transform duration-300 hover:scale-110"
+            aria-label="Menu"
+          >
           {mobileOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
