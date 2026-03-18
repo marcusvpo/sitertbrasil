@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Star, Phone, Mail, Instagram, Shield, Trophy, Zap, DollarSign, Truck } from "lucide-react";
+import { ArrowRight, Star, Phone, Mail, Instagram, Shield, Trophy, Zap, DollarSign, Truck, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { supabase } from "@/integrations/supabase/client";
+import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 
 const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
