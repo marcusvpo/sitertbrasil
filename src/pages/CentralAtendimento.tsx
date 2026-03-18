@@ -24,13 +24,12 @@ const CentralAtendimento = () => {
   return (
     <>
       {/* Header */}
-      <section className="bg-secondary text-secondary-foreground py-16 md:py-24 relative overflow-hidden">
-        {/* Decorative pattern */}
+      <section className="bg-secondary text-secondary-foreground pt-8 md:pt-14 pb-6 md:pb-10 relative overflow-hidden">
         <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, hsl(var(--secondary-foreground)) 1px, transparent 0)", backgroundSize: "40px 40px" }} />
         <div className="container relative text-center">
           <AnimateOnScroll animation="blur-in">
             <span className="font-heading uppercase text-primary text-sm tracking-[0.25em]">Suporte</span>
-            <h1 className="font-heading text-4xl md:text-5xl uppercase font-bold mt-3 mb-4">
+            <h1 className="font-heading text-[42px] md:text-[64px] uppercase font-bold mt-3 mb-4 leading-[0.95]">
               Central de <span className="text-gradient">Atendimento</span>
             </h1>
             <p className="text-secondary-foreground/60 max-w-lg mx-auto">
@@ -41,12 +40,12 @@ const CentralAtendimento = () => {
       </section>
 
       {/* Contact cards */}
-      <section className="bg-secondary text-secondary-foreground py-12 md:py-16 border-t border-secondary-foreground/5">
+      <section className="bg-secondary text-secondary-foreground py-8 md:py-12 border-t border-secondary-foreground/5">
         <div className="container">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {contactCards.map((c, i) => (
               <AnimateOnScroll key={c.label} animation="scale-in" delay={i * 100}>
-                <div className="bg-secondary-foreground/5 border border-secondary-foreground/10 rounded-lg p-6 text-center hover-lift hover-glow transition-all duration-300 h-full">
+                <div className="glass-card rounded-lg p-6 text-center hover-lift hover-glow transition-all duration-300 h-full">
                   <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
                     <c.icon size={22} className="text-primary" />
                   </div>
@@ -66,11 +65,11 @@ const CentralAtendimento = () => {
       </section>
 
       {/* Form */}
-      <section className="bg-secondary text-secondary-foreground py-16 md:py-24 border-t border-secondary-foreground/5">
+      <section className="bg-secondary text-secondary-foreground py-10 md:py-16 border-t border-secondary-foreground/5">
         <div className="container max-w-xl">
-          <AnimateOnScroll className="text-center mb-10">
+          <AnimateOnScroll className="text-center mb-8">
             <Send size={32} className="mx-auto text-primary mb-3" />
-            <h2 className="font-heading text-2xl md:text-3xl uppercase font-bold">Fale Conosco</h2>
+            <h2 className="font-heading text-[28px] md:text-[36px] uppercase font-bold">Fale Conosco</h2>
           </AnimateOnScroll>
 
           {submitted ? (
@@ -83,7 +82,7 @@ const CentralAtendimento = () => {
             </AnimateOnScroll>
           ) : (
             <AnimateOnScroll animation="fade-up">
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="liquid-glass rounded-lg p-6 md:p-8 space-y-5">
                 <div>
                   <Label htmlFor="nome">Nome</Label>
                   <Input id="nome" name="nome" placeholder="Seu nome" required className="mt-1" />

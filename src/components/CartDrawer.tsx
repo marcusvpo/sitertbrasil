@@ -32,8 +32,8 @@ const CartDrawer = () => {
 
   return (
     <Sheet open={isOpen} onOpenChange={setIsOpen}>
-      <SheetContent className="w-full sm:max-w-lg bg-secondary border-secondary-foreground/10 flex flex-col p-0">
-        <SheetHeader className="px-6 pt-6 pb-4">
+      <SheetContent className="w-full sm:max-w-lg glass border-l border-primary/10 flex flex-col p-0">
+        <SheetHeader className="px-5 pt-5 pb-3 border-b border-primary/10">
           <SheetTitle className="font-heading uppercase text-secondary-foreground flex items-center gap-2">
             <ShoppingCart size={20} className="text-primary" />
             Meu Carrinho
@@ -46,7 +46,7 @@ const CartDrawer = () => {
         </SheetHeader>
 
         {items.length === 0 ? (
-          <div className="flex-1 flex flex-col items-center justify-center px-6 gap-4">
+          <div className="flex-1 flex flex-col items-center justify-center px-5 gap-4">
             <div className="w-20 h-20 rounded-full bg-secondary-foreground/5 flex items-center justify-center">
               <ShoppingCart size={32} className="text-secondary-foreground/20" />
             </div>
@@ -57,17 +57,16 @@ const CartDrawer = () => {
           </div>
         ) : (
           <>
-            <ScrollArea className="flex-1 px-6">
-              <div className="space-y-4 pb-4">
+            <ScrollArea className="flex-1 px-5">
+              <div className="space-y-3 pb-4 pt-3">
                 {items.map((item) => {
                   const img = item.product.images?.[0];
                   const price = Number(item.product.price) || 0;
                   const subtotal = price * item.quantity;
 
                   return (
-                    <div key={item.product.id} className="flex gap-3 bg-secondary-foreground/5 rounded-lg p-3 border border-secondary-foreground/10">
-                      {/* Thumbnail */}
-                      <div className="w-20 h-20 rounded-md overflow-hidden bg-secondary-foreground/10 flex-shrink-0">
+                    <div key={item.product.id} className="glass-card rounded-lg p-3 flex gap-3">
+                      <div className="w-16 h-16 rounded-md overflow-hidden bg-secondary-foreground/10 flex-shrink-0">
                         {img ? (
                           <img
                             src={getImageUrl(img.storage_path)}
@@ -81,9 +80,8 @@ const CartDrawer = () => {
                         )}
                       </div>
 
-                      {/* Info */}
                       <div className="flex-1 min-w-0">
-                        <h4 className="font-heading text-sm uppercase font-semibold text-secondary-foreground truncate">
+                        <h4 className="font-heading text-xs uppercase font-semibold text-secondary-foreground truncate">
                           {item.product.name}
                         </h4>
                         {item.product.volume && (
@@ -93,30 +91,29 @@ const CartDrawer = () => {
                           {formatBRL(subtotal)}
                         </p>
 
-                        {/* Quantity controls */}
-                        <div className="flex items-center gap-2 mt-2">
+                        <div className="flex items-center gap-2 mt-1">
                           <button
                             onClick={() => updateQuantity(item.product.id, item.quantity - 1)}
                             disabled={item.quantity <= 1}
-                            className="w-7 h-7 rounded-md bg-secondary-foreground/10 flex items-center justify-center text-secondary-foreground/60 hover:bg-secondary-foreground/20 disabled:opacity-30 transition-colors"
+                            className="w-6 h-6 rounded bg-secondary-foreground/10 flex items-center justify-center text-secondary-foreground/60 hover:bg-secondary-foreground/20 disabled:opacity-30 transition-colors"
                           >
-                            <Minus size={14} />
+                            <Minus size={12} />
                           </button>
-                          <span className="font-heading text-sm text-secondary-foreground w-6 text-center">
+                          <span className="font-heading text-xs text-secondary-foreground w-5 text-center">
                             {item.quantity}
                           </span>
                           <button
                             onClick={() => updateQuantity(item.product.id, item.quantity + 1)}
-                            className="w-7 h-7 rounded-md bg-secondary-foreground/10 flex items-center justify-center text-secondary-foreground/60 hover:bg-secondary-foreground/20 transition-colors"
+                            className="w-6 h-6 rounded bg-secondary-foreground/10 flex items-center justify-center text-secondary-foreground/60 hover:bg-secondary-foreground/20 transition-colors"
                           >
-                            <Plus size={14} />
+                            <Plus size={12} />
                           </button>
 
                           <button
                             onClick={() => removeFromCart(item.product.id)}
-                            className="ml-auto w-7 h-7 rounded-md flex items-center justify-center text-destructive/60 hover:text-destructive hover:bg-destructive/10 transition-colors"
+                            className="ml-auto w-6 h-6 rounded flex items-center justify-center text-destructive/60 hover:text-destructive hover:bg-destructive/10 transition-colors"
                           >
-                            <Trash2 size={14} />
+                            <Trash2 size={12} />
                           </button>
                         </div>
                       </div>
@@ -126,8 +123,7 @@ const CartDrawer = () => {
               </div>
             </ScrollArea>
 
-            {/* Footer */}
-            <div className="border-t border-secondary-foreground/10 px-6 py-4 space-y-4">
+            <div className="border-t border-primary/10 px-5 py-4 space-y-3">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm text-secondary-foreground/60">
                   <span>Frete</span>

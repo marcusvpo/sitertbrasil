@@ -59,7 +59,7 @@ const Motorex = () => {
 
   return (
     <>
-      {/* Banner — clean, no overlay, no text */}
+      {/* Banner */}
       <section className="relative w-full overflow-hidden">
         <img
           src="/images/banner-motorex.jpg"
@@ -69,16 +69,16 @@ const Motorex = () => {
       </section>
 
       {/* Filters */}
-      <section className="bg-secondary border-b border-secondary-foreground/10 sticky top-16 md:top-20 z-30">
-        <div className="container py-4">
-          <div className="flex flex-col md:flex-row gap-3 md:items-center">
+      <section className="bg-secondary border-b border-secondary-foreground/10 sticky top-14 md:top-16 z-30">
+        <div className="container py-3">
+          <div className="glass-card rounded-lg p-3 flex flex-col md:flex-row gap-3 md:items-center">
             <div className="relative flex-1 max-w-sm">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/30" size={16} />
               <Input
                 placeholder="Buscar produto..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9 bg-secondary-foreground/5 border-secondary-foreground/20 text-secondary-foreground h-9 text-sm"
+                className="pl-9 bg-secondary/50 border-secondary-foreground/20 text-secondary-foreground h-9 text-sm"
               />
             </div>
 
@@ -86,10 +86,10 @@ const Motorex = () => {
               <Filter size={14} className="text-secondary-foreground/30" />
               <button
                 onClick={() => setActiveCategory(null)}
-                className={`px-3 py-1 rounded-full text-xs font-heading uppercase tracking-wider transition-colors ${
+                className={`px-3 py-1 text-xs font-heading uppercase tracking-wider transition-all duration-300 ${
                   !activeCategory
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-secondary-foreground/10 text-secondary-foreground/60 hover:text-secondary-foreground"
+                    ? "bg-primary text-primary-foreground btn-clip"
+                    : "bg-secondary-foreground/10 text-secondary-foreground/60 hover:text-secondary-foreground rounded-sm"
                 }`}
               >
                 Todos
@@ -98,10 +98,10 @@ const Motorex = () => {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
-                  className={`px-3 py-1 rounded-full text-xs font-heading uppercase tracking-wider transition-colors ${
+                  className={`px-3 py-1 text-xs font-heading uppercase tracking-wider transition-all duration-300 ${
                     activeCategory === cat.id
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary-foreground/10 text-secondary-foreground/60 hover:text-secondary-foreground"
+                      ? "bg-primary text-primary-foreground btn-clip"
+                      : "bg-secondary-foreground/10 text-secondary-foreground/60 hover:text-secondary-foreground rounded-sm"
                   }`}
                 >
                   {cat.name}
@@ -115,7 +115,7 @@ const Motorex = () => {
                   <button
                     key={vol}
                     onClick={() => setActiveVolume(activeVolume === vol ? null : vol)}
-                    className={`px-3 py-1 rounded-full text-xs font-heading uppercase tracking-wider transition-colors ${
+                    className={`px-3 py-1 rounded-sm text-xs font-heading uppercase tracking-wider transition-colors ${
                       activeVolume === vol
                         ? "bg-primary text-primary-foreground"
                         : "bg-secondary-foreground/10 text-secondary-foreground/60 hover:text-secondary-foreground"
@@ -131,16 +131,16 @@ const Motorex = () => {
       </section>
 
       {/* Products grid */}
-      <section className="bg-secondary py-12 md:py-16 min-h-[50vh]">
+      <section className="bg-secondary py-8 md:py-12 min-h-[50vh]">
         <div className="container">
           {isLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
               {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="aspect-[3/4] rounded-lg bg-secondary-foreground/5 animate-pulse" />
+                <div key={i} className="glass-card aspect-[3/4] rounded-lg animate-pulse" />
               ))}
             </div>
           ) : filtered.length === 0 ? (
-            <div className="text-center py-20">
+            <div className="text-center py-16">
               <ShoppingBag size={48} className="mx-auto text-secondary-foreground/20 mb-4" />
               <p className="text-secondary-foreground/50 font-heading uppercase">Nenhum produto encontrado</p>
               <p className="text-secondary-foreground/30 text-sm mt-1">Tente outro filtro ou busca.</p>
@@ -151,14 +151,14 @@ const Motorex = () => {
                 <AnimateOnScroll key={product.id} animation="fade-up" delay={(i % 4) * 80}>
                   <Link
                     to={`/motorex/${product.slug}`}
-                    className="group block bg-secondary-foreground/5 border border-secondary-foreground/10 rounded-lg overflow-hidden hover:border-primary/40 hover-lift hover-glow transition-all duration-300"
+                    className="group block glass-card rounded-lg overflow-hidden hover-lift transition-all duration-500"
                   >
                     <div className="relative aspect-square bg-secondary-foreground/5 overflow-hidden">
                       {product.images?.[0] ? (
                         <img
                           src={getImageUrl(product.images[0].storage_path)}
                           alt={product.name}
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                           loading="lazy"
                         />
                       ) : (
@@ -169,11 +169,10 @@ const Motorex = () => {
                         </div>
                       )}
                       {product.badge && (
-                        <span className="absolute top-2 left-2 bg-primary text-primary-foreground text-[9px] font-heading uppercase tracking-wider px-2 py-0.5 rounded-sm">
+                        <span className="absolute top-2 left-2 bg-primary text-primary-foreground text-[9px] font-heading uppercase tracking-wider px-2 py-0.5 btn-clip">
                           {product.badge}
                         </span>
                       )}
-                      {/* Add to cart overlay */}
                       {product.price && (
                         <button
                           onClick={(e) => {

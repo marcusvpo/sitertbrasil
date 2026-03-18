@@ -27,17 +27,17 @@ const values = [
 
 const QuemSomos = () => (
   <>
-    {/* Banner — clean */}
+    {/* Banner */}
     <section className="relative w-full overflow-hidden">
       <img src="/images/banner-quemsomos.jpg" alt="Fábrica MOTOREX na Suíça" className="w-full h-auto block" />
     </section>
 
     {/* Intro */}
-    <section className="bg-secondary text-secondary-foreground py-16 md:py-24">
+    <section className="bg-secondary text-secondary-foreground py-10 md:py-16">
       <div className="container max-w-3xl text-center">
         <AnimateOnScroll animation="blur-in">
           <span className="font-heading uppercase text-primary text-sm tracking-[0.25em]">Quem Somos</span>
-          <h1 className="font-heading text-3xl md:text-5xl uppercase font-bold mt-3 mb-6">
+          <h1 className="font-heading text-[42px] md:text-[64px] uppercase font-bold mt-3 mb-5 leading-[0.95]">
             RT Brasil + <span className="text-gradient">MOTOREX</span>
           </h1>
           <p className="text-secondary-foreground/70 text-lg leading-relaxed">
@@ -48,15 +48,14 @@ const QuemSomos = () => (
     </section>
 
     {/* Timeline */}
-    <section className="bg-secondary text-secondary-foreground py-16 md:py-24 border-t border-secondary-foreground/5">
+    <section className="bg-secondary text-secondary-foreground py-10 md:py-16 border-t border-secondary-foreground/5">
       <div className="container max-w-2xl">
-        <AnimateOnScroll className="text-center mb-12">
+        <AnimateOnScroll className="text-center mb-10">
           <span className="font-heading uppercase text-primary text-sm tracking-[0.2em]">Trajetória</span>
-          <h2 className="font-heading text-3xl md:text-4xl uppercase font-bold mt-2">Nossa História</h2>
+          <h2 className="font-heading text-[32px] md:text-[48px] uppercase font-bold mt-2">Nossa História</h2>
         </AnimateOnScroll>
 
         <div className="relative">
-          {/* Vertical line */}
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-primary/20 -translate-x-1/2" />
 
           {timeline.map((item, i) => (
@@ -64,7 +63,7 @@ const QuemSomos = () => (
               key={item.year}
               animation={i % 2 === 0 ? "fade-in-left" : "fade-in-right"}
               delay={i * 100}
-              className="relative mb-10 last:mb-0"
+              className="relative mb-8 last:mb-0"
             >
               <div className={`flex items-start gap-6 ${i % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"} md:text-${i % 2 === 0 ? "right" : "left"}`}>
                 <div className="flex-1 hidden md:block" />
@@ -83,16 +82,16 @@ const QuemSomos = () => (
     </section>
 
     {/* Stats */}
-    <section className="bg-secondary text-secondary-foreground py-16 md:py-24 border-t border-secondary-foreground/5">
+    <section className="bg-secondary text-secondary-foreground py-10 md:py-16 border-t border-secondary-foreground/5">
       <div className="container">
-        <AnimateOnScroll className="text-center mb-12">
+        <AnimateOnScroll className="text-center mb-10">
           <span className="font-heading uppercase text-primary text-sm tracking-[0.2em]">Números</span>
-          <h2 className="font-heading text-3xl md:text-4xl uppercase font-bold mt-2">MOTOREX no Mundo</h2>
+          <h2 className="font-heading text-[32px] md:text-[48px] uppercase font-bold mt-2">MOTOREX no Mundo</h2>
         </AnimateOnScroll>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {stats.map((s, i) => (
             <AnimateOnScroll key={s.label} animation="scale-in" delay={i * 100}>
-              <div className="text-center p-6 bg-secondary-foreground/5 border border-secondary-foreground/10 rounded-lg hover-lift transition-all duration-300">
+              <div className="glass-card text-center p-6 rounded-lg">
                 <s.icon size={28} className="mx-auto text-primary mb-3" />
                 <span className="font-heading text-3xl md:text-4xl font-bold text-gradient block">{s.value}</span>
                 <span className="text-secondary-foreground/60 text-sm mt-1 block">{s.label}</span>
@@ -104,16 +103,16 @@ const QuemSomos = () => (
     </section>
 
     {/* Values */}
-    <section className="bg-secondary text-secondary-foreground py-16 md:py-24 border-t border-secondary-foreground/5">
+    <section className="bg-secondary text-secondary-foreground py-10 md:py-16 border-t border-secondary-foreground/5">
       <div className="container">
-        <AnimateOnScroll className="text-center mb-12">
+        <AnimateOnScroll className="text-center mb-10">
           <span className="font-heading uppercase text-primary text-sm tracking-[0.2em]">Filosofia</span>
-          <h2 className="font-heading text-3xl md:text-4xl uppercase font-bold mt-2">Nossos Valores</h2>
+          <h2 className="font-heading text-[32px] md:text-[48px] uppercase font-bold mt-2">Nossos Valores</h2>
         </AnimateOnScroll>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {values.map((v, i) => (
             <AnimateOnScroll key={v.title} animation="fade-up" delay={i * 100}>
-              <div className="p-6 bg-secondary-foreground/5 border border-secondary-foreground/10 rounded-lg text-center hover-lift hover-glow transition-all duration-300 h-full">
+              <div className="glass-card p-6 rounded-lg text-center hover-lift hover-glow transition-all duration-300 h-full">
                 <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
                   <v.icon size={22} className="text-primary" />
                 </div>
@@ -127,18 +126,20 @@ const QuemSomos = () => (
     </section>
 
     {/* CTA */}
-    <section className="bg-secondary text-secondary-foreground py-16 md:py-24 border-t border-secondary-foreground/5">
+    <section className="bg-secondary text-secondary-foreground py-10 md:py-16 border-t border-secondary-foreground/5">
       <div className="container text-center">
         <AnimateOnScroll>
-          <h2 className="font-heading text-2xl md:text-3xl uppercase font-bold mb-4">
-            Quer fazer parte da rede MOTOREX?
-          </h2>
-          <p className="text-secondary-foreground/60 mb-8 max-w-md mx-auto">
-            Cadastre-se como revendedor e leve produtos de alta performance para sua região.
-          </p>
-          <Button asChild size="lg" className="font-heading uppercase tracking-wider hover-glow">
-            <Link to="/seja-revendedor">Seja Revendedor <ArrowRight className="ml-2" size={18} /></Link>
-          </Button>
+          <div className="liquid-glass rounded-lg p-8 md:p-12 max-w-xl mx-auto">
+            <h2 className="font-heading text-[28px] md:text-[36px] uppercase font-bold mb-4">
+              Quer fazer parte da rede MOTOREX?
+            </h2>
+            <p className="text-secondary-foreground/60 mb-6 max-w-md mx-auto">
+              Cadastre-se como revendedor e leve produtos de alta performance para sua região.
+            </p>
+            <Button asChild size="lg" className="font-heading uppercase tracking-wider hover-glow">
+              <Link to="/seja-revendedor">Seja Revendedor <ArrowRight className="ml-2" size={18} /></Link>
+            </Button>
+          </div>
         </AnimateOnScroll>
       </div>
     </section>

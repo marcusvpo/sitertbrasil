@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -16,22 +16,40 @@ const navItems = [
 
 const Header = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [location]);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="sticky top-0 z-50 bg-secondary/95 backdrop-blur-sm">
-      <div className="container flex items-center gap-4 h-16 md:h-20">
+    <header
+      className={cn(
+        "sticky top-0 z-50 transition-all duration-500",
+        scrolled
+          ? "glass py-1 shadow-[0_4px_30px_hsl(var(--primary)/0.08)]"
+          : "bg-secondary/95 backdrop-blur-md py-0"
+      )}
+    >
+      <div className="container flex items-center gap-4 h-14 md:h-16">
         {/* Logo */}
         <Link to="/" className="flex-shrink-0 transition-transform duration-300 hover:scale-105">
           <img
             src="/images/logo-motorex.png"
             alt="MOTOREX"
-            className="h-10 md:h-14 w-auto"
+            className="h-8 md:h-12 w-auto"
           />
         </Link>
 
         {/* Pill-shaped nav */}
-        <div className="hidden lg:flex items-center flex-1 bg-secondary-foreground/10 border border-secondary-foreground/20 rounded-full px-2 py-1.5">
+        <div className="hidden lg:flex items-center flex-1 glass-card rounded-full px-2 py-1.5">
           <nav className="flex items-center justify-center flex-1 gap-1">
             {navItems.map((item) => (
               <Link
@@ -47,7 +65,6 @@ const Header = () => {
                 <span className="relative inline-block transition-transform duration-300 group-hover:-translate-y-0.5 group-hover:scale-105">
                   {item.label}
                 </span>
-                {/* Active underline */}
                 <span
                   className={cn(
                     "absolute bottom-0 left-1/2 -translate-x-1/2 h-0.5 bg-primary rounded-full transition-all duration-300",
@@ -58,11 +75,10 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Cart + CTA pill */}
           <CartIcon />
           <Link
             to="/central-atendimento"
-            className="flex items-center bg-primary-foreground text-secondary font-heading uppercase text-xs tracking-wider px-5 py-2 rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)]"
+            className="flex items-center bg-primary text-primary-foreground font-heading uppercase text-xs tracking-wider px-5 py-2 btn-clip hover:shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)] transition-all duration-300"
           >
             Central de Atendimento
           </Link>
@@ -83,7 +99,7 @@ const Header = () => {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="fixed inset-0 top-16 z-40 bg-secondary/98 backdrop-blur-md lg:hidden">
+        <div className="fixed inset-0 top-14 z-40 glass lg:hidden">
           <nav className="flex flex-col items-center justify-center gap-1 pt-12">
             {navItems.map((item, i) => (
               <Link
@@ -104,7 +120,7 @@ const Header = () => {
             <Link
               to="/central-atendimento"
               onClick={() => setMobileOpen(false)}
-              className="mt-6 bg-primary-foreground text-secondary font-heading uppercase text-sm tracking-wider px-8 py-3 rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 animate-fade-up"
+              className="mt-6 bg-primary text-primary-foreground font-heading uppercase text-sm tracking-wider px-8 py-3 btn-clip hover:shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)] transition-all duration-300 animate-fade-up"
               style={{ animationDelay: `${navItems.length * 50}ms` }}
             >
               Central de Atendimento
