@@ -58,7 +58,8 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA pill */}
+          {/* Cart + CTA pill */}
+          <CartIcon />
           <Link
             to="/central-atendimento"
             className="flex items-center bg-primary-foreground text-secondary font-heading uppercase text-xs tracking-wider px-5 py-2 rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)]"
