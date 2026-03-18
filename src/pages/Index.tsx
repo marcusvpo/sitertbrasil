@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Star, Phone, Mail, Instagram, Shield, Trophy, Zap, DollarSign, Truck } from "lucide-react";
+import { ArrowRight, Star, Phone, Mail, Instagram, Shield, Trophy, Zap, DollarSign, Truck, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import ScrollAnimation from "@/components/ScrollAnimation";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { supabase } from "@/integrations/supabase/client";
+import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 
 const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
@@ -26,6 +27,7 @@ const benefits = [
 ];
 
 const Index = () => {
+  const { addToCart } = useCart();
   const { data: featuredProducts = [] } = useQuery({
     queryKey: ["featured-products"],
     queryFn: async () => {
@@ -112,6 +114,18 @@ const Index = () => {
                       <span className="absolute top-3 left-3 bg-primary text-primary-foreground text-[10px] font-heading uppercase tracking-wider px-2 py-1 rounded-sm">
                         {p.badge}
                       </span>
+                    )}
+                    {p.price && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          addToCart(p);
+                        }}
+                        className="absolute bottom-0 inset-x-0 bg-primary/90 backdrop-blur-sm text-primary-foreground py-2.5 flex items-center justify-center gap-2 font-heading uppercase text-xs tracking-wider translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                      >
+                        <ShoppingCart size={14} /> Adicionar
+                      </button>
                     )}
                   </div>
                   <div className="p-4">

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import CartIcon from "@/components/CartIcon";
 
 const navItems = [
   { label: "Home", to: "/" },
@@ -57,7 +58,8 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* CTA pill */}
+          {/* Cart + CTA pill */}
+          <CartIcon />
           <Link
             to="/central-atendimento"
             className="flex items-center bg-primary-foreground text-secondary font-heading uppercase text-xs tracking-wider px-5 py-2 rounded-full hover:bg-primary hover:text-primary-foreground transition-all duration-300 hover:shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)]"
@@ -66,14 +68,17 @@ const Header = () => {
           </Link>
         </div>
 
-        {/* Mobile hamburger */}
-        <button
-          onClick={() => setMobileOpen(!mobileOpen)}
-          className="lg:hidden text-secondary-foreground p-2 ml-auto transition-transform duration-300 hover:scale-110"
-          aria-label="Menu"
-        >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile cart + hamburger */}
+        <div className="lg:hidden ml-auto flex items-center gap-1">
+          <CartIcon />
+          <button
+            onClick={() => setMobileOpen(!mobileOpen)}
+            className="text-secondary-foreground p-2 transition-transform duration-300 hover:scale-110"
+            aria-label="Menu"
+          >
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}

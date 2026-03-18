@@ -4,8 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, ShoppingBag } from "lucide-react";
+import { Search, Filter, ShoppingBag, ShoppingCart } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 
 const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
@@ -14,6 +15,7 @@ const getImageUrl = (path: string) =>
   `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
 
 const Motorex = () => {
+  const { addToCart } = useCart();
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [activeVolume, setActiveVolume] = useState<string | null>(null);
@@ -170,6 +172,19 @@ const Motorex = () => {
                         <span className="absolute top-2 left-2 bg-primary text-primary-foreground text-[9px] font-heading uppercase tracking-wider px-2 py-0.5 rounded-sm">
                           {product.badge}
                         </span>
+                      )}
+                      {/* Add to cart overlay */}
+                      {product.price && (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            addToCart(product);
+                          }}
+                          className="absolute bottom-0 inset-x-0 bg-primary/90 backdrop-blur-sm text-primary-foreground py-2.5 flex items-center justify-center gap-2 font-heading uppercase text-xs tracking-wider translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                        >
+                          <ShoppingCart size={14} /> Adicionar ao Carrinho
+                        </button>
                       )}
                     </div>
 
