@@ -174,6 +174,19 @@ const Motorex = () => {
                           {product.badge}
                         </span>
                       )}
+                      {/* Add to cart overlay */}
+                      {product.price && (
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            addToCart(product);
+                          }}
+                          className="absolute bottom-0 inset-x-0 bg-primary/90 backdrop-blur-sm text-primary-foreground py-2.5 flex items-center justify-center gap-2 font-heading uppercase text-xs tracking-wider translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                        >
+                          <ShoppingCart size={14} /> Adicionar ao Carrinho
+                        </button>
+                      )}
                     </div>
 
                     <div className="p-3 md:p-4">
