@@ -28,9 +28,11 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
+      <CartProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
+        <CartDrawer />
         <BrowserRouter>
           <Routes>
             {/* Public */}
