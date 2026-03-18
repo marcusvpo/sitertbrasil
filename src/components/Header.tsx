@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+import CartIcon from "@/components/CartIcon";
 
 const navItems = [
   { label: "Home", to: "/" },
