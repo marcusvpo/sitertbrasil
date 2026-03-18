@@ -15,7 +15,9 @@ const getImageUrl = (path: string) =>
 
 const ProductDetail = () => {
   const { slug } = useParams();
+  const { addToCart } = useCart();
   const [activeImage, setActiveImage] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product-detail", slug],
