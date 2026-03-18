@@ -4,8 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Search, Filter, ShoppingBag } from "lucide-react";
+import { Search, Filter, ShoppingBag, ShoppingCart } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 
 const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
