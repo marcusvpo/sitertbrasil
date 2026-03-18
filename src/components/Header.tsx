@@ -76,8 +76,9 @@ const Header = () => {
             className="text-secondary-foreground p-2 transition-transform duration-300 hover:scale-110"
             aria-label="Menu"
           >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
 
       {/* Mobile menu */}
