@@ -146,12 +146,12 @@ const HeitorMatos = () => {
   return (
     <div className="bg-secondary text-secondary-foreground">
       {/* ═══════════ HERO ═══════════ */}
-      <section className="relative min-h-screen flex items-end overflow-hidden">
+      <section className="relative h-screen max-h-[1080px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src={img("heitorpng.png")}
+            src={img("heitorRT.png")}
             alt="Heitor Matos"
-            className="w-full h-full object-cover object-top"
+            className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/50 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-secondary/90 via-secondary/30 to-transparent" />
