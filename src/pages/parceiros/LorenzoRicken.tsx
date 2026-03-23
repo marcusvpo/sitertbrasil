@@ -693,8 +693,8 @@ const LorenzoRicken = () => {
               <p className="text-secondary-foreground/50 text-sm md:text-base leading-relaxed mb-8">
                 Desde lubrificantes de motor até produtos de limpeza e manutenção, cada detalhe conta na busca pela vitória. A linha MOTOREX garante proteção, rendimento e durabilidade superiores — exatamente o que um piloto de elite precisa.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2">
+              <div className="flex flex-col md:flex-row gap-3 md:gap-4 justify-center items-center">
+                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2 w-full md:w-auto justify-center">
                   <Shield className="w-4 h-4 text-primary" />
                   <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Proteção máxima</span>
                 </div>
