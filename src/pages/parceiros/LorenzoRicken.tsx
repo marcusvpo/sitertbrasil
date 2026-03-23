@@ -297,7 +297,7 @@ const LorenzoRicken = () => {
           </div>
         </div>
 
-        <div className="relative container pb-20 md:pb-28 pt-32 z-10">
+        <div className="relative container pb-20 md:pb-28 pt-32 z-10 flex flex-col items-end text-right">
           <Link
             to="/parceiros"
             className="inline-flex items-center gap-1.5 text-primary text-sm font-heading uppercase tracking-wider mb-8 hover:gap-3 transition-all duration-300"
