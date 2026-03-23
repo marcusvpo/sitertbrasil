@@ -668,7 +668,7 @@ const HeitorMatos = () => {
                   Conheça a linha MOTOREX escolhida por pilotos campeões como o Heitor Matos.
                 </p>
                 <Link to="/motorex">
-                  <Button className="btn-clip hover-glow text-base px-10 py-4"
+                  <Button className="btn-clip hover-glow text-base px-10 py-4 min-h-[44px] w-full md:w-auto"
                     style={{ boxShadow: '0 0 25px hsl(197 100% 43.7% / 0.3)' }}>
                     <Bike className="w-4 h-4 mr-2" /> Ver produtos MOTOREX
                   </Button>
