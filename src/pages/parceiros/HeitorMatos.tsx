@@ -592,7 +592,7 @@ const HeitorMatos = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Button className="btn-clip hover-glow text-base px-6 py-3"
+                  <Button className="btn-clip hover-glow text-base px-6 py-3 min-h-[44px] w-full md:w-auto"
                       style={{ boxShadow: '0 0 20px hsl(197 100% 43.7% / 0.2)' }}>
                       <Instagram className="w-4 h-4 mr-2" /> Seguir no Instagram
                     </Button>
