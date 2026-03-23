@@ -20,7 +20,7 @@ const partners: Partner[] = [
   {
     name: "Heitor Matos",
     slug: "heitor-matos",
-    image: getPartnerImage("heitorpng.png"),
+    image: getPartnerImage("heitor/heitorcard.png"),
     role: "Piloto de Motocross & BMX",
     instagram: "@heitormatos300",
     titles: 5,
@@ -48,12 +48,12 @@ const Parceiros = () => {
             <AnimateOnScroll key={partner.slug} animation="scale-in" delay={i * 150}>
               <Link to={`/parceiros/${partner.slug}`} className="group block">
                 <div className="relative glass-card rounded-lg overflow-hidden transition-all duration-500 hover:scale-[1.03] hover:shadow-[0_0_40px_hsl(197_100%_43.7%/0.25)]">
-                  {/* Card image */}
-                  <div className="relative h-[420px] overflow-hidden">
+                  {/* Card image — natural aspect ratio */}
+                  <div className="relative overflow-hidden">
                     <img
                       src={partner.image}
                       alt={partner.name}
-                      className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110"
+                      className="w-full h-auto block transition-transform duration-700 group-hover:scale-110"
                     />
                     {/* Gradient overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent" />
