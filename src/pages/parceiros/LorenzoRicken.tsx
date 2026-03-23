@@ -698,11 +698,11 @@ const LorenzoRicken = () => {
                   <Shield className="w-4 h-4 text-primary" />
                   <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Proteção máxima</span>
                 </div>
-                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2">
+                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2 w-full md:w-auto justify-center">
                   <Zap className="w-4 h-4 text-primary" />
                   <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Alta performance</span>
                 </div>
-                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2">
+                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2 w-full md:w-auto justify-center">
                   <Trophy className="w-4 h-4 text-primary" />
                   <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Qualidade suíça</span>
                 </div>
