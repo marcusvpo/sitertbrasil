@@ -246,7 +246,7 @@ const Index = () => {
         <div className="pause-on-hover">
           <div className="marquee-track flex gap-6 animate-marquee" style={{ width: 'max-content' }}>
             {[...testimonials, ...testimonials].map((t, i) => (
-              <div key={i} className="glass-card rounded-lg p-6 w-[340px] flex-shrink-0">
+              <div key={i} className="glass-card rounded-lg p-6 w-[280px] md:w-[340px] flex-shrink-0">
                 <div className="flex gap-1 mb-3">
                   {Array.from({ length: t.stars }).map((_, si) => (
                     <Star key={si} size={14} className="fill-primary text-primary" />
@@ -278,13 +278,13 @@ const Index = () => {
             <h2 className="font-heading text-[32px] md:text-[48px] uppercase font-bold mt-2 mb-6">Contato Rápido</h2>
           </AnimateOnScroll>
           <AnimateOnScroll animation="slide-up" delay={200}>
-            <div className="flex flex-wrap justify-center gap-8 mb-6">
+            <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 md:gap-8 mb-6">
               {[
                 { icon: Phone, label: "WhatsApp", href: "https://wa.me/5500000000000" },
                 { icon: Mail, label: "contato@rtbrasil.com.br", href: "mailto:contato@rtbrasil.com.br" },
                 { icon: Instagram, label: "@rtbrasil", href: "https://instagram.com/rtbrasil" },
               ].map((c) => (
-                <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-0.5">
+                <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-0.5 min-h-[44px]">
                   <c.icon size={20} /> {c.label}
                 </a>
               ))}

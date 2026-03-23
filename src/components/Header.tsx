@@ -89,7 +89,7 @@ const Header = () => {
           <CartIcon />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="text-secondary-foreground p-2 transition-transform duration-300 hover:scale-110"
+            className="text-secondary-foreground p-2 transition-transform duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Menu"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
@@ -107,7 +107,7 @@ const Header = () => {
                 to={item.to}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "font-heading uppercase text-lg tracking-wider py-3 transition-all duration-300 animate-fade-up",
+                  "font-heading uppercase text-lg tracking-wider py-3 transition-all duration-300 animate-fade-up min-h-[44px] flex items-center",
                   location.pathname === item.to
                     ? "text-primary"
                     : "text-secondary-foreground/80 hover:text-primary"

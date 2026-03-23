@@ -109,7 +109,7 @@ const Parceiros = () => {
         {/* CTA to become a partner */}
         <AnimateOnScroll animation="fade-up" delay={400}>
           <div className="mt-16 text-center">
-            <div className="liquid-glass inline-block px-8 py-6 rounded-lg">
+            <div className="liquid-glass inline-block px-5 md:px-8 py-6 rounded-lg">
               <h2 className="font-heading text-xl md:text-2xl uppercase font-bold mb-2">
                 Quer ser um parceiro RT Brasil?
               </h2>
@@ -118,7 +118,7 @@ const Parceiros = () => {
               </p>
               <Link
                 to="/seja-revendedor"
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-heading uppercase tracking-wider text-sm px-6 py-3 btn-clip hover-glow transition-all duration-300"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-heading uppercase tracking-wider text-sm px-6 py-3 btn-clip hover-glow transition-all duration-300 min-h-[44px] w-full sm:w-auto justify-center"
               >
                 Quero ser parceiro <ChevronRight className="w-4 h-4" />
               </Link>

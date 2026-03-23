@@ -94,7 +94,7 @@ const HUDCorners = () => (
 
 /* ─── HUD Overlay (game-style top bar) ─── */
 const HUDOverlay = () => (
-  <div className="absolute top-4 left-4 right-4 z-30 flex justify-between items-start pointer-events-none">
+  <div className="absolute top-4 left-4 right-4 z-30 hidden md:flex justify-between items-start pointer-events-none">
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2 bg-secondary/60 backdrop-blur-md border border-primary/20 rounded px-3 py-1.5"
         style={{ boxShadow: '0 0 15px hsl(197 100% 43.7% / 0.1)' }}>
@@ -118,7 +118,7 @@ const HUDOverlay = () => (
 
 /* ─── Checkpoint Divider ─── */
 const CheckpointDivider = ({ label }: { label: string }) => (
-  <div className="relative py-8 overflow-hidden">
+  <div className="relative py-4 md:py-8 overflow-hidden">
     <div className="flex items-center justify-center gap-4">
       <div className="h-[2px] flex-1 max-w-[200px] bg-gradient-to-r from-transparent to-primary/40" />
       <div className="flex items-center gap-2 bg-secondary/80 border border-primary/20 rounded px-4 py-2"
@@ -128,7 +128,7 @@ const CheckpointDivider = ({ label }: { label: string }) => (
       </div>
       <div className="h-[2px] flex-1 max-w-[200px] bg-gradient-to-l from-transparent to-primary/40" />
     </div>
-    <div className="flex items-center justify-center gap-0.5 mt-3 opacity-15">
+    <div className="hidden md:flex items-center justify-center gap-0.5 mt-3 opacity-15">
       {Array.from({ length: 50 }).map((_, i) => (
         <div
           key={i}
@@ -167,7 +167,7 @@ const ParallaxSection = ({
   }, []);
 
   return (
-    <div ref={ref} className="relative min-h-screen overflow-hidden flex items-center justify-center">
+    <div ref={ref} className="relative min-h-[60vh] md:min-h-screen overflow-hidden flex items-center justify-center">
       <img
         src={src}
         alt={alt}
@@ -251,7 +251,7 @@ const SpeedLines = () => (
 /* ─── MX Roost Spray (dirt splash) ─── */
 const RoostSpray = ({ side = "left" }: { side?: "left" | "right" }) => (
   <div className={`absolute bottom-0 ${side === "left" ? "left-0" : "right-0"} pointer-events-none opacity-50`}>
-    <svg width="350" height="200" viewBox="0 0 350 200" className="text-primary">
+    <svg width="350" height="200" viewBox="0 0 350 200" className="text-primary w-[200px] h-[120px] md:w-[350px] md:h-[200px]">
       {Array.from({ length: 40 }).map((_, i) => (
         <circle
           key={i}
@@ -282,7 +282,7 @@ const LorenzoRicken = () => {
   return (
     <div className="bg-secondary text-secondary-foreground">
       {/* ═══════════ HERO ═══════════ */}
-      <section className="relative h-screen max-h-[1080px] flex items-end overflow-hidden">
+      <section className="relative min-h-[80vh] md:h-screen max-h-[1080px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={img("lorenzoRT.png")}
@@ -311,41 +311,41 @@ const LorenzoRicken = () => {
           </div>
         </div>
 
-        <div className="relative container pb-20 md:pb-28 pt-32 z-10 flex flex-col items-end text-right">
+        <div className="relative container pb-16 md:pb-28 pt-24 md:pt-32 z-10 flex flex-col items-center text-center md:items-end md:text-right">
           <Link
             to="/parceiros"
-            className="inline-flex items-center gap-1.5 text-primary text-sm font-heading uppercase tracking-wider mb-8 hover:gap-3 transition-all duration-300"
+            className="inline-flex items-center gap-1.5 text-primary text-sm font-heading uppercase tracking-wider mb-6 md:mb-8 hover:gap-3 transition-all duration-300 min-h-[44px]"
           >
             <ChevronLeft className="w-4 h-4" /> Parceiros
           </Link>
 
           <AnimateOnScroll animation="fade-up">
-            <div className="flex items-center gap-3 mb-4 flex-wrap justify-end">
-              <span className="bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-heading uppercase tracking-wider px-3 py-1 btn-clip"
+            <div className="flex flex-col md:flex-row items-center md:items-center gap-2 md:gap-3 mb-4 md:justify-end">
+              <span className="bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-heading uppercase tracking-wider px-3 py-1.5 btn-clip min-h-[44px] flex items-center"
                 style={{ boxShadow: '0 0 15px hsl(197 100% 43.7% / 0.3)' }}>
                 <Bike className="w-3 h-3 inline mr-1.5 -mt-0.5" />
                 Parceiro RT Brasil
               </span>
-              <span className="bg-primary/10 border border-primary/30 text-primary text-[10px] font-heading uppercase tracking-wider px-2.5 py-1 rounded flex items-center gap-1.5">
+              <span className="bg-primary/10 border border-primary/30 text-primary text-[10px] font-heading uppercase tracking-wider px-2.5 py-1.5 rounded flex items-center gap-1.5 min-h-[44px]">
                 <Shield className="w-3 h-3" /> Piloto Elite
               </span>
               <a
                 href="https://instagram.com/lorenzorr16"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-secondary-foreground/40 text-xs hover:text-primary transition-colors"
+                className="flex items-center gap-1.5 text-secondary-foreground/40 text-xs hover:text-primary transition-colors min-h-[44px]"
               >
                 <Instagram className="w-3.5 h-3.5" /> @lorenzorr16
               </a>
             </div>
 
-            <h1 className="font-heading text-[60px] md:text-[100px] lg:text-[130px] uppercase font-bold leading-[0.85] mb-6">
+            <h1 className="font-heading text-[36px] md:text-[100px] lg:text-[130px] uppercase font-bold leading-[0.85] mb-4 md:mb-6">
               Lorenzo
               <br />
               <span className="text-gradient drop-shadow-[0_0_40px_hsl(197_100%_43.7%/0.3)]">Ricken</span>
             </h1>
 
-            <p className="text-secondary-foreground/60 text-lg md:text-xl max-w-xl leading-relaxed ml-auto">
+            <p className="text-secondary-foreground/60 text-base md:text-xl max-w-xl leading-relaxed md:ml-auto">
               Aos 11 anos, Lorenzo já acumula{" "}
               <strong className="text-secondary-foreground">8 títulos nacionais e internacionais</strong> em
               Motocross. O fenômeno catarinense que domina as pistas do Brasil.
@@ -363,7 +363,7 @@ const LorenzoRicken = () => {
         <FloatingIcons />
         <div className="container">
           <AnimateOnScroll animation="fade-up" delay={200}>
-            <div className="liquid-glass rounded-lg p-8 md:p-12 relative overflow-hidden">
+            <div className="liquid-glass rounded-lg p-4 md:p-8 lg:p-12 relative overflow-hidden">
               <HUDCorners />
               <div className="absolute inset-0 pointer-events-none"
                 style={{
@@ -395,7 +395,7 @@ const LorenzoRicken = () => {
             <div className="relative inline-block">
               <Bike className="w-10 h-10 md:w-14 md:h-14 text-primary/40 mx-auto mb-4 drop-shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)]" />
               <span
-                className="font-heading text-[48px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/60 block"
+                className="font-heading text-[28px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/60 block"
                 style={{ textShadow: '0 0 40px hsl(197 100% 43.7% / 0.6), 0 0 80px hsl(197 100% 43.7% / 0.3)' }}
               >
                 BORN TO RIDE
@@ -441,24 +441,24 @@ const LorenzoRicken = () => {
           <div className="max-w-3xl mx-auto space-y-4">
             {achievements.map((a, i) => (
               <AnimateOnScroll key={i} animation="fade-up" delay={i * 100}>
-                <div className="glass-card rounded-lg p-5 md:p-6 flex items-center gap-4 group hover:translate-x-2 transition-all duration-500 relative overflow-hidden">
+                <div className="glass-card rounded-lg p-4 md:p-6 flex items-center gap-3 md:gap-4 group hover:translate-x-2 transition-all duration-500 relative overflow-hidden">
                   <HUDCorners />
                   <div className="absolute inset-0 bg-gradient-to-r from-primary/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500 relative"
+                  <div className="w-11 h-11 md:w-14 md:h-14 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500 relative"
                     style={{ boxShadow: '0 0 15px hsl(197 100% 43.7% / 0.1)' }}>
-                    <a.icon className="w-6 h-6 text-primary drop-shadow-[0_0_8px_hsl(197_100%_43.7%/0.4)]" />
+                    <a.icon className="w-5 h-5 md:w-6 md:h-6 text-primary drop-shadow-[0_0_8px_hsl(197_100%_43.7%/0.4)]" />
                   </div>
                   <div className="flex-1 min-w-0 relative">
-                    <h3 className="font-heading text-lg md:text-xl uppercase font-bold leading-tight">
+                    <h3 className="font-heading text-base md:text-xl uppercase font-bold leading-tight">
                       🥇 {a.title}
                     </h3>
-                    <p className="text-secondary-foreground/50 text-sm flex items-center gap-2">
+                    <p className="text-secondary-foreground/50 text-xs md:text-sm flex items-center gap-2">
                       <Timer className="w-3 h-3 text-primary/40" />
                       {a.year}
                       {a.category ? ` — ${a.category}` : ""}
                     </p>
                   </div>
-                  <div className="text-primary font-heading text-3xl font-bold opacity-10 group-hover:opacity-40 transition-opacity duration-500 relative">
+                  <div className="hidden md:block text-primary font-heading text-3xl font-bold opacity-10 group-hover:opacity-40 transition-opacity duration-500 relative">
                     {a.year}
                   </div>
                 </div>
@@ -594,7 +594,7 @@ const LorenzoRicken = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <Button className="btn-clip hover-glow text-base px-6 py-3"
+                  <Button className="btn-clip hover-glow text-base px-6 py-3 min-h-[44px] w-full md:w-auto"
                       style={{ boxShadow: '0 0 20px hsl(197 100% 43.7% / 0.2)' }}>
                       <Instagram className="w-4 h-4 mr-2" /> Seguir no Instagram
                     </Button>
@@ -621,7 +621,7 @@ const LorenzoRicken = () => {
             <div className="relative inline-block">
               <Flag className="w-10 h-10 md:w-14 md:h-14 text-primary/40 mx-auto mb-4 drop-shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)]" />
               <span
-                className="font-heading text-[48px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/60 block"
+                className="font-heading text-[28px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/60 block"
                 style={{ textShadow: '0 0 40px hsl(197 100% 43.7% / 0.6), 0 0 80px hsl(197 100% 43.7% / 0.3)' }}
               >
                 FULL THROTTLE
@@ -651,7 +651,7 @@ const LorenzoRicken = () => {
             <div className="relative inline-block">
               <Crown className="w-10 h-10 md:w-14 md:h-14 text-primary/40 mx-auto mb-4 drop-shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)]" />
               <span
-                className="font-heading text-[48px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/60 block"
+                className="font-heading text-[28px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/60 block"
                 style={{ textShadow: '0 0 40px hsl(197 100% 43.7% / 0.6), 0 0 80px hsl(197 100% 43.7% / 0.3)' }}
               >
                 UNSTOPPABLE
@@ -693,16 +693,16 @@ const LorenzoRicken = () => {
               <p className="text-secondary-foreground/50 text-sm md:text-base leading-relaxed mb-8">
                 Desde lubrificantes de motor até produtos de limpeza e manutenção, cada detalhe conta na busca pela vitória. A linha MOTOREX garante proteção, rendimento e durabilidade superiores — exatamente o que um piloto de elite precisa.
               </p>
-              <div className="flex flex-wrap gap-4 justify-center">
-                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2">
+              <div className="flex flex-col md:flex-row gap-3 md:gap-4 justify-center items-center">
+                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2 w-full md:w-auto justify-center">
                   <Shield className="w-4 h-4 text-primary" />
                   <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Proteção máxima</span>
                 </div>
-                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2">
+                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2 w-full md:w-auto justify-center">
                   <Zap className="w-4 h-4 text-primary" />
                   <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Alta performance</span>
                 </div>
-                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2">
+                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2 w-full md:w-auto justify-center">
                   <Trophy className="w-4 h-4 text-primary" />
                   <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Qualidade suíça</span>
                 </div>
@@ -717,7 +717,7 @@ const LorenzoRicken = () => {
         <DustParticles />
         <div className="container">
           <AnimateOnScroll animation="fade-up">
-            <div className="liquid-glass rounded-lg p-10 md:p-16 text-center max-w-3xl mx-auto relative overflow-hidden">
+            <div className="liquid-glass rounded-lg p-6 md:p-10 lg:p-16 text-center max-w-3xl mx-auto relative overflow-hidden">
               <HUDCorners />
               <div className="absolute inset-0 pointer-events-none"
                 style={{
@@ -743,7 +743,7 @@ const LorenzoRicken = () => {
                   Conheça a linha MOTOREX escolhida por pilotos campeões como o Lorenzo Ricken.
                 </p>
                 <Link to="/motorex">
-                  <Button className="btn-clip hover-glow text-base px-10 py-4"
+                  <Button className="btn-clip hover-glow text-base px-10 py-4 min-h-[44px] w-full md:w-auto"
                     style={{ boxShadow: '0 0 25px hsl(197 100% 43.7% / 0.3)' }}>
                     <Bike className="w-4 h-4 mr-2" /> Ver produtos MOTOREX
                   </Button>
