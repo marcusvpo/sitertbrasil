@@ -52,15 +52,15 @@ const ScrollAnimation = () => {
     let drawW: number, drawH: number, drawX: number, drawY: number;
 
     if (imgRatio > canvasRatio) {
-      drawH = canvasH;
-      drawW = canvasH * imgRatio;
-      drawX = (canvasW - drawW) / 2;
-      drawY = 0;
-    } else {
       drawW = canvasW;
       drawH = canvasW / imgRatio;
       drawX = 0;
       drawY = (canvasH - drawH) / 2;
+    } else {
+      drawH = canvasH;
+      drawW = canvasH * imgRatio;
+      drawX = (canvasW - drawW) / 2;
+      drawY = 0;
     }
 
     ctx.clearRect(0, 0, canvasW, canvasH);
