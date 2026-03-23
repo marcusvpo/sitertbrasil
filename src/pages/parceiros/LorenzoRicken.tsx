@@ -22,8 +22,8 @@ const achievements = [
 const parallaxImages = [
   { src: img("foto1.jpg"), alt: "Lorenzo Ricken em ação no motocross" },
   { src: img("foto2.jpg"), alt: "Lorenzo Ricken manobra de motocross" },
-  { src: img("foto5.webp"), alt: "Lorenzo Ricken salto de motocross" },
-  { src: img("foto4.jpg"), alt: "Lorenzo Ricken no pódio" },
+  { src: img("foto5.jpg"), alt: "Lorenzo Ricken salto de motocross" },
+  { src: img("foto4.webp"), alt: "Lorenzo Ricken no pódio" },
   { src: img("foto3.jpg"), alt: "Lorenzo Ricken com produtos MOTOREX" },
 ];
 
