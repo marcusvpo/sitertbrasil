@@ -276,7 +276,7 @@ const LorenzoRicken = () => {
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/50 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-secondary/90 via-secondary/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-l from-secondary/95 via-secondary/40 to-transparent" />
         </div>
 
         <div className="absolute inset-0 grain-overlay pointer-events-none" />
