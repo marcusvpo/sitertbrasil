@@ -415,7 +415,7 @@ const LorenzoRicken = () => {
               <div className="h-[1px] w-16 bg-gradient-to-l from-transparent to-primary/50" />
             </div>
             <h2 className="font-heading text-[36px] md:text-[56px] uppercase font-bold text-center mb-4 leading-none">
-              Palmarés
+              Premiações
             </h2>
             <p className="text-center text-secondary-foreground/30 text-xs font-heading uppercase tracking-[0.2em] mb-12">
               <Star className="w-3 h-3 inline mr-1 text-primary/50" />
