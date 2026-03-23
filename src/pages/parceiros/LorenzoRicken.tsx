@@ -331,7 +331,7 @@ const LorenzoRicken = () => {
               <span className="text-gradient drop-shadow-[0_0_40px_hsl(197_100%_43.7%/0.3)]">Ricken</span>
             </h1>
 
-            <p className="text-secondary-foreground/60 text-lg md:text-xl max-w-xl leading-relaxed">
+            <p className="text-secondary-foreground/60 text-lg md:text-xl max-w-xl leading-relaxed ml-auto">
               Aos 11 anos, Lorenzo já acumula{" "}
               <strong className="text-secondary-foreground">8 títulos nacionais e internacionais</strong> em
               Motocross. O fenômeno catarinense que domina as pistas do Brasil.
