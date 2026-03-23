@@ -250,16 +250,28 @@ const SpeedLines = () => (
 
 /* ─── MX Roost Spray (dirt splash) ─── */
 const RoostSpray = ({ side = "left" }: { side?: "left" | "right" }) => (
-  <div className={`absolute bottom-0 ${side === "left" ? "left-0" : "right-0"} pointer-events-none opacity-20`}>
-    <svg width="200" height="120" viewBox="0 0 200 120" className="text-primary">
-      {Array.from({ length: 15 }).map((_, i) => (
+  <div className={`absolute bottom-0 ${side === "left" ? "left-0" : "right-0"} pointer-events-none opacity-50`}>
+    <svg width="350" height="200" viewBox="0 0 350 200" className="text-primary">
+      {Array.from({ length: 40 }).map((_, i) => (
         <circle
           key={i}
-          cx={30 + Math.random() * 140}
-          cy={100 - Math.random() * 80}
-          r={2 + Math.random() * 4}
+          cx={20 + Math.random() * 310}
+          cy={180 - Math.random() * 150}
+          r={2 + Math.random() * 6}
           fill="currentColor"
-          opacity={0.2 + Math.random() * 0.5}
+          opacity={0.3 + Math.random() * 0.6}
+        />
+      ))}
+      {Array.from({ length: 12 }).map((_, i) => (
+        <ellipse
+          key={`e${i}`}
+          cx={30 + Math.random() * 290}
+          cy={170 - Math.random() * 120}
+          rx={4 + Math.random() * 8}
+          ry={2 + Math.random() * 4}
+          fill="currentColor"
+          opacity={0.2 + Math.random() * 0.4}
+          transform={`rotate(${-30 + Math.random() * 60} ${30 + Math.random() * 290} ${170 - Math.random() * 120})`}
         />
       ))}
     </svg>
