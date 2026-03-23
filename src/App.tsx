@@ -14,6 +14,7 @@ import ProductDetail from "./pages/ProductDetail";
 import SejaRevendedor from "./pages/SejaRevendedor";
 import QuemSomos from "./pages/QuemSomos";
 import Parceiros from "./pages/Parceiros";
+import HeitorMatos from "./pages/parceiros/HeitorMatos";
 import IndiqueCidade from "./pages/IndiqueCidade";
 import Depoimentos from "./pages/Depoimentos";
 import CentralAtendimento from "./pages/CentralAtendimento";
@@ -43,6 +44,7 @@ const App = () => (
               <Route path="/seja-revendedor" element={<SejaRevendedor />} />
               <Route path="/quem-somos" element={<QuemSomos />} />
               <Route path="/parceiros" element={<Parceiros />} />
+              <Route path="/parceiros/heitor-matos" element={<HeitorMatos />} />
               <Route path="/indique-cidade" element={<IndiqueCidade />} />
               <Route path="/depoimentos" element={<Depoimentos />} />
               <Route path="/central-atendimento" element={<CentralAtendimento />} />
