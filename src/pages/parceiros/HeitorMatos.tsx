@@ -308,41 +308,41 @@ const HeitorMatos = () => {
           </div>
         </div>
 
-        <div className="relative container pb-20 md:pb-28 pt-32 z-10">
+        <div className="relative container pb-16 md:pb-28 pt-24 md:pt-32 z-10 flex flex-col items-center text-center md:items-start md:text-left">
           <Link
             to="/parceiros"
-            className="inline-flex items-center gap-1.5 text-primary text-sm font-heading uppercase tracking-wider mb-8 hover:gap-3 transition-all duration-300"
+            className="inline-flex items-center gap-1.5 text-primary text-sm font-heading uppercase tracking-wider mb-6 md:mb-8 hover:gap-3 transition-all duration-300 min-h-[44px]"
           >
             <ChevronLeft className="w-4 h-4" /> Parceiros
           </Link>
 
           <AnimateOnScroll animation="fade-up">
-            <div className="flex items-center gap-3 mb-4 flex-wrap">
-              <span className="bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-heading uppercase tracking-wider px-3 py-1 btn-clip"
+            <div className="flex flex-col md:flex-row items-center md:items-center gap-2 md:gap-3 mb-4">
+              <span className="bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-heading uppercase tracking-wider px-3 py-1.5 btn-clip min-h-[44px] flex items-center"
                 style={{ boxShadow: '0 0 15px hsl(197 100% 43.7% / 0.3)' }}>
                 <Bike className="w-3 h-3 inline mr-1.5 -mt-0.5" />
                 Parceiro RT Brasil
               </span>
-              <span className="bg-primary/10 border border-primary/30 text-primary text-[10px] font-heading uppercase tracking-wider px-2.5 py-1 rounded flex items-center gap-1.5">
+              <span className="bg-primary/10 border border-primary/30 text-primary text-[10px] font-heading uppercase tracking-wider px-2.5 py-1.5 rounded flex items-center gap-1.5 min-h-[44px]">
                 <Shield className="w-3 h-3" /> Piloto Elite
               </span>
               <a
                 href="https://instagram.com/heitormatos300"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-secondary-foreground/40 text-xs hover:text-primary transition-colors"
+                className="flex items-center gap-1.5 text-secondary-foreground/40 text-xs hover:text-primary transition-colors min-h-[44px]"
               >
                 <Instagram className="w-3.5 h-3.5" /> @heitormatos300
               </a>
             </div>
 
-            <h1 className="font-heading text-[60px] md:text-[100px] lg:text-[130px] uppercase font-bold leading-[0.85] mb-6">
+            <h1 className="font-heading text-[36px] md:text-[100px] lg:text-[130px] uppercase font-bold leading-[0.85] mb-4 md:mb-6">
               Heitor
               <br />
               <span className="text-gradient drop-shadow-[0_0_40px_hsl(197_100%_43.7%/0.3)]">Matos</span>
             </h1>
 
-            <p className="text-secondary-foreground/60 text-lg md:text-xl max-w-xl leading-relaxed">
+            <p className="text-secondary-foreground/60 text-base md:text-xl max-w-xl leading-relaxed">
               Aos 9 anos, Heitor já acumula{" "}
               <strong className="text-secondary-foreground">5 títulos nacionais e internacionais</strong> em
               Motocross e BMX. Um dos maiores talentos da nova geração.
