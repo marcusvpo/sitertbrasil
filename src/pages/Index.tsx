@@ -246,7 +246,7 @@ const Index = () => {
         <div className="pause-on-hover">
           <div className="marquee-track flex gap-6 animate-marquee" style={{ width: 'max-content' }}>
             {[...testimonials, ...testimonials].map((t, i) => (
-              <div key={i} className="glass-card rounded-lg p-6 w-[340px] flex-shrink-0">
+              <div key={i} className="glass-card rounded-lg p-6 w-[280px] md:w-[340px] flex-shrink-0">
                 <div className="flex gap-1 mb-3">
                   {Array.from({ length: t.stars }).map((_, si) => (
                     <Star key={si} size={14} className="fill-primary text-primary" />
