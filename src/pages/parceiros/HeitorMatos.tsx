@@ -640,7 +640,7 @@ const HeitorMatos = () => {
         <DustParticles />
         <div className="container">
           <AnimateOnScroll animation="fade-up">
-            <div className="liquid-glass rounded-lg p-10 md:p-16 text-center max-w-3xl mx-auto relative overflow-hidden">
+            <div className="liquid-glass rounded-lg p-6 md:p-10 lg:p-16 text-center max-w-3xl mx-auto relative overflow-hidden">
               <HUDCorners />
               {/* Scan lines */}
               <div className="absolute inset-0 pointer-events-none"
