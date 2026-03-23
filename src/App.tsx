@@ -14,6 +14,7 @@ import ProductDetail from "./pages/ProductDetail";
 import SejaRevendedor from "./pages/SejaRevendedor";
 import QuemSomos from "./pages/QuemSomos";
 import Parceiros from "./pages/Parceiros";
+import HeitorMatos from "./pages/parceiros/HeitorMatos";
 import IndiqueCidade from "./pages/IndiqueCidade";
 import Depoimentos from "./pages/Depoimentos";
 import CentralAtendimento from "./pages/CentralAtendimento";
