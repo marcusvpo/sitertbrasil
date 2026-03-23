@@ -248,7 +248,7 @@ const SpeedLines = () => (
 /* ─── MX Roost Spray (dirt splash) ─── */
 const RoostSpray = ({ side = "left" }: { side?: "left" | "right" }) => (
   <div className={`absolute bottom-0 ${side === "left" ? "left-0" : "right-0"} pointer-events-none opacity-50`}>
-    <svg width="350" height="200" viewBox="0 0 350 200" className="text-primary">
+    <svg width="350" height="200" viewBox="0 0 350 200" className="text-primary w-[200px] h-[120px] md:w-[350px] md:h-[200px]">
       {Array.from({ length: 40 }).map((_, i) => (
         <circle
           key={i}
