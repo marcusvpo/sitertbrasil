@@ -17,9 +17,9 @@ const achievements = [
 ];
 
 const parallaxImages = [
-  { src: img("foto1.png"), alt: "Heitor Matos em ação no motocross" },
-  { src: img("foto2.png"), alt: "Heitor Matos manobra de motocross" },
-  { src: img("foto3.png"), alt: "Heitor Matos salto de motocross" },
+  { src: img("foto1.jpg"), alt: "Heitor Matos em ação no motocross" },
+  { src: img("foto2.jpg"), alt: "Heitor Matos manobra de motocross" },
+  { src: img("foto3.jpg"), alt: "Heitor Matos salto de motocross" },
 ];
 
 /* ─── Parallax Background Section ─── */
@@ -53,8 +53,8 @@ const ParallaxSection = ({
     <img
         src={src}
         alt={alt}
-        className="absolute inset-[-15%] w-[130%] h-[130%] object-cover will-change-transform"
-        style={{ transform: `translateY(${offset}px) scale(0.85)` }}
+        className="absolute inset-0 w-full h-full object-cover object-center will-change-transform"
+        style={{ transform: `translateY(${offset}px)` }}
       />
       <div className={`absolute inset-0 bg-gradient-to-b ${overlay}`} />
       <div className="absolute inset-0 grain-overlay pointer-events-none opacity-40" />
