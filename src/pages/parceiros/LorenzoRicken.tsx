@@ -282,7 +282,7 @@ const LorenzoRicken = () => {
   return (
     <div className="bg-secondary text-secondary-foreground">
       {/* ═══════════ HERO ═══════════ */}
-      <section className="relative h-screen max-h-[1080px] flex items-end overflow-hidden">
+      <section className="relative min-h-[80vh] md:h-screen max-h-[1080px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
           <img
             src={img("lorenzoRT.png")}
