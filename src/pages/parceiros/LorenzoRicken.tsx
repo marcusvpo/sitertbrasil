@@ -22,7 +22,9 @@ const achievements = [
 const parallaxImages = [
   { src: img("foto1.jpg"), alt: "Lorenzo Ricken em ação no motocross" },
   { src: img("foto2.jpg"), alt: "Lorenzo Ricken manobra de motocross" },
-  { src: img("foto3.jpg"), alt: "Lorenzo Ricken salto de motocross" },
+  { src: img("foto5.webp"), alt: "Lorenzo Ricken salto de motocross" },
+  { src: img("foto4.jpg"), alt: "Lorenzo Ricken no pódio" },
+  { src: img("foto3.jpg"), alt: "Lorenzo Ricken com produtos MOTOREX" },
 ];
 
 /* ─── Floating MX Icons ─── */
@@ -622,7 +624,82 @@ const LorenzoRicken = () => {
         </div>
       </ParallaxSection>
 
-      {/* ═══════════ CTA — Victory Screen ═══════════ */}
+      <CheckpointDivider label="Checkpoint 04" />
+
+      {/* ═══════════ PARALLAX IMAGE 4 — foto4 ═══════════ */}
+      <ParallaxSection
+        src={parallaxImages[3].src}
+        alt={parallaxImages[3].alt}
+        overlay="from-secondary via-secondary/30 to-secondary"
+      >
+        <div className="container text-center py-20 relative">
+          <RoostSpray side="left" />
+          <RoostSpray side="right" />
+          <AnimateOnScroll animation="scale-in">
+            <div className="relative inline-block">
+              <Crown className="w-10 h-10 md:w-14 md:h-14 text-primary/40 mx-auto mb-4 drop-shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)]" />
+              <span
+                className="font-heading text-[48px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/60 block"
+                style={{ textShadow: '0 0 40px hsl(197 100% 43.7% / 0.6), 0 0 80px hsl(197 100% 43.7% / 0.3)' }}
+              >
+                UNSTOPPABLE
+              </span>
+              <div className="mt-4 flex items-center justify-center gap-2">
+                <Star className="w-4 h-4 text-primary/50" />
+                <span className="text-primary/60 text-xs font-heading uppercase tracking-[0.3em]">Next Level</span>
+                <Star className="w-4 h-4 text-primary/50" />
+              </div>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </ParallaxSection>
+
+      <CheckpointDivider label="Checkpoint 05" />
+
+      {/* ═══════════ PARALLAX IMAGE 5 — Motorex Section ═══════════ */}
+      <ParallaxSection
+        src={parallaxImages[4].src}
+        alt={parallaxImages[4].alt}
+        overlay="from-secondary via-secondary/40 to-secondary"
+      >
+        <div className="container py-20 relative">
+          <RoostSpray side="left" />
+          <AnimateOnScroll animation="fade-up">
+            <div className="max-w-2xl mx-auto text-center">
+              <div className="flex items-center gap-4 justify-center mb-6">
+                <div className="h-[1px] w-12 bg-primary/50" />
+                <span className="text-primary text-xs font-heading uppercase tracking-[0.3em]">Powered By</span>
+                <div className="h-[1px] w-12 bg-primary/50" />
+              </div>
+              <h2 className="font-heading text-[36px] md:text-[56px] uppercase font-bold leading-none mb-6">
+                Potência com{" "}
+                <span className="text-gradient">MOTOREX</span>
+              </h2>
+              <p className="text-secondary-foreground/60 text-base md:text-lg leading-relaxed mb-4">
+                Lorenzo confia na tecnologia suíça MOTOREX para extrair o máximo de performance da sua máquina. Com mais de 100 anos de expertise, a MOTOREX é a escolha dos campeões mundiais.
+              </p>
+              <p className="text-secondary-foreground/50 text-sm md:text-base leading-relaxed mb-8">
+                Desde lubrificantes de motor até produtos de limpeza e manutenção, cada detalhe conta na busca pela vitória. A linha MOTOREX garante proteção, rendimento e durabilidade superiores — exatamente o que um piloto de elite precisa.
+              </p>
+              <div className="flex flex-wrap gap-4 justify-center">
+                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2">
+                  <Shield className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Proteção máxima</span>
+                </div>
+                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2">
+                  <Zap className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Alta performance</span>
+                </div>
+                <div className="glass-card rounded-lg px-5 py-3 flex items-center gap-2">
+                  <Trophy className="w-4 h-4 text-primary" />
+                  <span className="text-sm font-heading uppercase tracking-wider text-secondary-foreground/70">Qualidade suíça</span>
+                </div>
+              </div>
+            </div>
+          </AnimateOnScroll>
+        </div>
+      </ParallaxSection>
+
       <section className="relative py-16 md:py-24 overflow-hidden">
         <SpeedLines />
         <DustParticles />
