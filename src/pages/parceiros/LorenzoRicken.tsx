@@ -276,7 +276,7 @@ const LorenzoRicken = () => {
             className="w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-secondary via-secondary/50 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-secondary/90 via-secondary/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-l from-secondary/95 via-secondary/40 to-transparent" />
         </div>
 
         <div className="absolute inset-0 grain-overlay pointer-events-none" />
@@ -297,7 +297,7 @@ const LorenzoRicken = () => {
           </div>
         </div>
 
-        <div className="relative container pb-20 md:pb-28 pt-32 z-10">
+        <div className="relative container pb-20 md:pb-28 pt-32 z-10 flex flex-col items-end text-right">
           <Link
             to="/parceiros"
             className="inline-flex items-center gap-1.5 text-primary text-sm font-heading uppercase tracking-wider mb-8 hover:gap-3 transition-all duration-300"
@@ -306,7 +306,7 @@ const LorenzoRicken = () => {
           </Link>
 
           <AnimateOnScroll animation="fade-up">
-            <div className="flex items-center gap-3 mb-4 flex-wrap">
+            <div className="flex items-center gap-3 mb-4 flex-wrap justify-end">
               <span className="bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-heading uppercase tracking-wider px-3 py-1 btn-clip"
                 style={{ boxShadow: '0 0 15px hsl(197 100% 43.7% / 0.3)' }}>
                 <Bike className="w-3 h-3 inline mr-1.5 -mt-0.5" />
@@ -331,7 +331,7 @@ const LorenzoRicken = () => {
               <span className="text-gradient drop-shadow-[0_0_40px_hsl(197_100%_43.7%/0.3)]">Ricken</span>
             </h1>
 
-            <p className="text-secondary-foreground/60 text-lg md:text-xl max-w-xl leading-relaxed">
+            <p className="text-secondary-foreground/60 text-lg md:text-xl max-w-xl leading-relaxed ml-auto">
               Aos 11 anos, Lorenzo já acumula{" "}
               <strong className="text-secondary-foreground">8 títulos nacionais e internacionais</strong> em
               Motocross. O fenômeno catarinense que domina as pistas do Brasil.
