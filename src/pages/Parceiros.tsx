@@ -26,6 +26,15 @@ const partners: Partner[] = [
     titles: 5,
     topAchievement: "Campeão Brasileiro MX 2021",
   },
+  {
+    name: "Lorenzo Ricken",
+    slug: "lorenzo-ricken",
+    image: getPartnerImage("lorenzo/lorenzocard.png"),
+    role: "Piloto de Motocross",
+    instagram: "@lorenzorr16",
+    titles: 8,
+    topAchievement: "Bicampeão Brasileiro MX",
+  },
 ];
 
 const Parceiros = () => {
