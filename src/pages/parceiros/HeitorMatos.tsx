@@ -360,7 +360,7 @@ const HeitorMatos = () => {
         <FloatingIcons />
         <div className="container">
           <AnimateOnScroll animation="fade-up" delay={200}>
-            <div className="liquid-glass rounded-lg p-8 md:p-12 relative overflow-hidden">
+            <div className="liquid-glass rounded-lg p-4 md:p-8 lg:p-12 relative overflow-hidden">
               <HUDCorners />
               {/* Scan line effect */}
               <div className="absolute inset-0 pointer-events-none"
