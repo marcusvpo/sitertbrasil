@@ -15,6 +15,7 @@ import SejaRevendedor from "./pages/SejaRevendedor";
 import QuemSomos from "./pages/QuemSomos";
 import Parceiros from "./pages/Parceiros";
 import HeitorMatos from "./pages/parceiros/HeitorMatos";
+import LorenzoRicken from "./pages/parceiros/LorenzoRicken";
 import IndiqueCidade from "./pages/IndiqueCidade";
 import Depoimentos from "./pages/Depoimentos";
 import CentralAtendimento from "./pages/CentralAtendimento";
