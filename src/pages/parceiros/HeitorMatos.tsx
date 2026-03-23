@@ -50,11 +50,11 @@ const ParallaxSection = ({
 
   return (
     <div ref={ref} className="relative min-h-screen overflow-hidden flex items-center justify-center">
-      <img
+    <img
         src={src}
         alt={alt}
-        className="absolute inset-0 w-full h-full object-cover scale-110 will-change-transform"
-        style={{ transform: `translateY(${offset}px)` }}
+        className="absolute inset-[-15%] w-[130%] h-[130%] object-cover will-change-transform"
+        style={{ transform: `translateY(${offset}px) scale(0.85)` }}
       />
       <div className={`absolute inset-0 bg-gradient-to-b ${overlay}`} />
       <div className="absolute inset-0 grain-overlay pointer-events-none opacity-40" />
