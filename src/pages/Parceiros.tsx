@@ -118,7 +118,7 @@ const Parceiros = () => {
               </p>
               <Link
                 to="/seja-revendedor"
-                className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-heading uppercase tracking-wider text-sm px-6 py-3 btn-clip hover-glow transition-all duration-300"
+                className="inline-flex items-center gap-2 bg-primary text-primary-foreground font-heading uppercase tracking-wider text-sm px-6 py-3 btn-clip hover-glow transition-all duration-300 min-h-[44px] w-full sm:w-auto justify-center"
               >
                 Quero ser parceiro <ChevronRight className="w-4 h-4" />
               </Link>
