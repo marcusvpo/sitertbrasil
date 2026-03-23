@@ -89,7 +89,7 @@ const HUDCorners = () => (
 
 /* ─── HUD Overlay (game-style top bar) ─── */
 const HUDOverlay = () => (
-  <div className="absolute top-4 left-4 right-4 z-30 flex justify-between items-start pointer-events-none">
+  <div className="absolute top-4 left-4 right-4 z-30 hidden md:flex justify-between items-start pointer-events-none">
     {/* Left HUD */}
     <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2 bg-secondary/60 backdrop-blur-md border border-primary/20 rounded px-3 py-1.5"
