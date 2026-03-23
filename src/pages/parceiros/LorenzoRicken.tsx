@@ -306,7 +306,7 @@ const LorenzoRicken = () => {
           </Link>
 
           <AnimateOnScroll animation="fade-up">
-            <div className="flex items-center gap-3 mb-4 flex-wrap">
+            <div className="flex items-center gap-3 mb-4 flex-wrap justify-end">
               <span className="bg-primary/90 backdrop-blur-sm text-primary-foreground text-xs font-heading uppercase tracking-wider px-3 py-1 btn-clip"
                 style={{ boxShadow: '0 0 15px hsl(197 100% 43.7% / 0.3)' }}>
                 <Bike className="w-3 h-3 inline mr-1.5 -mt-0.5" />
