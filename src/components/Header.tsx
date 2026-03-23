@@ -89,7 +89,7 @@ const Header = () => {
           <CartIcon />
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="text-secondary-foreground p-2 transition-transform duration-300 hover:scale-110"
+            className="text-secondary-foreground p-2 transition-transform duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
             aria-label="Menu"
           >
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
