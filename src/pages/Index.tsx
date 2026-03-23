@@ -278,7 +278,7 @@ const Index = () => {
             <h2 className="font-heading text-[32px] md:text-[48px] uppercase font-bold mt-2 mb-6">Contato Rápido</h2>
           </AnimateOnScroll>
           <AnimateOnScroll animation="slide-up" delay={200}>
-            <div className="flex flex-wrap justify-center gap-8 mb-6">
+            <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 md:gap-8 mb-6">
               {[
                 { icon: Phone, label: "WhatsApp", href: "https://wa.me/5500000000000" },
                 { icon: Mail, label: "contato@rtbrasil.com.br", href: "mailto:contato@rtbrasil.com.br" },
