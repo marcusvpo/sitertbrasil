@@ -231,7 +231,7 @@ const HeitorMatos = () => {
       >
         <div className="container text-center py-20">
           <AnimateOnScroll animation="scale-in">
-            <span className="font-heading text-[48px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-secondary-foreground/10">
+            <span className="font-heading text-[48px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/30" style={{ textShadow: '0 0 40px hsl(197 100% 43.7% / 0.4), 0 0 80px hsl(197 100% 43.7% / 0.2)' }}>
               BORN TO RIDE
             </span>
           </AnimateOnScroll>
