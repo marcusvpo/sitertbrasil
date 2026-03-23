@@ -17,9 +17,9 @@ const achievements = [
 ];
 
 const parallaxImages = [
-  { src: img("foto1.png"), alt: "Heitor Matos em ação no motocross" },
-  { src: img("foto2.png"), alt: "Heitor Matos manobra de motocross" },
-  { src: img("foto3.png"), alt: "Heitor Matos salto de motocross" },
+  { src: img("foto1.jpg"), alt: "Heitor Matos em ação no motocross" },
+  { src: img("foto2.jpg"), alt: "Heitor Matos manobra de motocross" },
+  { src: img("foto3.jpg"), alt: "Heitor Matos salto de motocross" },
 ];
 
 /* ─── Parallax Background Section ─── */
