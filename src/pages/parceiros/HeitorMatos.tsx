@@ -440,25 +440,24 @@ const HeitorMatos = () => {
           <div className="max-w-3xl mx-auto space-y-4">
             {achievements.map((a, i) => (
               <AnimateOnScroll key={i} animation="fade-up" delay={i * 100}>
-                <div className="glass-card rounded-lg p-5 md:p-6 flex items-center gap-4 group hover:translate-x-2 transition-all duration-500 relative overflow-hidden">
+                <div className="glass-card rounded-lg p-4 md:p-6 flex items-center gap-3 md:gap-4 group hover:translate-x-2 transition-all duration-500 relative overflow-hidden">
                   <HUDCorners />
-                  {/* Unlock glow */}
                   <div className="absolute inset-0 bg-gradient-to-r from-primary/[0.03] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="w-14 h-14 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500 relative"
+                  <div className="w-11 h-11 md:w-14 md:h-14 rounded-lg bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary/20 group-hover:scale-110 transition-all duration-500 relative"
                     style={{ boxShadow: '0 0 15px hsl(197 100% 43.7% / 0.1)' }}>
-                    <a.icon className="w-6 h-6 text-primary drop-shadow-[0_0_8px_hsl(197_100%_43.7%/0.4)]" />
+                    <a.icon className="w-5 h-5 md:w-6 md:h-6 text-primary drop-shadow-[0_0_8px_hsl(197_100%_43.7%/0.4)]" />
                   </div>
                   <div className="flex-1 min-w-0 relative">
-                    <h3 className="font-heading text-lg md:text-xl uppercase font-bold leading-tight">
+                    <h3 className="font-heading text-base md:text-xl uppercase font-bold leading-tight">
                       🥇 {a.title}
                     </h3>
-                    <p className="text-secondary-foreground/50 text-sm flex items-center gap-2">
+                    <p className="text-secondary-foreground/50 text-xs md:text-sm flex items-center gap-2">
                       <Timer className="w-3 h-3 text-primary/40" />
                       {a.year}
                       {a.category ? ` — ${a.category}` : ""}
                     </p>
                   </div>
-                  <div className="text-primary font-heading text-3xl font-bold opacity-10 group-hover:opacity-40 transition-opacity duration-500 relative">
+                  <div className="hidden md:block text-primary font-heading text-3xl font-bold opacity-10 group-hover:opacity-40 transition-opacity duration-500 relative">
                     {a.year}
                   </div>
                 </div>
