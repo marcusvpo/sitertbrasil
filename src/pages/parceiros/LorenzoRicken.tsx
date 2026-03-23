@@ -167,7 +167,7 @@ const ParallaxSection = ({
   }, []);
 
   return (
-    <div ref={ref} className="relative min-h-screen overflow-hidden flex items-center justify-center">
+    <div ref={ref} className="relative min-h-[60vh] md:min-h-screen overflow-hidden flex items-center justify-center">
       <img
         src={src}
         alt={alt}
