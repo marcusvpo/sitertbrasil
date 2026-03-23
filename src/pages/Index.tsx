@@ -284,7 +284,7 @@ const Index = () => {
                 { icon: Mail, label: "contato@rtbrasil.com.br", href: "mailto:contato@rtbrasil.com.br" },
                 { icon: Instagram, label: "@rtbrasil", href: "https://instagram.com/rtbrasil" },
               ].map((c) => (
-                <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-0.5">
+                <a key={c.label} href={c.href} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 text-foreground hover:text-primary transition-all duration-300 hover:-translate-y-0.5 min-h-[44px]">
                   <c.icon size={20} /> {c.label}
                 </a>
               ))}

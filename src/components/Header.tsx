@@ -107,7 +107,7 @@ const Header = () => {
                 to={item.to}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  "font-heading uppercase text-lg tracking-wider py-3 transition-all duration-300 animate-fade-up",
+                  "font-heading uppercase text-lg tracking-wider py-3 transition-all duration-300 animate-fade-up min-h-[44px] flex items-center",
                   location.pathname === item.to
                     ? "text-primary"
                     : "text-secondary-foreground/80 hover:text-primary"

@@ -109,7 +109,7 @@ const Parceiros = () => {
         {/* CTA to become a partner */}
         <AnimateOnScroll animation="fade-up" delay={400}>
           <div className="mt-16 text-center">
-            <div className="liquid-glass inline-block px-8 py-6 rounded-lg">
+            <div className="liquid-glass inline-block px-5 md:px-8 py-6 rounded-lg">
               <h2 className="font-heading text-xl md:text-2xl uppercase font-bold mb-2">
                 Quer ser um parceiro RT Brasil?
               </h2>
