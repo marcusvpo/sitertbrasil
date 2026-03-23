@@ -115,7 +115,7 @@ const HUDOverlay = () => (
 
 /* ─── Checkpoint Divider ─── */
 const CheckpointDivider = ({ label }: { label: string }) => (
-  <div className="relative py-8 overflow-hidden">
+  <div className="relative py-4 md:py-8 overflow-hidden">
     <div className="flex items-center justify-center gap-4">
       <div className="h-[2px] flex-1 max-w-[200px] bg-gradient-to-r from-transparent to-primary/40" />
       <div className="flex items-center gap-2 bg-secondary/80 border border-primary/20 rounded px-4 py-2"
@@ -125,8 +125,7 @@ const CheckpointDivider = ({ label }: { label: string }) => (
       </div>
       <div className="h-[2px] flex-1 max-w-[200px] bg-gradient-to-l from-transparent to-primary/40" />
     </div>
-    {/* Tire marks */}
-    <div className="flex items-center justify-center gap-0.5 mt-3 opacity-15">
+    <div className="hidden md:flex items-center justify-center gap-0.5 mt-3 opacity-15">
       {Array.from({ length: 50 }).map((_, i) => (
         <div
           key={i}
