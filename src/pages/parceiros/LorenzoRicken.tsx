@@ -607,15 +607,15 @@ const LorenzoRicken = () => {
             <div className="relative inline-block">
               <Flag className="w-10 h-10 md:w-14 md:h-14 text-primary/40 mx-auto mb-4 drop-shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)]" />
               <span
-                className="font-heading text-[48px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/30 block"
-                style={{ textShadow: '0 0 40px hsl(197 100% 43.7% / 0.4), 0 0 80px hsl(197 100% 43.7% / 0.2)' }}
+                className="font-heading text-[48px] md:text-[80px] lg:text-[100px] uppercase font-bold leading-none text-primary/60 block"
+                style={{ textShadow: '0 0 40px hsl(197 100% 43.7% / 0.6), 0 0 80px hsl(197 100% 43.7% / 0.3)' }}
               >
                 FULL THROTTLE
               </span>
               <div className="mt-4 flex items-center justify-center gap-2">
-                <Gauge className="w-4 h-4 text-primary/30" />
-                <span className="text-primary/40 text-xs font-heading uppercase tracking-[0.3em]">Max Power</span>
-                <Zap className="w-4 h-4 text-primary/30" />
+                <Gauge className="w-4 h-4 text-primary/50" />
+                <span className="text-primary/60 text-xs font-heading uppercase tracking-[0.3em]">Max Power</span>
+                <Zap className="w-4 h-4 text-primary/50" />
               </div>
             </div>
           </AnimateOnScroll>
