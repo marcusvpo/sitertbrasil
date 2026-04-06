@@ -12,7 +12,7 @@ import { ArrowLeft, Upload, X, GripVertical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 
-const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
+import { getProductImageUrl } from "@/lib/image-utils";
 
 const slugify = (text: string) =>
   text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");

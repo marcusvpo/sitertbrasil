@@ -8,11 +8,7 @@ import { Search, Filter, ShoppingBag, ShoppingCart } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
-
-const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
-
-const getImageUrl = (path: string) =>
-  `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
+import { getProductImageUrl } from "@/lib/image-utils";
 
 const Motorex = () => {
   const { addToCart } = useCart();

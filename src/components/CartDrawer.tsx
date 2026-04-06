@@ -5,10 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ShoppingCart, Trash2, Plus, Minus, ExternalLink } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-
-const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
-const getImageUrl = (path: string) =>
-  `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
+import { getProductImageUrl } from "@/lib/image-utils";
 
 const formatBRL = (value: number) =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });

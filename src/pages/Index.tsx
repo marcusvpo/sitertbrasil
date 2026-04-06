@@ -7,10 +7,7 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
-
-const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
-const getImageUrl = (path: string) =>
-  `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
+import { getProductImageUrl } from "@/lib/image-utils";
 
 const testimonials = [
   { name: "André Ferreira", role: "Piloto Profissional", stars: 5, text: "Desde que comecei a usar MOTOREX, minha moto nunca teve tanta performance. Produto de qualidade incomparável." },

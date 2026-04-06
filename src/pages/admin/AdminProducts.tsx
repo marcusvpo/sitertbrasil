@@ -14,7 +14,7 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose,
 } from "@/components/ui/dialog";
 
-const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
+import { getProductImageUrl } from "@/lib/image-utils";
 
 const AdminProducts = () => {
   const queryClient = useQueryClient();
