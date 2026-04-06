@@ -18,6 +18,7 @@ import HeitorMatos from "./pages/parceiros/HeitorMatos";
 import LorenzoRicken from "./pages/parceiros/LorenzoRicken";
 import RodrigoGaliotto from "./pages/parceiros/RodrigoGaliotto";
 import MarceloGaliotto from "./pages/parceiros/MarceloGaliotto";
+import OtavioOliveira from "./pages/parceiros/OtavioOliveira";
 import IndiqueCidade from "./pages/IndiqueCidade";
 import Depoimentos from "./pages/Depoimentos";
 import CentralAtendimento from "./pages/CentralAtendimento";
