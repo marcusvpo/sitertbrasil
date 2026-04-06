@@ -53,6 +53,15 @@ const partners: Partner[] = [
     titles: 12,
     topAchievement: "9x Campeão Regional",
   },
+  {
+    name: "Otavio Oliveira",
+    slug: "otavio-oliveira",
+    image: getPartnerImage("otavio/otaviocard.png"),
+    role: "Piloto de Motocross & Trilhas",
+    instagram: "@otaviooliveira05",
+    titles: 1,
+    topAchievement: "Guia Off-Road Ilicínea MG",
+  },
 ];
 
 const Parceiros = () => {
