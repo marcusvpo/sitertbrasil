@@ -16,6 +16,7 @@ import QuemSomos from "./pages/QuemSomos";
 import Parceiros from "./pages/Parceiros";
 import HeitorMatos from "./pages/parceiros/HeitorMatos";
 import LorenzoRicken from "./pages/parceiros/LorenzoRicken";
+import RodrigoGaliotto from "./pages/parceiros/RodrigoGaliotto";
 import IndiqueCidade from "./pages/IndiqueCidade";
 import Depoimentos from "./pages/Depoimentos";
 import CentralAtendimento from "./pages/CentralAtendimento";
@@ -47,6 +48,7 @@ const App = () => (
               <Route path="/parceiros" element={<Parceiros />} />
               <Route path="/parceiros/heitor-matos" element={<HeitorMatos />} />
               <Route path="/parceiros/lorenzo-ricken" element={<LorenzoRicken />} />
+              <Route path="/parceiros/rodrigo-galiotto" element={<RodrigoGaliotto />} />
               <Route path="/indique-cidade" element={<IndiqueCidade />} />
               <Route path="/depoimentos" element={<Depoimentos />} />
               <Route path="/central-atendimento" element={<CentralAtendimento />} />
