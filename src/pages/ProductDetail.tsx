@@ -74,7 +74,7 @@ const ProductDetail = () => {
                 {images.length > 0 ? (
                   <>
                     <img
-                      src={getImageUrl(images[activeImage].storage_path)}
+                      src={getProductImageUrl(images[activeImage])}
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />
