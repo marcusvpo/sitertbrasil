@@ -1,98 +1,76 @@
 
 
-# Plano de Responsividade Mobile - Todas as Páginas
+# Criar Página do Parceiro Rodrigo Galiotto
 
 ## Resumo
-Refatorar o CSS de todas as páginas para abordagem mobile-first, corrigindo sobreposições, alvos de toque quebrados e layouts horizontais que não funcionam em telas < 768px.
+Criar a landing page completa do parceiro Rodrigo Galiotto seguindo a mesma estrutura/UI das páginas de Heitor Matos e Lorenzo Ricken, adicionar à listagem de parceiros e registrar a rota no App.tsx.
+
+---
+
+## Imagens Disponíveis (bucket `parceiros/rodrigo/`)
+- `rodrigocard.png` — card na listagem
+- `rodrigoRT.png` — hero principal
+- `foto1.jpg`, `foto2.jpg`, `foto3.jpg` — seções parallax
+- `foto4.jpg`, `foto5.jpg` — seções parallax adicionais (UNSTOPPABLE + MOTOREX)
+
+Todas as 7 imagens serão utilizadas na página.
+
+---
+
+## Informações do Piloto (pesquisadas)
+
+**Rodrigo Galiotto** — Natural de Flores da Cunha, RS. Piloto de Motocross e Velocross com mais de 15 anos de carreira. Número #720. Instagram: @galiotto.720.
+
+**Conquistas confirmadas:**
+- 4x Campeão Gaúcho de Motocross (MX3/MX4)
+- Campeão Sul Brasileiro MX3 (2024)
+- Campeão Sul Brasileiro Intermediária MX1 (2024)
+- Campeão Sul Brasileiro VX (Velocross)
+- 3º lugar MX4 — Brasileiro de Motocross 2025
+- Tricampeão Regional de Motocross (2017, 2018, 2019)
+- Top 10 Brasileiro de Motocross por 4 anos consecutivos
+- 4 vitórias na abertura do Campeonato Pro Honda 2025
+- Campeão Gaúcho de Velocross
+
+**Bio:** Piloto veterano e resiliente, Rodrigo compete nas categorias MX3, MX4, Intermediária MX1 e Velocross. Pilota Honda com apoio familiar (irmão Marcello também é piloto). Representa a força do motocross gaúcho no cenário nacional.
+
+**Stats RPG:**
+- Velocidade: 88 | Técnica: 92 | Resistência: 95 | Coragem: 90
 
 ---
 
 ## Arquivos e Alterações
 
-### 1. Header (`src/components/Header.tsx`)
-- Menu mobile já existe (`lg:hidden`). Ajustar padding e garantir que botões de menu/cart tenham min 44x44px de área de toque
-- Scroll indicator no mobile: garantir espaçamento adequado
+### 1. Novo arquivo: `src/pages/parceiros/RodrigoGaliotto.tsx`
+- Copiar estrutura completa do LorenzoRicken.tsx (760 linhas)
+- Adaptar `img()` para `parceiros/rodrigo/`
+- Hero com `rodrigoRT.png`, número `#720`, Instagram `@galiotto.720`
+- HUD: "Piloto Ativo", "MX · 450cc", RaceNumberPlate "720"
+- Achievements array com 9 conquistas listadas acima
+- Stats Bar: 12 títulos, 🥇 medalhas, 3 modalidades (MX/INT MX/VX), MX4 categoria
+- Parallax sections usando foto1→foto5 na ordem, com textos decorativos adaptados:
+  - "BORN TO RIDE" / Since 2010
+  - "FULL THROTTLE" / Max Power
+  - "UNSTOPPABLE" / Next Level
+  - Seção MOTOREX com foto3.jpg
+- Bio section: texto biográfico pesquisado, foto de perfil = rodrigoRT.png
+- CTA final com nome "Rodrigo"
 
-### 2. Página Lorenzo Ricken (`src/pages/parceiros/LorenzoRicken.tsx`)
+### 2. Editar: `src/pages/Parceiros.tsx`
+- Adicionar Rodrigo ao array `partners[]`:
+  ```
+  { name: "Rodrigo Galiotto", slug: "rodrigo-galiotto", image: rodrigo/rodrigocard.png, role: "Piloto de Motocross & Velocross", instagram: "@galiotto.720", titles: 12, topAchievement: "4x Campeão Gaúcho MX" }
+  ```
 
-**Hero Section (linha ~285-358)**
-- Reduzir `h-screen` para `min-h-[80vh]` no mobile para evitar corte
-- HUD Overlay: esconder ou simplificar no mobile (`hidden md:flex` nos HUD laterais)
-- Texto h1: `text-[36px]` base mobile (atualmente `text-[60px]` sem breakpoint adequado)
-- Badges row: `flex-col` no mobile em vez de `flex-wrap` para evitar sobreposição
-- Hero text alignment: `text-center` no mobile, `text-right` apenas em `md:+`
-
-**Stats Bar (linha ~361-381)**
-- Grid `grid-cols-2` já funciona, manter. Reduzir padding: `p-4 md:p-8 lg:p-12`
-
-**Achievements Section (linha ~415-469)**
-- Achievement cards: reduzir padding, esconder o year number decorativo no mobile (`hidden md:block`)
-- Icon box `w-14 h-14` -> `w-11 h-11 md:w-14 md:h-14` para caber melhor
-
-**Bio/Profile Section (linha ~503-607)**
-- Grid `md:grid-cols-5`: já é single-column no mobile. OK
-- Stat bars grid `grid-cols-2`: manter, reduzir font sizes
-- Botão Instagram: min-height 44px
-
-**Parallax Sections**
-- Reduzir `min-h-screen` para `min-h-[60vh] md:min-h-screen` no mobile
-- Textos decorativos ("BORN TO RIDE", "FULL THROTTLE", "UNSTOPPABLE"): `text-[28px] md:text-[48px] lg:text-[80px]`
-
-**MOTOREX Section (linha ~671-713)**
-- Glass cards row: `flex-col` no mobile em vez de `flex-wrap`
-- Garantir padding adequado
-
-**CTA Final (linha ~715-755)**
-- Padding: `p-6 md:p-10 lg:p-16`
-- Botão: largura total no mobile `w-full md:w-auto`
-
-### 3. Página Heitor Matos (`src/pages/parceiros/HeitorMatos.tsx`)
-Aplicar as mesmas mudanças do Lorenzo (estrutura idêntica):
-- Hero: h1 font-size mobile, HUD hidden, flex-col badges
-- Stats, Achievements, Bio, Parallax, CTA: mesmos ajustes
-
-### 4. Página Parceiros (`src/pages/Parceiros.tsx`)
-- Cards grid já responsivo (`grid-cols-1 sm:grid-cols-2`). OK
-- CTA "Quer ser parceiro": garantir `px-4` no mobile, botão `w-full sm:w-auto`
-
-### 5. Página Index (`src/pages/Index.tsx`)
-- Já usa breakpoints `md:`. Verificar:
-  - Banner buttons (linhas 220-235): área de toque mínima 44px, `p-4` -> `p-3`
-  - Marquee testimonials: `w-[280px] md:w-[340px]`
-  - Contact links: `flex-col md:flex-row` para evitar wrap caótico
-
-### 6. Componentes Compartilhados
-
-**HUDOverlay** (ambos parceiros)
-- Esconder no mobile: `hidden md:flex` no container principal
-- Ou simplificar para apenas 1 badge no mobile
-
-**ParallaxSection**
-- `min-h-[60vh] md:min-h-screen` para não forçar scroll excessivo em mobile
-
-**CheckpointDivider**
-- Reduzir quantidade de tire marks no mobile (ou esconder)
-- `py-4 md:py-8`
-
-**RoostSpray**
-- Reduzir SVG size no mobile: `w-[200px] md:w-[350px]`
-
----
-
-## Regras Gerais Aplicadas
-
-1. **Mobile-first**: valores base sem prefixo = mobile, `md:` = tablet+, `lg:` = desktop
-2. **Touch targets**: todos os botões, links e áreas interativas com `min-h-[44px] min-w-[44px]`
-3. **Sem absolute positioning para layout**: elementos decorativos mantêm absolute, conteúdo usa flex column
-4. **Sem overflow horizontal**: textos grandes reduzidos, grids em single-column
-5. **Font scaling**: h1 `text-[36px] md:text-[60px] lg:text-[100px]+`
+### 3. Editar: `src/App.tsx`
+- Importar `RodrigoGaliotto` do novo arquivo
+- Adicionar rota `/parceiros/rodrigo-galiotto`
 
 ---
 
 ## Detalhes Técnicos
-
-- Nenhuma dependência nova necessária
-- Todas as alterações são via classes Tailwind (responsivas)
-- 5 arquivos modificados: `LorenzoRicken.tsx`, `HeitorMatos.tsx`, `Parceiros.tsx`, `Index.tsx`, `Header.tsx`
-- Foco principal nos parceiros (maior complexidade visual)
+- Mesma UI, efeitos e componentes internos (FloatingIcons, DustParticles, RoostSpray, HUDOverlay, CheckpointDivider, ParallaxSection, Counter, SpeedLines, RaceNumberPlate, HUDCorners)
+- Mobile-first responsivo (já aplicado no template base)
+- 3 arquivos modificados/criados
+- Nenhuma dependência nova
 
