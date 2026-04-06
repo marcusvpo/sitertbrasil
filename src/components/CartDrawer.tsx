@@ -22,7 +22,7 @@ const CartDrawer = () => {
   const count = getItemCount();
 
   const handleCheckout = () => {
-    const yampiItems = items.map((i) => ({ slug: i.product.slug, qty: i.quantity }));
+    const yampiItems = items.map((i) => ({ slug: i.product.yampi_slug || i.product.slug, qty: i.quantity }));
     const url = buildYampiUrl(yampiItems);
     window.open(url, "_blank");
   };

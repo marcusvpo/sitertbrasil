@@ -95,11 +95,22 @@ const AdminProducts = () => {
           <h1 className="font-heading text-2xl uppercase text-secondary-foreground">Produtos</h1>
           <p className="text-secondary-foreground/50 text-sm">{products.length} produtos cadastrados</p>
         </div>
-        <Button asChild className="font-heading uppercase tracking-wider">
-          <Link to="/admin/products/new">
-            <Plus size={18} className="mr-2" /> Novo Produto
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            className="font-heading uppercase tracking-wider border-primary/30 text-primary hover:bg-primary/10"
+            onClick={handleSyncYampi}
+            disabled={syncing}
+          >
+            <RefreshCw size={18} className={`mr-2 ${syncing ? "animate-spin" : ""}`} />
+            {syncing ? "Sincronizando..." : "Sincronizar Yampi"}
+          </Button>
+          <Button asChild className="font-heading uppercase tracking-wider">
+            <Link to="/admin/products/new">
+              <Plus size={18} className="mr-2" /> Novo Produto
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="relative mb-4">
