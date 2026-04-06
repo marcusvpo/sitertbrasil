@@ -44,6 +44,15 @@ const partners: Partner[] = [
     titles: 12,
     topAchievement: "4x Campeão Gaúcho MX",
   },
+  {
+    name: "Marcelo Galiotto",
+    slug: "marcelo-galiotto",
+    image: getPartnerImage("marcelo/marcelocard.png"),
+    role: "Piloto de Motocross",
+    instagram: "@tchelo110",
+    titles: 12,
+    topAchievement: "9x Campeão Regional",
+  },
 ];
 
 const Parceiros = () => {
