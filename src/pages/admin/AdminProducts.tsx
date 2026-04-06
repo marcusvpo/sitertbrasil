@@ -63,8 +63,6 @@ const AdminProducts = () => {
       p.category?.name?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const getImageUrl = (path: string) =>
-    `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
 
   return (
     <div className="p-6 md:p-8">

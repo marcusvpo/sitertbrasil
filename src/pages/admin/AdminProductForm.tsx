@@ -112,8 +112,6 @@ const AdminProductForm = () => {
     setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
   };
 
-  const getImageUrl = (path: string) =>
-    `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
