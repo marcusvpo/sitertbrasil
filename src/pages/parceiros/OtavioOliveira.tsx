@@ -504,7 +504,7 @@ const OtavioOliveira = () => {
             <AnimateOnScroll animation="fade-in-left" className="md:col-span-2">
               <div className="relative rounded-lg overflow-hidden aspect-[3/4] group">
                 <img
-                  src={img("otavioRT.png")}
+                  src={img("otaviopng.png")}
                   alt="Otavio Oliveira - Piloto"
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
