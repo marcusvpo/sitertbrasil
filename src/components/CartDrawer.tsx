@@ -66,7 +66,7 @@ const CartDrawer = () => {
                       <div className="w-16 h-16 rounded-md overflow-hidden bg-secondary-foreground/10 flex-shrink-0">
                         {img ? (
                           <img
-                            src={getImageUrl(img.storage_path)}
+                            src={getProductImageUrl(img)}
                             alt={item.product.name}
                             className="w-full h-full object-cover"
                           />

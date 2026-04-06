@@ -103,7 +103,7 @@ const Index = () => {
                 <Link to={`/motorex/${p.slug}`} className="group block glass-card rounded-lg overflow-hidden transition-all duration-500">
                   <div className="relative aspect-square bg-muted overflow-hidden">
                     {p.images?.[0] ? (
-                      <img src={getImageUrl(p.images[0].storage_path)} alt={p.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
+                      <img src={getProductImageUrl(p.images[0])} alt={p.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
                     ) : (
                       <div className="flex flex-col items-center justify-center w-full h-full text-muted-foreground">
                         <span className="font-heading text-2xl uppercase font-bold">{p.name}</span>

@@ -152,7 +152,7 @@ const Motorex = () => {
                     <div className="relative aspect-square bg-secondary-foreground/5 overflow-hidden">
                       {product.images?.[0] ? (
                         <img
-                          src={getImageUrl(product.images[0].storage_path)}
+                          src={getProductImageUrl(product.images[0])}
                           alt={product.name}
                           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                           loading="lazy"

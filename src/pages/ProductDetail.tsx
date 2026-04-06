@@ -115,7 +115,7 @@ const ProductDetail = () => {
                       }`}
                     >
                       <img
-                        src={getImageUrl(img.storage_path)}
+                        src={getProductImageUrl(img)}
                         alt=""
                         className="w-full h-full object-cover"
                       />
