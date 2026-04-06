@@ -110,7 +110,7 @@ const AdminProducts = () => {
                   <TableCell>
                     {product.images?.[0] ? (
                       <img
-                        src={getImageUrl(product.images[0].storage_path)}
+                        src={getProductImageUrl(product.images[0])}
                         alt={product.name}
                         className="w-12 h-12 rounded object-cover"
                       />

@@ -336,7 +336,7 @@ const AdminProductForm = () => {
             {existingImages.map((img) => (
               <div key={img.id} className="relative group aspect-square rounded-lg overflow-hidden border border-secondary-foreground/10">
                 <img
-                  src={getImageUrl(img.storage_path)}
+                  src={getProductImageUrl(img)}
                   alt={img.alt_text || ""}
                   className="w-full h-full object-cover"
                 />
