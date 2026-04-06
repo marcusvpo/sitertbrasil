@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, RefreshCw } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import type { Product } from "@/types/database";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
@@ -14,12 +15,35 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose,
 } from "@/components/ui/dialog";
 
-const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
+import { getProductImageUrl } from "@/lib/image-utils";
 
 const AdminProducts = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSyncYampi = async () => {
+    setSyncing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-yampi");
+      if (error) throw error;
+      toast({
+        title: "Sincronização concluída",
+        description: `${data.total} produtos processados (${data.created} novos, ${data.updated} atualizados)`,
+      });
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+    } catch (err: any) {
+      toast({
+        title: "Erro na sincronização",
+        description: err.message || "Erro desconhecido",
+        variant: "destructive",
+      });
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["admin-products"],
@@ -63,8 +87,6 @@ const AdminProducts = () => {
       p.category?.name?.toLowerCase().includes(search.toLowerCase())
   );
 
-  const getImageUrl = (path: string) =>
-    `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
 
   return (
     <div className="p-6 md:p-8">
@@ -73,11 +95,22 @@ const AdminProducts = () => {
           <h1 className="font-heading text-2xl uppercase text-secondary-foreground">Produtos</h1>
           <p className="text-secondary-foreground/50 text-sm">{products.length} produtos cadastrados</p>
         </div>
-        <Button asChild className="font-heading uppercase tracking-wider">
-          <Link to="/admin/products/new">
-            <Plus size={18} className="mr-2" /> Novo Produto
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <Button
+            variant="outline"
+            className="font-heading uppercase tracking-wider border-primary/30 text-primary hover:bg-primary/10"
+            onClick={handleSyncYampi}
+            disabled={syncing}
+          >
+            <RefreshCw size={18} className={`mr-2 ${syncing ? "animate-spin" : ""}`} />
+            {syncing ? "Sincronizando..." : "Sincronizar Yampi"}
+          </Button>
+          <Button asChild className="font-heading uppercase tracking-wider">
+            <Link to="/admin/products/new">
+              <Plus size={18} className="mr-2" /> Novo Produto
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <div className="relative mb-4">
@@ -112,7 +145,7 @@ const AdminProducts = () => {
                   <TableCell>
                     {product.images?.[0] ? (
                       <img
-                        src={getImageUrl(product.images[0].storage_path)}
+                        src={getProductImageUrl(product.images[0])}
                         alt={product.name}
                         className="w-12 h-12 rounded object-cover"
                       />

@@ -12,7 +12,7 @@ import { ArrowLeft, Upload, X, GripVertical } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 
-const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
+import { getProductImageUrl } from "@/lib/image-utils";
 
 const slugify = (text: string) =>
   text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -112,8 +112,6 @@ const AdminProductForm = () => {
     setExistingImages((prev) => prev.filter((img) => img.id !== imageId));
   };
 
-  const getImageUrl = (path: string) =>
-    `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -338,7 +336,7 @@ const AdminProductForm = () => {
             {existingImages.map((img) => (
               <div key={img.id} className="relative group aspect-square rounded-lg overflow-hidden border border-secondary-foreground/10">
                 <img
-                  src={getImageUrl(img.storage_path)}
+                  src={getProductImageUrl(img)}
                   alt={img.alt_text || ""}
                   className="w-full h-full object-cover"
                 />

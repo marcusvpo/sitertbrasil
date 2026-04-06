@@ -6,6 +6,7 @@ export interface ProductCategory {
   slug: string;
   sort_order: number;
   created_at: string;
+  yampi_id?: number | null;
 }
 
 export interface Product {
@@ -24,6 +25,12 @@ export interface Product {
   sort_order: number;
   created_at: string;
   updated_at: string;
+  // Yampi sync fields
+  yampi_id?: number | null;
+  yampi_slug?: string | null;
+  yampi_sku?: string | null;
+  yampi_url?: string | null;
+  synced_at?: string | null;
   // joined
   category?: ProductCategory;
   images?: ProductImage[];
@@ -32,10 +39,12 @@ export interface Product {
 export interface ProductImage {
   id: string;
   product_id: string;
-  storage_path: string;
+  storage_path: string | null;
   alt_text: string | null;
   sort_order: number;
   created_at: string;
+  external_url?: string | null;
+  yampi_id?: number | null;
   url?: string;
 }
 

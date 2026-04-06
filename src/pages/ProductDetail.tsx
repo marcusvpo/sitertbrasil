@@ -8,11 +8,7 @@ import { ArrowLeft, ChevronLeft, ChevronRight, ShoppingCart, Plus, Minus } from 
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
-
-const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
-
-const getImageUrl = (path: string) =>
-  `${SUPABASE_URL}/storage/v1/object/public/products/${path}`;
+import { getProductImageUrl } from "@/lib/image-utils";
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -78,7 +74,7 @@ const ProductDetail = () => {
                 {images.length > 0 ? (
                   <>
                     <img
-                      src={getImageUrl(images[activeImage].storage_path)}
+                      src={getProductImageUrl(images[activeImage])}
                       alt={product.name}
                       className="w-full h-full object-cover"
                     />
@@ -119,7 +115,7 @@ const ProductDetail = () => {
                       }`}
                     >
                       <img
-                        src={getImageUrl(img.storage_path)}
+                        src={getProductImageUrl(img)}
                         alt=""
                         className="w-full h-full object-cover"
                       />
