@@ -19,8 +19,31 @@ import { getProductImageUrl } from "@/lib/image-utils";
 
 const AdminProducts = () => {
   const queryClient = useQueryClient();
+  const { toast } = useToast();
   const [search, setSearch] = useState("");
   const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [syncing, setSyncing] = useState(false);
+
+  const handleSyncYampi = async () => {
+    setSyncing(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("sync-yampi");
+      if (error) throw error;
+      toast({
+        title: "Sincronização concluída",
+        description: `${data.total} produtos processados (${data.created} novos, ${data.updated} atualizados)`,
+      });
+      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
+    } catch (err: any) {
+      toast({
+        title: "Erro na sincronização",
+        description: err.message || "Erro desconhecido",
+        variant: "destructive",
+      });
+    } finally {
+      setSyncing(false);
+    }
+  };
 
   const { data: products = [], isLoading } = useQuery({
     queryKey: ["admin-products"],
