@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff } from "lucide-react";
+import { Plus, Pencil, Trash2, Search, Eye, EyeOff, RefreshCw } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import type { Product } from "@/types/database";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
