@@ -1,60 +1,81 @@
 
 
-# Criar Página do Parceiro Otavio Oliveira
+# Integração Yampi API — Plano de Implementação
 
-## Resumo
-Criar landing page completa do parceiro Otavio Oliveira seguindo a mesma estrutura/UI dos outros parceiros, registrar rota e adicionar à listagem.
-
----
-
-## Informações do Piloto
-
-**Otavio Oliveira** — Natural de Ilicínea, MG. Número #05. Instagram: @otaviooliveira05. Pilota KTM 350 SX-F. Guia de trilhas off-road na região de Ilicínea, Minas Gerais. Também atua na compra e revenda de motos off-road. Perfil diferenciado dos demais parceiros: foco em trilhas e enduro, além do motocross.
-
-**Perfil (baseado nas informações fornecidas):**
-- Piloto de Motocross e Trilhas Off-Road
-- KTM 350 SX-F — piloto número #05
-- Guia de trilhas em Ilicínea, MG
-- Compra e revenda de motos off-road
-- Embaixador da cultura off-road mineira
-
-**Stats RPG:**
-- Velocidade: 82 | Técnica: 88 | Resistência: 90 | Coragem: 94
+## Pré-requisito: Adicionar Secrets
+Antes de qualquer código, precisamos adicionar 3 secrets ao projeto:
+- `YAMPI_ALIAS` = `rt-brasil`
+- `YAMPI_TOKEN` = `MuvmgVQzg0fBLIrLxRJWblU1Csazsfq5FA5xX8FR`
+- `YAMPI_SECRET_KEY` = `sk_EQcPIdrapSu01G24KPvwJHLUr426hOvofWSY3`
 
 ---
 
-## Arquivos e Alterações
+## Alterações
 
-### 1. Novo arquivo: `src/pages/parceiros/OtavioOliveira.tsx`
-- Copiar estrutura do RodrigoGaliotto.tsx como base
-- Adaptar `img()` para `parceiros/otavio/`
-- Hero com `otavioRT.png`, número `#05`, Instagram `@otaviooliveira05`
-- HUD: "Piloto Ativo", "MX · KTM 350", RaceNumberPlate "05"
-- Achievements adaptados ao perfil de trilheiro/piloto:
-  - Guia de Trilhas Ilicínea MG
-  - Piloto KTM 350 SX-F
-  - Especialista Off-Road / Revenda de motos
-  - Embaixador RT Brasil em Minas Gerais
-- Stats Bar: títulos e medalhas adaptados ao perfil
-- Parallax sections usando foto1→foto5 na mesma ordem
-- Bio sobre o perfil de piloto/guia/revendedor de motos off-road
-- CTA final com nome "Otavio"
+### 1. Migration — Adicionar campos Yampi às tabelas existentes
+```sql
+ALTER TABLE public.products
+  ADD COLUMN yampi_id integer UNIQUE,
+  ADD COLUMN yampi_slug text,
+  ADD COLUMN yampi_sku text,
+  ADD COLUMN yampi_url text,
+  ADD COLUMN synced_at timestamptz;
 
-### 2. Editar: `src/pages/Parceiros.tsx`
-- Adicionar Otavio ao array `partners[]`:
-  - name: "Otavio Oliveira", slug: "otavio-oliveira", image: otavio/otaviocard.png
-  - role: "Piloto de Motocross & Trilhas", instagram: "@otaviooliveira05", titles adaptados, topAchievement: "Guia Off-Road Ilicínea MG"
+ALTER TABLE public.product_categories
+  ADD COLUMN yampi_id integer UNIQUE;
 
-### 3. Editar: `src/App.tsx`
-- Importar `OtavioOliveira`
-- Adicionar rota `/parceiros/otavio-oliveira`
+ALTER TABLE public.product_images
+  ADD COLUMN external_url text,
+  ADD COLUMN yampi_id integer;
+```
+
+### 2. Edge Function: `supabase/functions/sync-yampi/index.ts`
+- Valida JWT do admin via `getClaims()`
+- Busca produtos da Yampi: `GET /v2/rt-brasil/catalog/products?include=skus,images,categories&limit=100`
+- Upsert categorias por `yampi_id`
+- Upsert produtos mapeando: name, slug, description, price (de `skus[0].price_sale`), compare_price, is_active
+- Upsert imagens usando `external_url` (URLs da Yampi, sem copiar para Storage)
+- Retorna contagem de criados/atualizados
+- CORS headers incluídos
+
+### 3. Tipos: `src/types/database.ts`
+Adicionar campos `yampi_id`, `yampi_slug`, `yampi_sku`, `yampi_url`, `synced_at` ao `Product`, e `external_url` ao `ProductImage`.
+
+### 4. Helper `getImageUrl` — 6 arquivos
+Atualizar para priorizar `external_url` quando presente:
+```ts
+const getImageUrl = (img: ProductImage) =>
+  img.external_url || `${SUPABASE_URL}/storage/v1/object/public/products/${img.storage_path}`;
+```
+Arquivos: `Index.tsx`, `Motorex.tsx`, `ProductDetail.tsx`, `CartDrawer.tsx`, `AdminProducts.tsx`, `AdminProductForm.tsx`
+
+### 5. Admin: Botão "Sincronizar Yampi" em `AdminProducts.tsx`
+- Botão no header ao lado de "Novo Produto"
+- Chama `supabase.functions.invoke("sync-yampi")`
+- Loading state + toast com resultado
+- Invalida query após sucesso
+
+### 6. CartDrawer: Checkout URL com `yampi_slug`
+```ts
+const yampiItems = items.map((i) => ({
+  slug: i.product.yampi_slug || i.product.slug,
+  qty: i.quantity
+}));
+```
 
 ---
 
-## Detalhes Técnicos
-- Mesma UI, efeitos e componentes internos (FloatingIcons, DustParticles, RoostSpray, HUDOverlay, etc.)
-- Mobile-first responsivo já aplicado no template base
-- 3 arquivos modificados/criados
-- Nenhuma dependência nova
-- Todas as 7 imagens do bucket `parceiros/otavio/` utilizadas
+## Resumo de Arquivos
+
+| Arquivo | Ação |
+|---------|------|
+| Migration (campos yampi) | Criar |
+| `supabase/functions/sync-yampi/index.ts` | Criar |
+| `src/types/database.ts` | Editar |
+| `src/pages/admin/AdminProducts.tsx` | Editar (botão sync + getImageUrl) |
+| `src/pages/Index.tsx` | Editar (getImageUrl) |
+| `src/pages/Motorex.tsx` | Editar (getImageUrl) |
+| `src/pages/ProductDetail.tsx` | Editar (getImageUrl) |
+| `src/components/CartDrawer.tsx` | Editar (getImageUrl + yampi_slug) |
+| `src/pages/admin/AdminProductForm.tsx` | Editar (getImageUrl) |
 
