@@ -1,50 +1,53 @@
 
 
-# Criar Página do Parceiro Marcelo "Tchelo" Galiotto
+# Criar Página do Parceiro Otavio Oliveira
 
 ## Resumo
-Criar landing page completa seguindo a mesma estrutura dos outros parceiros, registrar rota e adicionar ao listing.
+Criar landing page completa do parceiro Otavio Oliveira seguindo a mesma estrutura/UI dos outros parceiros, registrar rota e adicionar à listagem.
 
 ---
 
-## Informações do Piloto (pesquisadas)
+## Informações do Piloto
 
-**Marcelo "Tchelo" Galiotto** — Natural de Flores da Cunha, RS. Irmão de Rodrigo Galiotto. Número #110. Instagram: @tchelo110. Piloto de Motocross com carreira sólida no cenário gaúcho e sul-brasileiro. Trabalha na empresa da família junto com o irmão.
+**Otavio Oliveira** — Natural de Ilicínea, MG. Número #05. Instagram: @otaviooliveira05. Pilota KTM 350 SX-F. Guia de trilhas off-road na região de Ilicínea, Minas Gerais. Também atua na compra e revenda de motos off-road. Perfil diferenciado dos demais parceiros: foco em trilhas e enduro, além do motocross.
 
-**Conquistas confirmadas:**
-- 1x Campeão Sul Brasileiro de Motocross
-- 2x Campeão Gaúcho de Motocross
-- 9x Campeão Regional de Motocross
-- Dobradinha com o irmão Rodrigo no Campeonato Regional 2018
-
-**Bio:** Marcelo e Rodrigo treinam juntos diariamente, trocam dicas de velocidade, mas na pista "é cada um por si". Marcelo é o mais dominante no cenário regional, com 9 títulos consecutivos. Pilota Honda com apoio da estrutura familiar Galiotto.
+**Perfil (baseado nas informações fornecidas):**
+- Piloto de Motocross e Trilhas Off-Road
+- KTM 350 SX-F — piloto número #05
+- Guia de trilhas em Ilicínea, MG
+- Compra e revenda de motos off-road
+- Embaixador da cultura off-road mineira
 
 **Stats RPG:**
-- Velocidade: 85 | Técnica: 90 | Resistência: 88 | Coragem: 92
+- Velocidade: 82 | Técnica: 88 | Resistência: 90 | Coragem: 94
 
 ---
 
 ## Arquivos e Alterações
 
-### 1. Novo arquivo: `src/pages/parceiros/MarceloGaliotto.tsx`
+### 1. Novo arquivo: `src/pages/parceiros/OtavioOliveira.tsx`
 - Copiar estrutura do RodrigoGaliotto.tsx como base
-- Adaptar `img()` para `parceiros/marcelo/`
-- Hero com `marceloRT.png`, número `#110`, Instagram `@tchelo110`
-- HUD: "Piloto Ativo", "MX · 450cc", RaceNumberPlate "110"
-- Achievements: 4 conquistas (1x Sul Brasileiro, 2x Gaúcho, 9x Regional, Dobradinha Regional 2018)
-- Stats Bar: 12 títulos, medalhas, MX categoria
+- Adaptar `img()` para `parceiros/otavio/`
+- Hero com `otavioRT.png`, número `#05`, Instagram `@otaviooliveira05`
+- HUD: "Piloto Ativo", "MX · KTM 350", RaceNumberPlate "05"
+- Achievements adaptados ao perfil de trilheiro/piloto:
+  - Guia de Trilhas Ilicínea MG
+  - Piloto KTM 350 SX-F
+  - Especialista Off-Road / Revenda de motos
+  - Embaixador RT Brasil em Minas Gerais
+- Stats Bar: títulos e medalhas adaptados ao perfil
 - Parallax sections usando foto1→foto5 na mesma ordem
-- Bio com texto sobre a dupla de irmãos e domínio regional
-- CTA final com nome "Marcelo"
+- Bio sobre o perfil de piloto/guia/revendedor de motos off-road
+- CTA final com nome "Otavio"
 
 ### 2. Editar: `src/pages/Parceiros.tsx`
-- Adicionar Marcelo ao array `partners[]`:
-  - name: "Marcelo Galiotto", slug: "marcelo-galiotto", image: marcelo/marcelocard.png
-  - role: "Piloto de Motocross", instagram: "@tchelo110", titles: 12, topAchievement: "9x Campeão Regional"
+- Adicionar Otavio ao array `partners[]`:
+  - name: "Otavio Oliveira", slug: "otavio-oliveira", image: otavio/otaviocard.png
+  - role: "Piloto de Motocross & Trilhas", instagram: "@otaviooliveira05", titles adaptados, topAchievement: "Guia Off-Road Ilicínea MG"
 
 ### 3. Editar: `src/App.tsx`
-- Importar `MarceloGaliotto`
-- Adicionar rota `/parceiros/marcelo-galiotto`
+- Importar `OtavioOliveira`
+- Adicionar rota `/parceiros/otavio-oliveira`
 
 ---
 
@@ -53,5 +56,5 @@ Criar landing page completa seguindo a mesma estrutura dos outros parceiros, reg
 - Mobile-first responsivo já aplicado no template base
 - 3 arquivos modificados/criados
 - Nenhuma dependência nova
-- Todas as 7 imagens do bucket `parceiros/marcelo/` utilizadas
+- Todas as 7 imagens do bucket `parceiros/otavio/` utilizadas
 
