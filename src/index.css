@@ -6,23 +6,23 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 6.7%;
+    --background: 0 0% 4%;
+    --foreground: 0 0% 96%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 6.7%;
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 96%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 6.7%;
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 96%;
 
     --primary: 197 100% 43.7%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 6.7%;
-    --secondary-foreground: 0 0% 100%;
+    --secondary: 0 0% 4%;
+    --secondary-foreground: 0 0% 96%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 45%;
 
     --accent: 197 100% 43.7%;
     --accent-foreground: 0 0% 100%;
@@ -30,50 +30,20 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 85%;
-    --input: 0 0% 85%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
     --ring: 197 100% 43.7%;
 
-    --radius: 0.375rem;
+    --radius: 0.5rem;
 
-    --sidebar-background: 0 0% 6.7%;
-    --sidebar-foreground: 0 0% 100%;
+    --sidebar-background: 0 0% 4%;
+    --sidebar-foreground: 0 0% 96%;
     --sidebar-primary: 197 100% 43.7%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 15%;
-    --sidebar-accent-foreground: 0 0% 100%;
-    --sidebar-border: 0 0% 20%;
+    --sidebar-accent: 0 0% 10%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 0 0% 14%;
     --sidebar-ring: 197 100% 43.7%;
-  }
-
-  .dark {
-    --background: 0 0% 6.7%;
-    --foreground: 0 0% 100%;
-
-    --card: 0 0% 10%;
-    --card-foreground: 0 0% 100%;
-
-    --popover: 0 0% 10%;
-    --popover-foreground: 0 0% 100%;
-
-    --primary: 197 100% 43.7%;
-    --primary-foreground: 0 0% 100%;
-
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 100%;
-
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 60%;
-
-    --accent: 197 100% 43.7%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 100%;
-
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 197 100% 43.7%;
   }
 }
 
@@ -91,77 +61,153 @@
   }
 }
 
+/* ─────────────────────────────────────────────
+   UTILITY CLASSES — Dark Premium System
+   ───────────────────────────────────────────── */
+
 @layer components {
-  /* Glassmorphism */
+
+  /* ── Mesh Gradient Background ── */
+  .mesh-gradient {
+    position: relative;
+  }
+  .mesh-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 50%, hsl(197 100% 43.7% / 0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 80% 30%, hsl(260 80% 50% / 0.05) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 50% 80%, hsl(197 100% 43.7% / 0.04) 0%, transparent 70%);
+    z-index: 0;
+    animation: aurora-drift 12s ease-in-out infinite alternate;
+  }
+
+  /* ── Glass (refined dark) ── */
   .glass {
     @apply backdrop-blur-xl border shadow-lg;
-    background: hsl(var(--secondary) / 0.7);
-    border-color: hsl(var(--primary) / 0.08);
+    background: hsl(0 0% 4% / 0.85);
+    border-color: hsl(0 0% 100% / 0.06);
   }
 
   .glass-card {
     @apply relative overflow-hidden backdrop-blur-md border transition-all duration-500;
-    background: hsl(var(--secondary) / 0.6);
-    border-color: hsl(var(--primary) / 0.12);
-    box-shadow: 0 4px 30px hsl(var(--primary) / 0.06), inset 0 1px 0 hsl(var(--primary-foreground) / 0.04);
+    background: hsl(0 0% 100% / 0.03);
+    border-color: hsl(0 0% 100% / 0.06);
+    box-shadow: 0 4px 30px hsl(0 0% 0% / 0.3);
   }
 
   .glass-card:hover {
-    border-color: hsl(var(--primary) / 0.3);
-    box-shadow: 0 8px 40px hsl(var(--primary) / 0.12), inset 0 1px 0 hsl(var(--primary-foreground) / 0.06);
+    border-color: hsl(197 100% 43.7% / 0.2);
+    box-shadow: 0 8px 40px hsl(197 100% 43.7% / 0.08);
   }
 
-  .glass-card::after {
+  /* ── Card Glare — mouse tracking radial highlight ── */
+  .card-glare {
+    --mx: 50%;
+    --my: 50%;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-glare::after {
     content: '';
-    @apply absolute inset-0 pointer-events-none opacity-0 transition-opacity duration-700;
-    background: linear-gradient(
-      105deg,
-      transparent 40%,
-      hsl(var(--primary) / 0.06) 45%,
-      hsl(var(--primary) / 0.12) 50%,
-      hsl(var(--primary) / 0.06) 55%,
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    background: radial-gradient(
+      600px circle at var(--mx) var(--my),
+      hsl(197 100% 43.7% / 0.1) 0%,
       transparent 60%
     );
-    transform: translateX(-100%);
+    z-index: 1;
   }
-
-  .glass-card:hover::after {
+  .card-glare:hover::after {
     opacity: 1;
-    animation: shimmer 1.5s ease-in-out;
   }
 
-  /* Liquid Glass */
-  .liquid-glass {
-    @apply relative backdrop-blur-xl border;
+  /* ── Border Beam — rotating conic gradient border ── */
+  .border-beam {
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+  }
+  .border-beam::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    background: conic-gradient(
+      from var(--beam-angle, 0deg),
+      transparent 0%,
+      hsl(197 100% 43.7%) 10%,
+      hsl(197 100% 60%) 15%,
+      transparent 25%,
+      transparent 100%
+    );
+    animation: border-beam-spin 3s linear infinite;
+  }
+  .border-beam::after {
+    content: '';
+    position: absolute;
+    inset: 1.5px;
+    z-index: -1;
+    background: hsl(0 0% 4%);
+    border-radius: inherit;
+  }
+
+  /* ── Gradient Border (for value cards) ── */
+  .gradient-border {
+    position: relative;
+    background: hsl(0 0% 100% / 0.02);
+    border: 1px solid transparent;
+    background-clip: padding-box;
+  }
+  .gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
     background: linear-gradient(
       135deg,
-      hsl(var(--primary) / 0.08),
-      hsl(var(--secondary) / 0.6),
-      hsl(var(--primary) / 0.05)
+      hsl(197 100% 43.7% / 0.3),
+      hsl(197 100% 43.7% / 0.05) 40%,
+      hsl(260 80% 50% / 0.1) 70%,
+      hsl(197 100% 43.7% / 0.2)
     );
-    border-color: hsl(var(--primary) / 0.15);
-    box-shadow: 0 8px 32px hsl(var(--primary) / 0.1), inset 0 0 20px hsl(var(--primary) / 0.03);
-    animation: hue-shift 8s ease-in-out infinite;
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 
-  /* Clipped-Corner Button */
+  /* ── Neon Focus — inputs with cyan bleed glow ── */
+  .neon-focus {
+    @apply transition-all duration-300;
+  }
+  .neon-focus:focus-within {
+    box-shadow: 0 0 0 1px hsl(197 100% 43.7% / 0.4),
+                0 0 20px hsl(197 100% 43.7% / 0.12),
+                0 0 40px hsl(197 100% 43.7% / 0.05);
+  }
+
+  /* ── Liquid Glass (refined) ── */
+  .liquid-glass {
+    @apply relative backdrop-blur-xl border;
+    background: hsl(0 0% 100% / 0.03);
+    border-color: hsl(0 0% 100% / 0.08);
+    box-shadow: 0 8px 32px hsl(0 0% 0% / 0.4);
+  }
+
+  /* ── Clipped-Corner Button ── */
   .btn-clip {
     clip-path: polygon(0 12px, 12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
     border-radius: 0 !important;
-  }
-
-  /* Grain Overlay */
-  .grain-overlay {
-    @apply relative;
-  }
-
-  .grain-overlay::before {
-    content: '';
-    @apply absolute inset-0 pointer-events-none z-10;
-    opacity: 0.35;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
-    background-size: 128px 128px;
-    animation: grain 0.8s steps(4) infinite;
   }
 }
 
@@ -175,16 +221,39 @@
   }
 
   .hover-glow {
-    @apply transition-all duration-300 hover:shadow-[0_0_30px_hsl(197_100%_43.7%/0.2)];
+    @apply transition-all duration-300 hover:shadow-[0_0_30px_hsl(197_100%_43.7%/0.25)];
   }
 
   .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-[hsl(197_100%_60%)];
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary to-[hsl(197_100%_65%)];
   }
 
   .pause-on-hover:hover .marquee-track {
     animation-play-state: paused;
   }
+}
+
+/* ─────────────────────────────────────────────
+   KEYFRAMES
+   ───────────────────────────────────────────── */
+
+@keyframes border-beam-spin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes aurora-drift {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.7; }
+  100% { opacity: 1; }
+}
+
+@keyframes float-dust {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+  10%      { opacity: 0.6; }
+  50%      { transform: translateY(-80px) translateX(30px); opacity: 0.3; }
+  90%      { opacity: 0; }
+  100%     { transform: translateY(-160px) translateX(-10px); opacity: 0; }
 }
 
 @keyframes float-particle {
@@ -197,4 +266,9 @@
 @keyframes speed-line {
   0%, 100% { opacity: 0.05; }
   50% { opacity: 0.2; }
+}
+
+@keyframes shimmer-loading {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
