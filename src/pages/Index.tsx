@@ -86,37 +86,39 @@ const Index = () => {
           />
         ))}
 
-        {/* Hero content */}
-        <div className="relative z-10 container pb-20 md:pb-28">
-          <AnimateOnScroll animation="blur-in">
-            <span className="inline-block font-heading uppercase text-primary text-xs tracking-[0.3em] mb-4">
-              Distribuidora Oficial MOTOREX no Brasil
-            </span>
-          </AnimateOnScroll>
-          <AnimateOnScroll animation="fade-up" delay={200}>
-            <h1 className="font-heading text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] mb-6 max-w-4xl">
-              Performance Máxima Para Quem Vive o{" "}
-              <span className="text-gradient">Motocross</span>
-            </h1>
-          </AnimateOnScroll>
-          <AnimateOnScroll animation="fade-up" delay={400}>
-            <p className="text-foreground/60 text-lg md:text-xl max-w-xl mb-8">
-              Lubrificantes e produtos de alta tecnologia suíça para quem exige o
-              melhor da sua máquina.
-            </p>
-          </AnimateOnScroll>
-          <AnimateOnScroll animation="slide-up" delay={500}>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <Button asChild size="lg" className="font-heading uppercase tracking-wider text-base border-beam hover-glow">
-                <Link to="/seja-revendedor">
-                  Quero ser revendedor <ArrowRight className="ml-2" size={18} />
-                </Link>
-              </Button>
-              <Button asChild variant="outline" size="lg" className="font-heading uppercase tracking-wider text-base border-primary/30 text-primary hover:bg-primary/10">
-                <Link to="/motorex">Conhecer produtos</Link>
-              </Button>
-            </div>
-          </AnimateOnScroll>
+        {/* Hero content — aligned right */}
+        <div className="relative z-10 container pb-20 md:pb-28 flex justify-end">
+          <div className="w-full md:w-1/2 md:text-right">
+            <AnimateOnScroll animation="blur-in">
+              <span className="inline-block font-heading uppercase text-primary text-xs tracking-[0.3em] mb-4">
+                Distribuidora Oficial MOTOREX no Brasil
+              </span>
+            </AnimateOnScroll>
+            <AnimateOnScroll animation="fade-up" delay={200}>
+              <h1 className="font-heading text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] mb-6">
+                Performance Máxima Para Quem Vive o{" "}
+                <span className="text-gradient">Motocross</span>
+              </h1>
+            </AnimateOnScroll>
+            <AnimateOnScroll animation="fade-up" delay={400}>
+              <p className="text-foreground/60 text-lg md:text-xl max-w-xl md:ml-auto mb-8">
+                Lubrificantes e produtos de alta tecnologia suíça para quem exige o
+                melhor da sua máquina.
+              </p>
+            </AnimateOnScroll>
+            <AnimateOnScroll animation="slide-up" delay={500}>
+              <div className="flex flex-col sm:flex-row gap-4 md:justify-end">
+                <Button asChild size="lg" className="font-heading uppercase tracking-wider text-base border-beam hover-glow">
+                  <Link to="/seja-revendedor">
+                    Quero ser revendedor <ArrowRight className="ml-2" size={18} />
+                  </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="font-heading uppercase tracking-wider text-base border-primary/30 text-primary hover:bg-primary/10">
+                  <Link to="/motorex">Conhecer produtos</Link>
+                </Button>
+              </div>
+            </AnimateOnScroll>
+          </div>
         </div>
       </section>
 
