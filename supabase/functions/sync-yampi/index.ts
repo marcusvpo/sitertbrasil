@@ -14,10 +14,11 @@ interface YampiProduct {
   slug: string;
   url: string;
   is_active: boolean;
-  texts?: { description?: string; short_description?: string };
+  texts?: { description?: string; short_description?: string } | { data?: { description?: string; short_description?: string } };
   skus?: { data: Array<{ price_sale: number; price_discount: number; sku: string }> };
-  images?: { data: Array<{ id: number; url: string; order: number }> };
+  images?: { data: Array<{ id: number; url?: string; image_url?: string; src?: string; order: number }> } | Array<{ id: number; url?: string; image_url?: string; src?: string; order: number }>;
   categories?: { data: Array<{ id: number; name: string; slug: string }> };
+  image_url?: string;
 }
 
 Deno.serve(async (req) => {
@@ -91,7 +92,7 @@ Deno.serve(async (req) => {
     let hasMore = true;
 
     while (hasMore) {
-      const url = `${YAMPI_BASE}/${alias}/catalog/products?include=skus,images,categories&limit=100&page=${page}`;
+      const url = `${YAMPI_BASE}/${alias}/catalog/products?include=texts,skus,images,categories&limit=100&page=${page}`;
       const resp = await fetch(url, { headers: yampiHeaders });
 
       if (!resp.ok) {
@@ -101,6 +102,17 @@ Deno.serve(async (req) => {
 
       const json = await resp.json();
       const products: YampiProduct[] = json.data || [];
+
+      // Log first product structure for debugging
+      if (page === 1 && products.length > 0) {
+        const sample = products[0];
+        console.log("Sample product keys:", Object.keys(sample));
+        console.log("Sample texts:", JSON.stringify(sample.texts));
+        console.log("Sample images type:", typeof sample.images, Array.isArray(sample.images));
+        console.log("Sample images:", JSON.stringify(sample.images)?.substring(0, 500));
+        console.log("Sample image_url:", (sample as any).image_url);
+      }
+
       allProducts = allProducts.concat(products);
 
       const meta = json.meta;
@@ -129,6 +141,11 @@ Deno.serve(async (req) => {
 
       // Map product
       const sku = yp.skus?.data?.[0];
+      // Extract texts - handle both {description} and {data: {description}} formats
+      const textsObj = yp.texts as any;
+      const description = textsObj?.description || textsObj?.data?.description || null;
+      const shortDescription = textsObj?.short_description || textsObj?.data?.short_description || null;
+
       const productData = {
         yampi_id: yp.id,
         yampi_slug: yp.slug,
@@ -136,8 +153,8 @@ Deno.serve(async (req) => {
         yampi_url: yp.url || null,
         name: yp.name,
         slug: yp.slug,
-        description: yp.texts?.description || null,
-        short_description: yp.texts?.short_description || null,
+        description,
+        short_description: shortDescription,
         price: sku?.price_sale || null,
         compare_price: sku?.price_discount || null,
         category_id: categoryId,
@@ -173,29 +190,33 @@ Deno.serve(async (req) => {
         created++;
       }
 
-      // Sync images
-      const imgData = yp.images?.data;
-      console.log(`Product ${yp.name} (yampi_id=${yp.id}): ${imgData?.length ?? 0} images found`);
+      // Sync images - handle both {data: [...]} and direct array formats
+      const imagesRaw = yp.images as any;
+      const imgData: any[] = Array.isArray(imagesRaw) ? imagesRaw : (imagesRaw?.data || []);
+      
+      // Also check for top-level image_url as fallback (like link_foto_principal in exports)
+      const fallbackImageUrl = (yp as any).image_url || (yp as any).thumb || null;
 
-      if (imgData && imgData.length > 0) {
-        // Remove old yampi images for this product
-        const { error: delError } = await adminClient
-          .from("product_images")
-          .delete()
-          .eq("product_id", productId)
-          .not("yampi_id", "is", null);
+      console.log(`Product ${yp.name}: ${imgData.length} images from API, fallback=${fallbackImageUrl ? 'yes' : 'no'}`);
 
-        if (delError) {
-          console.error(`Delete images error for ${yp.name}:`, delError);
-        }
+      // Remove old yampi images for this product
+      const { error: delError } = await adminClient
+        .from("product_images")
+        .delete()
+        .eq("product_id", productId)
+        .not("yampi_id", "is", null);
 
-        // Insert new images
+      if (delError) {
+        console.error(`Delete images error for ${yp.name}:`, delError);
+      }
+
+      if (imgData.length > 0) {
         const imageRows = imgData.map((img: any, idx: number) => ({
           product_id: productId,
-          yampi_id: img.id,
-          external_url: img.url || img.image_url || img.src || null,
+          yampi_id: img.id || null,
+          external_url: img.url || img.image_url || img.src || img.thumb || null,
           storage_path: null,
-          sort_order: img.order ?? idx,
+          sort_order: img.order ?? img.sort_order ?? idx,
         }));
 
         console.log(`Inserting images for ${yp.name}:`, JSON.stringify(imageRows[0]));
@@ -203,6 +224,18 @@ Deno.serve(async (req) => {
         const { error: imgError } = await adminClient.from("product_images").insert(imageRows);
         if (imgError) {
           console.error(`Insert images error for ${yp.name}:`, imgError);
+        }
+      } else if (fallbackImageUrl) {
+        // Use fallback image URL if no images array
+        const { error: imgError } = await adminClient.from("product_images").insert({
+          product_id: productId,
+          yampi_id: yp.id,
+          external_url: fallbackImageUrl,
+          storage_path: null,
+          sort_order: 0,
+        });
+        if (imgError) {
+          console.error(`Insert fallback image error for ${yp.name}:`, imgError);
         }
       }
     }
