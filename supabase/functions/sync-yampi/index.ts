@@ -141,6 +141,11 @@ Deno.serve(async (req) => {
 
       // Map product
       const sku = yp.skus?.data?.[0];
+      // Extract texts - handle both {description} and {data: {description}} formats
+      const textsObj = yp.texts as any;
+      const description = textsObj?.description || textsObj?.data?.description || null;
+      const shortDescription = textsObj?.short_description || textsObj?.data?.short_description || null;
+
       const productData = {
         yampi_id: yp.id,
         yampi_slug: yp.slug,
@@ -148,8 +153,8 @@ Deno.serve(async (req) => {
         yampi_url: yp.url || null,
         name: yp.name,
         slug: yp.slug,
-        description: yp.texts?.description || null,
-        short_description: yp.texts?.short_description || null,
+        description,
+        short_description: shortDescription,
         price: sku?.price_sale || null,
         compare_price: sku?.price_discount || null,
         category_id: categoryId,
