@@ -92,7 +92,7 @@ Deno.serve(async (req) => {
     let hasMore = true;
 
     while (hasMore) {
-      const url = `${YAMPI_BASE}/${alias}/catalog/products?include=skus,images,categories&limit=100&page=${page}`;
+      const url = `${YAMPI_BASE}/${alias}/catalog/products?include=texts,skus,images,categories&limit=100&page=${page}`;
       const resp = await fetch(url, { headers: yampiHeaders });
 
       if (!resp.ok) {
