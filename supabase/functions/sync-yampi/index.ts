@@ -190,29 +190,33 @@ Deno.serve(async (req) => {
         created++;
       }
 
-      // Sync images
-      const imgData = yp.images?.data;
-      console.log(`Product ${yp.name} (yampi_id=${yp.id}): ${imgData?.length ?? 0} images found`);
+      // Sync images - handle both {data: [...]} and direct array formats
+      const imagesRaw = yp.images as any;
+      const imgData: any[] = Array.isArray(imagesRaw) ? imagesRaw : (imagesRaw?.data || []);
+      
+      // Also check for top-level image_url as fallback (like link_foto_principal in exports)
+      const fallbackImageUrl = (yp as any).image_url || (yp as any).thumb || null;
 
-      if (imgData && imgData.length > 0) {
-        // Remove old yampi images for this product
-        const { error: delError } = await adminClient
-          .from("product_images")
-          .delete()
-          .eq("product_id", productId)
-          .not("yampi_id", "is", null);
+      console.log(`Product ${yp.name}: ${imgData.length} images from API, fallback=${fallbackImageUrl ? 'yes' : 'no'}`);
 
-        if (delError) {
-          console.error(`Delete images error for ${yp.name}:`, delError);
-        }
+      // Remove old yampi images for this product
+      const { error: delError } = await adminClient
+        .from("product_images")
+        .delete()
+        .eq("product_id", productId)
+        .not("yampi_id", "is", null);
 
-        // Insert new images
+      if (delError) {
+        console.error(`Delete images error for ${yp.name}:`, delError);
+      }
+
+      if (imgData.length > 0) {
         const imageRows = imgData.map((img: any, idx: number) => ({
           product_id: productId,
-          yampi_id: img.id,
-          external_url: img.url || img.image_url || img.src || null,
+          yampi_id: img.id || null,
+          external_url: img.url || img.image_url || img.src || img.thumb || null,
           storage_path: null,
-          sort_order: img.order ?? idx,
+          sort_order: img.order ?? img.sort_order ?? idx,
         }));
 
         console.log(`Inserting images for ${yp.name}:`, JSON.stringify(imageRows[0]));
@@ -220,6 +224,18 @@ Deno.serve(async (req) => {
         const { error: imgError } = await adminClient.from("product_images").insert(imageRows);
         if (imgError) {
           console.error(`Insert images error for ${yp.name}:`, imgError);
+        }
+      } else if (fallbackImageUrl) {
+        // Use fallback image URL if no images array
+        const { error: imgError } = await adminClient.from("product_images").insert({
+          product_id: productId,
+          yampi_id: yp.id,
+          external_url: fallbackImageUrl,
+          storage_path: null,
+          sort_order: 0,
+        });
+        if (imgError) {
+          console.error(`Insert fallback image error for ${yp.name}:`, imgError);
         }
       }
     }
