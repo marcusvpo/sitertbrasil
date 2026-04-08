@@ -18,48 +18,49 @@ const IndiqueCidade = () => {
       {/* Banner */}
       <section className="relative w-full overflow-hidden">
         <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" className="w-full h-auto block" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
       </section>
 
-      <section className="bg-secondary text-secondary-foreground py-10 md:py-16">
-        <div className="container max-w-xl">
-          <AnimateOnScroll className="text-center mb-6">
-            <h1 className="font-heading text-[42px] md:text-[64px] uppercase font-bold leading-[0.95]">
+      <section className="relative py-12 md:py-20 mesh-gradient">
+        <div className="container relative z-10 max-w-xl">
+          <AnimateOnScroll className="text-center mb-8">
+            <h1 className="font-heading text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[0.9]">
               Indique sua <span className="text-gradient">Cidade</span>
             </h1>
           </AnimateOnScroll>
 
           {submitted ? (
             <AnimateOnScroll animation="scale-in">
-              <div className="text-center py-12">
+              <div className="text-center py-16">
                 <CheckCircle className="mx-auto text-primary mb-4" size={48} />
-                <h3 className="font-heading text-xl uppercase font-bold mb-2">Indicação enviada!</h3>
-                <p className="text-secondary-foreground/70">Obrigado por nos ajudar a expandir a rede MOTOREX.</p>
+                <h3 className="font-heading text-xl font-bold mb-2">Indicação enviada!</h3>
+                <p className="text-muted-foreground">Obrigado por nos ajudar a expandir a rede MOTOREX.</p>
               </div>
             </AnimateOnScroll>
           ) : (
             <AnimateOnScroll animation="fade-up">
-              <form onSubmit={handleSubmit} className="liquid-glass rounded-lg p-6 md:p-8 space-y-5">
-                <div>
-                  <Label htmlFor="nome">Nome</Label>
-                  <Input id="nome" name="nome" placeholder="Seu nome" required className="mt-1" />
+              <form onSubmit={handleSubmit} className="gradient-border rounded-xl p-7 md:p-10 space-y-5 bg-foreground/[0.02]">
+                <div className="neon-focus rounded-md">
+                  <Label htmlFor="nome" className="text-foreground/80 text-sm mb-1.5 block">Nome</Label>
+                  <Input id="nome" name="nome" placeholder="Seu nome" required className="bg-muted/30 border-foreground/10" />
                 </div>
-                <div>
-                  <Label htmlFor="whatsapp">WhatsApp</Label>
-                  <Input id="whatsapp" name="whatsapp" type="tel" placeholder="(00) 00000-0000" required className="mt-1" />
+                <div className="neon-focus rounded-md">
+                  <Label htmlFor="whatsapp" className="text-foreground/80 text-sm mb-1.5 block">WhatsApp</Label>
+                  <Input id="whatsapp" name="whatsapp" type="tel" placeholder="(00) 00000-0000" required className="bg-muted/30 border-foreground/10" />
                 </div>
-                <div>
-                  <Label htmlFor="cidade">Nome da Cidade</Label>
-                  <Input id="cidade" name="cidade" placeholder="Ex: Campinas - SP" required className="mt-1" />
+                <div className="neon-focus rounded-md">
+                  <Label htmlFor="cidade" className="text-foreground/80 text-sm mb-1.5 block">Nome da Cidade</Label>
+                  <Input id="cidade" name="cidade" placeholder="Ex: Campinas - SP" required className="bg-muted/30 border-foreground/10" />
                 </div>
-                <div>
-                  <Label htmlFor="lojista">Nome do Lojista</Label>
-                  <Input id="lojista" name="lojista" placeholder="Nome da loja ou pessoa" className="mt-1" />
+                <div className="neon-focus rounded-md">
+                  <Label htmlFor="lojista" className="text-foreground/80 text-sm mb-1.5 block">Nome do Lojista</Label>
+                  <Input id="lojista" name="lojista" placeholder="Nome da loja ou pessoa" className="bg-muted/30 border-foreground/10" />
                 </div>
-                <div>
-                  <Label htmlFor="contato-lojista">Contato do Lojista</Label>
-                  <Input id="contato-lojista" name="contato-lojista" type="tel" placeholder="Telefone ou WhatsApp do lojista" className="mt-1" />
+                <div className="neon-focus rounded-md">
+                  <Label htmlFor="contato-lojista" className="text-foreground/80 text-sm mb-1.5 block">Contato do Lojista</Label>
+                  <Input id="contato-lojista" name="contato-lojista" type="tel" placeholder="Telefone ou WhatsApp" className="bg-muted/30 border-foreground/10" />
                 </div>
-                <Button type="submit" className="w-full font-heading uppercase tracking-wider hover-glow">
+                <Button type="submit" className="w-full font-heading uppercase tracking-wider border-beam hover-glow">
                   Enviar indicação
                 </Button>
               </form>

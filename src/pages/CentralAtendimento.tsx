@@ -23,39 +23,38 @@ const CentralAtendimento = () => {
 
   return (
     <>
-      {/* Header */}
-      <section className="bg-secondary text-secondary-foreground pt-8 md:pt-14 pb-6 md:pb-10 relative overflow-hidden">
-        <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: "radial-gradient(circle at 1px 1px, hsl(var(--secondary-foreground)) 1px, transparent 0)", backgroundSize: "40px 40px" }} />
-        <div className="container relative text-center">
+      {/* ── Header ── */}
+      <section className="relative py-16 md:py-24 overflow-hidden mesh-gradient">
+        <div className="container relative z-10 text-center">
           <AnimateOnScroll animation="blur-in">
-            <span className="font-heading uppercase text-primary text-sm tracking-[0.25em]">Suporte</span>
-            <h1 className="font-heading text-[42px] md:text-[64px] uppercase font-bold mt-3 mb-4 leading-[0.95]">
+            <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Suporte</span>
+            <h1 className="font-heading text-[clamp(2.5rem,6vw,4.5rem)] font-bold mt-3 mb-5 leading-[0.9]">
               Central de <span className="text-gradient">Atendimento</span>
             </h1>
-            <p className="text-secondary-foreground/60 max-w-lg mx-auto">
+            <p className="text-muted-foreground max-w-lg mx-auto">
               Estamos prontos para ajudar. Escolha o canal de sua preferência ou envie uma mensagem direta.
             </p>
           </AnimateOnScroll>
         </div>
       </section>
 
-      {/* Contact cards */}
-      <section className="bg-secondary text-secondary-foreground py-8 md:py-12 border-t border-secondary-foreground/5">
+      {/* ── Contact Cards — gradient borders ── */}
+      <section className="py-10 md:py-16 border-t border-foreground/[0.04]">
         <div className="container">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {contactCards.map((c, i) => (
               <AnimateOnScroll key={c.label} animation="scale-in" delay={i * 100}>
-                <div className="glass-card rounded-lg p-6 text-center hover-lift hover-glow transition-all duration-300 h-full">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-3">
-                    <c.icon size={22} className="text-primary" />
+                <div className="gradient-border rounded-xl p-7 text-center hover:shadow-[0_0_30px_hsl(197_100%_43.7%/0.1)] transition-all duration-500 h-full">
+                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                    <c.icon size={24} className="text-primary" />
                   </div>
-                  <h3 className="font-heading uppercase text-sm font-semibold mb-1">{c.label}</h3>
+                  <h3 className="font-heading text-sm font-semibold mb-1">{c.label}</h3>
                   {c.href ? (
-                    <a href={c.href} target="_blank" rel="noopener noreferrer" className="text-secondary-foreground/70 text-sm hover:text-primary transition-colors">
+                    <a href={c.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm hover:text-primary transition-colors">
                       {c.value}
                     </a>
                   ) : (
-                    <p className="text-secondary-foreground/70 text-sm">{c.value}</p>
+                    <p className="text-muted-foreground text-sm">{c.value}</p>
                   )}
                 </div>
               </AnimateOnScroll>
@@ -64,42 +63,42 @@ const CentralAtendimento = () => {
         </div>
       </section>
 
-      {/* Form */}
-      <section className="bg-secondary text-secondary-foreground py-10 md:py-16 border-t border-secondary-foreground/5">
-        <div className="container max-w-xl">
-          <AnimateOnScroll className="text-center mb-8">
-            <Send size={32} className="mx-auto text-primary mb-3" />
-            <h2 className="font-heading text-[28px] md:text-[36px] uppercase font-bold">Fale Conosco</h2>
+      {/* ── Form ── */}
+      <section className="relative py-12 md:py-20 border-t border-foreground/[0.04] mesh-gradient">
+        <div className="container relative z-10 max-w-xl">
+          <AnimateOnScroll className="text-center mb-10">
+            <Send size={32} className="mx-auto text-primary mb-4" />
+            <h2 className="font-heading text-[clamp(1.5rem,4vw,2.5rem)] font-bold">Fale Conosco</h2>
           </AnimateOnScroll>
 
           {submitted ? (
             <AnimateOnScroll animation="scale-in">
-              <div className="text-center py-12">
+              <div className="text-center py-16">
                 <CheckCircle className="mx-auto text-primary mb-4" size={48} />
-                <h3 className="font-heading text-xl uppercase font-bold mb-2">Mensagem enviada!</h3>
-                <p className="text-secondary-foreground/70">Retornaremos o mais breve possível.</p>
+                <h3 className="font-heading text-xl font-bold mb-2">Mensagem enviada!</h3>
+                <p className="text-muted-foreground">Retornaremos o mais breve possível.</p>
               </div>
             </AnimateOnScroll>
           ) : (
             <AnimateOnScroll animation="fade-up">
-              <form onSubmit={handleSubmit} className="liquid-glass rounded-lg p-6 md:p-8 space-y-5">
-                <div>
-                  <Label htmlFor="nome">Nome</Label>
-                  <Input id="nome" name="nome" placeholder="Seu nome" required className="mt-1" />
+              <form onSubmit={handleSubmit} className="gradient-border rounded-xl p-7 md:p-10 space-y-5 bg-foreground/[0.02]">
+                <div className="neon-focus rounded-md">
+                  <Label htmlFor="nome" className="text-foreground/80 text-sm mb-1.5 block">Nome</Label>
+                  <Input id="nome" name="nome" placeholder="Seu nome" required className="bg-muted/30 border-foreground/10" />
                 </div>
-                <div>
-                  <Label htmlFor="email">E-mail</Label>
-                  <Input id="email" name="email" type="email" placeholder="seu@email.com" required className="mt-1" />
+                <div className="neon-focus rounded-md">
+                  <Label htmlFor="email" className="text-foreground/80 text-sm mb-1.5 block">E-mail</Label>
+                  <Input id="email" name="email" type="email" placeholder="seu@email.com" required className="bg-muted/30 border-foreground/10" />
                 </div>
-                <div>
-                  <Label htmlFor="whatsapp">WhatsApp</Label>
-                  <Input id="whatsapp" name="whatsapp" type="tel" placeholder="(00) 00000-0000" required className="mt-1" />
+                <div className="neon-focus rounded-md">
+                  <Label htmlFor="whatsapp" className="text-foreground/80 text-sm mb-1.5 block">WhatsApp</Label>
+                  <Input id="whatsapp" name="whatsapp" type="tel" placeholder="(00) 00000-0000" required className="bg-muted/30 border-foreground/10" />
                 </div>
-                <div>
-                  <Label htmlFor="mensagem">Como podemos te ajudar?</Label>
-                  <Textarea id="mensagem" name="mensagem" placeholder="Descreva sua dúvida ou solicitação..." required className="mt-1" rows={5} />
+                <div className="neon-focus rounded-md">
+                  <Label htmlFor="mensagem" className="text-foreground/80 text-sm mb-1.5 block">Como podemos te ajudar?</Label>
+                  <Textarea id="mensagem" name="mensagem" placeholder="Descreva sua dúvida ou solicitação..." required className="bg-muted/30 border-foreground/10" rows={5} />
                 </div>
-                <Button type="submit" className="w-full font-heading uppercase tracking-wider hover-glow">
+                <Button type="submit" className="w-full font-heading uppercase tracking-wider border-beam hover-glow">
                   Enviar mensagem
                 </Button>
               </form>
