@@ -102,6 +102,17 @@ Deno.serve(async (req) => {
 
       const json = await resp.json();
       const products: YampiProduct[] = json.data || [];
+
+      // Log first product structure for debugging
+      if (page === 1 && products.length > 0) {
+        const sample = products[0];
+        console.log("Sample product keys:", Object.keys(sample));
+        console.log("Sample texts:", JSON.stringify(sample.texts));
+        console.log("Sample images type:", typeof sample.images, Array.isArray(sample.images));
+        console.log("Sample images:", JSON.stringify(sample.images)?.substring(0, 500));
+        console.log("Sample image_url:", (sample as any).image_url);
+      }
+
       allProducts = allProducts.concat(products);
 
       const meta = json.meta;
