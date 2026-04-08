@@ -116,13 +116,6 @@ export default {
           "0%, 100%": { filter: "hue-rotate(0deg)" },
           "50%": { filter: "hue-rotate(15deg)" },
         },
-        grain: {
-          "0%": { transform: "translate(0, 0)" },
-          "25%": { transform: "translate(-2px, 2px)" },
-          "50%": { transform: "translate(2px, -1px)" },
-          "75%": { transform: "translate(-1px, -2px)" },
-          "100%": { transform: "translate(0, 0)" },
-        },
         marquee: {
           "0%": { transform: "translateX(0)" },
           "100%": { transform: "translateX(-50%)" },
@@ -130,6 +123,17 @@ export default {
         "marquee-reverse": {
           "0%": { transform: "translateX(-50%)" },
           "100%": { transform: "translateX(0)" },
+        },
+        "float-dust": {
+          "0%, 100%": { transform: "translateY(0) translateX(0)", opacity: "0" },
+          "10%": { opacity: "0.5" },
+          "50%": { transform: "translateY(-100px) translateX(25px)", opacity: "0.2" },
+          "90%": { opacity: "0" },
+          "100%": { transform: "translateY(-180px) translateX(-10px)", opacity: "0" },
+        },
+        "glow-breathe": {
+          "0%, 100%": { boxShadow: "0 0 15px hsl(197 100% 43.7% / 0.1)" },
+          "50%": { boxShadow: "0 0 35px hsl(197 100% 43.7% / 0.2)" },
         },
       },
       animation: {
@@ -145,9 +149,10 @@ export default {
         "glow-pulse": "glow-pulse 3s ease-in-out infinite",
         shimmer: "shimmer 1.5s ease-in-out",
         "hue-shift": "hue-shift 8s ease-in-out infinite",
-        grain: "grain 0.8s steps(4) infinite",
         marquee: "marquee 30s linear infinite",
         "marquee-reverse": "marquee-reverse 30s linear infinite",
+        "float-dust": "float-dust 6s ease-in-out infinite",
+        "glow-breathe": "glow-breathe 4s ease-in-out infinite",
       },
     },
   },

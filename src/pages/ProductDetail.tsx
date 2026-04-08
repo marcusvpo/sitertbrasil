@@ -32,17 +32,17 @@ const ProductDetail = () => {
 
   if (isLoading) {
     return (
-      <div className="bg-secondary min-h-[60vh] flex items-center justify-center">
-        <div className="text-secondary-foreground/40">Carregando...</div>
+      <div className="min-h-[60vh] flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
       </div>
     );
   }
 
   if (!product) {
     return (
-      <div className="bg-secondary min-h-[60vh] flex items-center justify-center">
+      <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-secondary-foreground/50 text-lg mb-4">Produto não encontrado.</p>
+          <p className="text-muted-foreground text-lg mb-4">Produto não encontrado.</p>
           <Button asChild variant="outline">
             <Link to="/motorex">Voltar à vitrine</Link>
           </Button>
@@ -54,41 +54,46 @@ const ProductDetail = () => {
   const images = product.images?.sort((a, b) => a.sort_order - b.sort_order) || [];
 
   return (
-    <section className="bg-secondary text-secondary-foreground py-6 md:py-10 min-h-[60vh]">
-      <div className="container">
+    <section className="relative py-8 md:py-14 min-h-[60vh] mesh-gradient">
+      <div className="container relative z-10">
         <Button
           asChild
           variant="ghost"
-          className="text-secondary-foreground/60 hover:text-secondary-foreground mb-4"
+          className="text-muted-foreground hover:text-foreground mb-6"
         >
           <Link to="/motorex">
             <ArrowLeft size={18} className="mr-2" /> Voltar à vitrine
           </Link>
         </Button>
 
-        <div className="grid md:grid-cols-2 gap-8 md:gap-10">
-          {/* Gallery */}
+        <div className="grid md:grid-cols-2 gap-10 md:gap-14">
+          {/* ── Gallery ── */}
           <AnimateOnScroll animation="fade-in-left">
             <div>
-              <div className="relative aspect-square glass-card rounded-lg overflow-hidden mb-3">
+              <div className="relative aspect-square rounded-lg overflow-hidden bg-muted/20 border border-foreground/[0.06]">
+                {/* Radial glow behind product image */}
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <div className="w-3/4 h-3/4 rounded-full bg-primary/10 blur-[80px]" />
+                </div>
+
                 {images.length > 0 ? (
                   <>
                     <img
                       src={getProductImageUrl(images[activeImage])}
                       alt={product.name}
-                      className="w-full h-full object-cover"
+                      className="relative z-[1] w-full h-full object-cover"
                     />
                     {images.length > 1 && (
                       <>
                         <button
                           onClick={() => setActiveImage((p) => (p > 0 ? p - 1 : images.length - 1))}
-                          className="absolute left-2 top-1/2 -translate-y-1/2 glass rounded-full p-2 text-secondary-foreground hover:bg-secondary/80 transition-colors"
+                          className="absolute left-3 top-1/2 -translate-y-1/2 z-[2] bg-background/60 backdrop-blur-md rounded-full p-2 text-foreground hover:bg-background/80 transition-colors border border-foreground/10"
                         >
                           <ChevronLeft size={20} />
                         </button>
                         <button
                           onClick={() => setActiveImage((p) => (p < images.length - 1 ? p + 1 : 0))}
-                          className="absolute right-2 top-1/2 -translate-y-1/2 glass rounded-full p-2 text-secondary-foreground hover:bg-secondary/80 transition-colors"
+                          className="absolute right-3 top-1/2 -translate-y-1/2 z-[2] bg-background/60 backdrop-blur-md rounded-full p-2 text-foreground hover:bg-background/80 transition-colors border border-foreground/10"
                         >
                           <ChevronRight size={20} />
                         </button>
@@ -97,21 +102,24 @@ const ProductDetail = () => {
                   </>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
-                    <span className="font-heading text-secondary-foreground/20 text-2xl uppercase">
+                    <span className="font-heading text-muted-foreground text-2xl uppercase">
                       {product.name}
                     </span>
                   </div>
                 )}
               </div>
 
+              {/* Thumbnails */}
               {images.length > 1 && (
-                <div className="flex gap-2 overflow-x-auto pb-1">
+                <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
                   {images.map((img, i) => (
                     <button
                       key={img.id}
                       onClick={() => setActiveImage(i)}
-                      className={`flex-shrink-0 w-16 h-16 rounded overflow-hidden border-2 transition-all duration-300 ${
-                        i === activeImage ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"
+                      className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all duration-300 ${
+                        i === activeImage
+                          ? "border-primary shadow-[0_0_10px_hsl(197_100%_43.7%/0.3)]"
+                          : "border-foreground/10 opacity-50 hover:opacity-100"
                       }`}
                     >
                       <img
@@ -126,55 +134,55 @@ const ProductDetail = () => {
             </div>
           </AnimateOnScroll>
 
-          {/* Info */}
+          {/* ── Product Info ── */}
           <AnimateOnScroll animation="fade-in-right">
             <div>
               {product.category && (
-                <span className="text-primary text-xs font-heading uppercase tracking-wider">
+                <span className="text-primary text-xs font-heading uppercase tracking-[0.2em]">
                   {product.category.name}
                 </span>
               )}
-              <h1 className="font-heading text-[32px] md:text-[42px] uppercase font-bold mt-1 mb-3 leading-[0.95]">
+              <h1 className="font-heading text-[clamp(2rem,5vw,3rem)] font-bold mt-1 mb-4 leading-[0.95]">
                 {product.name}
               </h1>
 
-              <div className="flex items-center gap-3 mb-5">
+              <div className="flex items-center gap-3 mb-6">
                 {product.badge && (
-                  <Badge className="bg-primary/10 text-primary border-0 font-heading uppercase tracking-wider text-xs btn-clip">
+                  <Badge className="bg-primary/10 text-primary border border-primary/20 font-heading uppercase tracking-wider text-xs">
                     {product.badge}
                   </Badge>
                 )}
                 {product.volume && (
-                  <Badge variant="secondary" className="bg-secondary-foreground/10 text-secondary-foreground/60 border-0">
+                  <Badge variant="secondary" className="bg-foreground/5 text-muted-foreground border-0">
                     {product.volume}
                   </Badge>
                 )}
               </div>
 
               {product.short_description && (
-                <p className="text-secondary-foreground/70 mb-4">{product.short_description}</p>
+                <p className="text-foreground/70 mb-4 text-lg leading-relaxed">{product.short_description}</p>
               )}
 
               {product.description && (
-                <div className="prose prose-invert prose-sm max-w-none mb-6">
-                  <p className="text-secondary-foreground/60 whitespace-pre-wrap leading-relaxed">
+                <div className="mb-8">
+                  <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed text-sm">
                     {product.description}
                   </p>
                 </div>
               )}
 
-              {/* Price & Actions */}
-              <div className="liquid-glass rounded-lg p-5 space-y-4">
+              {/* ── Price & Actions ── */}
+              <div className="gradient-border rounded-lg p-6 space-y-5">
                 <div className="flex items-baseline gap-3">
                   {product.price ? (
-                    <span className="font-heading text-3xl text-primary font-bold">
+                    <span className="font-heading text-3xl text-primary font-bold" style={{ textShadow: "0 0 30px hsl(197 100% 43.7% / 0.3)" }}>
                       R$ {Number(product.price).toFixed(2)}
                     </span>
                   ) : (
-                    <span className="text-secondary-foreground/40 text-sm">Consulte preço</span>
+                    <span className="text-muted-foreground text-sm">Consulte preço</span>
                   )}
                   {product.compare_price && (
-                    <span className="text-secondary-foreground/30 text-lg line-through">
+                    <span className="text-muted-foreground/50 text-lg line-through">
                       R$ {Number(product.compare_price).toFixed(2)}
                     </span>
                   )}
@@ -183,24 +191,24 @@ const ProductDetail = () => {
                 <div className="flex flex-col sm:flex-row gap-3">
                   {product.price ? (
                     <>
-                      <div className="flex items-center border border-secondary-foreground/20 rounded-md overflow-hidden h-11">
+                      <div className="flex items-center border border-foreground/10 rounded-md overflow-hidden h-11">
                         <button
                           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-                          className="px-3 h-full text-secondary-foreground/60 hover:bg-secondary-foreground/10 transition-colors"
+                          className="px-3 h-full text-muted-foreground hover:bg-foreground/5 transition-colors"
                         >
                           <Minus size={16} />
                         </button>
-                        <span className="px-4 font-heading text-secondary-foreground">{quantity}</span>
+                        <span className="px-4 font-heading text-foreground">{quantity}</span>
                         <button
                           onClick={() => setQuantity((q) => q + 1)}
-                          className="px-3 h-full text-secondary-foreground/60 hover:bg-secondary-foreground/10 transition-colors"
+                          className="px-3 h-full text-muted-foreground hover:bg-foreground/5 transition-colors"
                         >
                           <Plus size={16} />
                         </button>
                       </div>
                       <Button
                         size="lg"
-                        className="font-heading uppercase tracking-wider flex-1 hover-glow"
+                        className="font-heading uppercase tracking-wider flex-1 border-beam hover-glow"
                         onClick={() => {
                           addToCart(product, quantity);
                           setQuantity(1);
@@ -218,7 +226,7 @@ const ProductDetail = () => {
                   )}
                 </div>
 
-                <Button asChild variant="outline" className="w-full font-heading uppercase tracking-wider border-primary/40 text-primary hover:bg-primary/10">
+                <Button asChild variant="outline" className="w-full font-heading uppercase tracking-wider border-primary/20 text-primary hover:bg-primary/10">
                   <Link to="/seja-revendedor">Seja Revendedor</Link>
                 </Button>
               </div>
