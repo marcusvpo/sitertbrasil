@@ -14,10 +14,11 @@ interface YampiProduct {
   slug: string;
   url: string;
   is_active: boolean;
-  texts?: { description?: string; short_description?: string };
+  texts?: { description?: string; short_description?: string } | { data?: { description?: string; short_description?: string } };
   skus?: { data: Array<{ price_sale: number; price_discount: number; sku: string }> };
-  images?: { data: Array<{ id: number; url: string; order: number }> };
+  images?: { data: Array<{ id: number; url?: string; image_url?: string; src?: string; order: number }> } | Array<{ id: number; url?: string; image_url?: string; src?: string; order: number }>;
   categories?: { data: Array<{ id: number; name: string; slug: string }> };
+  image_url?: string;
 }
 
 Deno.serve(async (req) => {
