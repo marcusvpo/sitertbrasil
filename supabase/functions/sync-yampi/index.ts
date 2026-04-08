@@ -174,24 +174,36 @@ Deno.serve(async (req) => {
       }
 
       // Sync images
-      if (yp.images?.data?.length) {
+      const imgData = yp.images?.data;
+      console.log(`Product ${yp.name} (yampi_id=${yp.id}): ${imgData?.length ?? 0} images found`);
+
+      if (imgData && imgData.length > 0) {
         // Remove old yampi images for this product
-        await adminClient
+        const { error: delError } = await adminClient
           .from("product_images")
           .delete()
           .eq("product_id", productId)
           .not("yampi_id", "is", null);
 
+        if (delError) {
+          console.error(`Delete images error for ${yp.name}:`, delError);
+        }
+
         // Insert new images
-        const imageRows = yp.images.data.map((img, idx) => ({
+        const imageRows = imgData.map((img: any, idx: number) => ({
           product_id: productId,
           yampi_id: img.id,
-          external_url: img.url,
+          external_url: img.url || img.image_url || img.src || null,
           storage_path: null,
           sort_order: img.order ?? idx,
         }));
 
-        await adminClient.from("product_images").insert(imageRows);
+        console.log(`Inserting images for ${yp.name}:`, JSON.stringify(imageRows[0]));
+
+        const { error: imgError } = await adminClient.from("product_images").insert(imageRows);
+        if (imgError) {
+          console.error(`Insert images error for ${yp.name}:`, imgError);
+        }
       }
     }
 
