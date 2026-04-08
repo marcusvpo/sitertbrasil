@@ -6,14 +6,11 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 const timeline = [
   { year: "1917", text: "Fundação da MOTOREX na Suíça — mais de um século de inovação.", icon: Calendar },
-  { year: "1960", text: "Primeiros contratos com equipes de competição internacionais.", icon: Trophy },
+  { year: "1960", text: "Primeiros contratos com equipes de competição internacionais.", icon: Award },
   { year: "2000", text: "Expansão global — presente em mais de 60 países.", icon: Globe },
   { year: "2018", text: "RT Brasil inicia distribuição oficial no mercado brasileiro.", icon: Award },
   { year: "2024", text: "Rede de revendedores em expansão por todo o território nacional.", icon: Users },
 ];
-
-/* Placeholder for Trophy since it's not in the import */
-const Trophy = Award;
 
 const stats = [
   { value: "100+", label: "Anos de história", icon: Calendar },
