@@ -1,0 +1,2 @@
+[functions.sync-yampi]
+verify_jwt = false
