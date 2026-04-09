@@ -26,6 +26,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminProductForm from "./pages/admin/AdminProductForm";
 import AdminCategories from "./pages/admin/AdminCategories";
+import AdminVitrine from "./pages/admin/AdminVitrine";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -64,6 +65,7 @@ const App = () => (
               <Route path="/admin" element={<AdminProducts />} />
               <Route path="/admin/products/new" element={<AdminProductForm />} />
               <Route path="/admin/products/:id" element={<AdminProductForm />} />
+              <Route path="/admin/vitrine" element={<AdminVitrine />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
             </Route>
 

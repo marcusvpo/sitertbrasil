@@ -1,11 +1,12 @@
 import { Navigate, Outlet, Link, useLocation } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Package, Grid3X3, LogOut, Home, ImageIcon } from "lucide-react";
+import { Package, Grid3X3, LogOut, Home, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 const sidebarItems = [
   { label: "Produtos", to: "/admin", icon: Package },
+  { label: "Vitrine", to: "/admin/vitrine", icon: Star },
   { label: "Categorias", to: "/admin/categories", icon: Grid3X3 },
 ];
 
