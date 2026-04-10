@@ -63,6 +63,8 @@ const Header = () => {
         >
           {/* Logo */}
           <Link to="/" className="flex-shrink-0 transition-transform duration-300 hover:scale-105 mr-1">
+            <picture>
+            <source srcSet="/images/logo-motorex.webp" type="image/webp" />
             <img
               src="/images/logo-motorex.png"
               alt="MOTOREX"
@@ -71,6 +73,7 @@ const Header = () => {
               fetchPriority="high"
               className={cn("w-auto transition-all duration-500", scrolled ? "h-6" : "h-8")}
             />
+            </picture>
           </Link>
 
           {/* Desktop nav with animated pill */}

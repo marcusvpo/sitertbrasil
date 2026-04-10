@@ -60,15 +60,18 @@ const Index = () => {
       <section className="relative min-h-screen flex items-end overflow-hidden">
         {/* Background image with parallax feel */}
         <div className="absolute inset-0">
-          <img
-            src="/images/hero-motocross.jpg"
-            alt="Motocross em ação"
-            width={1920}
-            height={1080}
-            fetchPriority="high"
-            className="absolute inset-0 w-full h-full object-cover"
-            style={{ objectPosition: "center 30%" }}
-          />
+          <picture>
+            <source srcSet="/images/hero-motocross.webp" type="image/webp" />
+            <img
+              src="/images/hero-motocross.jpg"
+              alt="Motocross em ação"
+              width={1920}
+              height={1080}
+              fetchPriority="high"
+              className="absolute inset-0 w-full h-full object-cover"
+              style={{ objectPosition: "center 30%" }}
+            />
+          </picture>
           {/* Heavy gradient mask */}
           <div className="absolute inset-0 bg-gradient-to-t from-background via-background/70 to-transparent" />
           <div className="absolute inset-0 bg-gradient-to-r from-background/50 to-transparent" />
@@ -243,7 +246,10 @@ const Index = () => {
               <div className="flex justify-center">
                 <div className="relative">
                   <div className="absolute inset-0 bg-primary/10 rounded-full blur-[80px]" />
-                  <img src="/images/logo-motorex.png" alt="MOTOREX" loading="lazy" width={280} height={100} className="relative max-w-[280px] w-full opacity-90 hover:opacity-100 transition-opacity duration-500" />
+                  <picture>
+                    <source srcSet="/images/logo-motorex.webp" type="image/webp" />
+                    <img src="/images/logo-motorex.png" alt="MOTOREX" loading="lazy" width={280} height={100} className="relative max-w-[280px] w-full opacity-90 hover:opacity-100 transition-opacity duration-500" />
+                  </picture>
                 </div>
               </div>
             </AnimateOnScroll>
@@ -253,7 +259,10 @@ const Index = () => {
 
       {/* ── Banners (Revendedor + Indique) ── */}
       <section className="relative w-full overflow-hidden">
-        <img src="/images/banner-revendedor.jpg" alt="Seja um Revendedor MOTOREX" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
+        <picture>
+          <source srcSet="/images/banner-revendedor.webp" type="image/webp" />
+          <img src="/images/banner-revendedor.jpg" alt="Seja um Revendedor MOTOREX" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="absolute bottom-0 left-0 p-6 md:p-10">
           <Button asChild className="font-heading uppercase tracking-wider border-beam hover-glow">
@@ -263,7 +272,10 @@ const Index = () => {
       </section>
 
       <section className="relative w-full overflow-hidden">
-        <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
+        <picture>
+          <source srcSet="/images/banner-indique.webp" type="image/webp" />
+          <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
+        </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="absolute bottom-0 left-0 p-6 md:p-10">
           <Button asChild className="font-heading uppercase tracking-wider border-beam hover-glow">
