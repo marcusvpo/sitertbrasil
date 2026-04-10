@@ -165,7 +165,7 @@ const ProductDetail = () => {
 
               {product.description && (
                 <div
-                  className="mb-8 prose prose-sm prose-invert max-w-none text-muted-foreground leading-relaxed"
+                  className="mb-8 prose prose-sm prose-invert max-w-none text-muted-foreground leading-relaxed [&_*]:!text-muted-foreground"
                   dangerouslySetInnerHTML={{ __html: product.description }}
                 />
               )}
