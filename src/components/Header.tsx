@@ -73,6 +73,7 @@ const Header = () => {
               fetchPriority="high"
               className={cn("w-auto transition-all duration-500", scrolled ? "h-6" : "h-8")}
             />
+            </picture>
           </Link>
 
           {/* Desktop nav with animated pill */}
