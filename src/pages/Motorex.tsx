@@ -86,7 +86,7 @@ const Motorex = () => {
       </section>
 
       {/* ── Filter Bar — Neon pills ── */}
-      <section className="sticky top-12 z-30 border-b border-foreground/[0.06] bg-background/90 backdrop-blur-xl">
+      <section className="md:sticky md:top-12 z-30 border-b border-foreground/[0.06] bg-background/90 backdrop-blur-xl">
         <div className="container py-3">
           <div className="flex flex-col md:flex-row gap-3 md:items-center">
             {/* Search */}
