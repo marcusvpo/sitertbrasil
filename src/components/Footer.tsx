@@ -59,13 +59,13 @@ const Footer = () => {
             </h4>
             <div className="flex flex-col gap-3 text-sm text-muted-foreground">
               <a
-                href="https://wa.me/5500000000000"
+                href="https://wa.me/5516997964255"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 hover:text-primary transition-colors duration-300"
               >
                 <Phone size={14} className="text-primary/60" />
-                WhatsApp
+                (16) 99796-4255
               </a>
               <a
                 href="mailto:contato@rtbrasil.com.br"
@@ -85,7 +85,7 @@ const Footer = () => {
               </a>
               <div className="flex items-start gap-2.5">
                 <MapPin size={14} className="mt-0.5 flex-shrink-0 text-primary/60" />
-                <span>São Paulo, SP - Brasil</span>
+                <span>Av. Alfeu Martini, 790 - Distrito Industrial II, Jaboticabal - SP</span>
               </div>
             </div>
           </div>
