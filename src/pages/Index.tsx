@@ -372,7 +372,7 @@ const Index = () => {
             <div className="rounded-lg overflow-hidden border border-foreground/10">
               <iframe
                 title="Localização RT Brasil"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3716.5!2d-48.3222!3d-21.2547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b8f4!2sAv.+Alfeu+Martini%2C+790+-+Distrito+Industrial+II%2C+Jaboticabal+-+SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1858.2!2d-48.32556!3d-21.25472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b8f5e5a4c5d3e7%3A0x0!2sAv.+Alfeu+Martini%2C+790+-+Distrito+Industrial+II%2C+Jaboticabal+-+SP%2C+14887-208!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
                 width="100%"
                 height="300"
                 style={{ border: 0 }}
