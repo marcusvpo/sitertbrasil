@@ -1,3 +1,4 @@
+import { lazy, Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,27 +10,35 @@ import CartDrawer from "@/components/CartDrawer";
 import Layout from "./components/Layout";
 import AdminLayout from "./components/AdminLayout";
 import Index from "./pages/Index";
-import Motorex from "./pages/Motorex";
-import ProductDetail from "./pages/ProductDetail";
-import SejaRevendedor from "./pages/SejaRevendedor";
-import QuemSomos from "./pages/QuemSomos";
-import Parceiros from "./pages/Parceiros";
-import HeitorMatos from "./pages/parceiros/HeitorMatos";
-import LorenzoRicken from "./pages/parceiros/LorenzoRicken";
-import RodrigoGaliotto from "./pages/parceiros/RodrigoGaliotto";
-import MarceloGaliotto from "./pages/parceiros/MarceloGaliotto";
-import OtavioOliveira from "./pages/parceiros/OtavioOliveira";
-import IndiqueCidade from "./pages/IndiqueCidade";
-import Depoimentos from "./pages/Depoimentos";
-import CentralAtendimento from "./pages/CentralAtendimento";
-import AdminLogin from "./pages/AdminLogin";
-import AdminProducts from "./pages/admin/AdminProducts";
-import AdminProductForm from "./pages/admin/AdminProductForm";
-import AdminCategories from "./pages/admin/AdminCategories";
-import AdminVitrine from "./pages/admin/AdminVitrine";
-import NotFound from "./pages/NotFound";
+
+// Lazy-loaded routes for code splitting
+const Motorex = lazy(() => import("./pages/Motorex"));
+const ProductDetail = lazy(() => import("./pages/ProductDetail"));
+const SejaRevendedor = lazy(() => import("./pages/SejaRevendedor"));
+const QuemSomos = lazy(() => import("./pages/QuemSomos"));
+const Parceiros = lazy(() => import("./pages/Parceiros"));
+const HeitorMatos = lazy(() => import("./pages/parceiros/HeitorMatos"));
+const LorenzoRicken = lazy(() => import("./pages/parceiros/LorenzoRicken"));
+const RodrigoGaliotto = lazy(() => import("./pages/parceiros/RodrigoGaliotto"));
+const MarceloGaliotto = lazy(() => import("./pages/parceiros/MarceloGaliotto"));
+const OtavioOliveira = lazy(() => import("./pages/parceiros/OtavioOliveira"));
+const IndiqueCidade = lazy(() => import("./pages/IndiqueCidade"));
+const Depoimentos = lazy(() => import("./pages/Depoimentos"));
+const CentralAtendimento = lazy(() => import("./pages/CentralAtendimento"));
+const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
+const AdminProductForm = lazy(() => import("./pages/admin/AdminProductForm"));
+const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
+const AdminVitrine = lazy(() => import("./pages/admin/AdminVitrine"));
+const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
+
+const PageLoader = () => (
+  <div className="min-h-screen flex items-center justify-center">
+    <div className="w-8 h-8 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+  </div>
+);
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -40,6 +49,7 @@ const App = () => (
         <Sonner />
         <BrowserRouter>
           <CartDrawer />
+          <Suspense fallback={<PageLoader />}>
           <Routes>
             {/* Public */}
             <Route element={<Layout />}>
@@ -71,6 +81,7 @@ const App = () => (
 
             <Route path="*" element={<NotFound />} />
           </Routes>
+          </Suspense>
         </BrowserRouter>
       </TooltipProvider>
       </CartProvider>

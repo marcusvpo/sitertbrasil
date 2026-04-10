@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Star, Phone, Mail, Instagram, Shield, Trophy, Zap, DollarSign, Truck, ShoppingCart } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import ScrollAnimation from "@/components/ScrollAnimation";
+import { lazy, Suspense } from "react";
+const ScrollAnimation = lazy(() => import("@/components/ScrollAnimation"));
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import GlareCard from "@/components/GlareCard";
 import { supabase } from "@/integrations/supabase/client";
@@ -62,6 +63,9 @@ const Index = () => {
           <img
             src="/images/hero-motocross.jpg"
             alt="Motocross em ação"
+            width={1920}
+            height={1080}
+            fetchPriority="high"
             className="absolute inset-0 w-full h-full object-cover"
             style={{ objectPosition: "center 30%" }}
           />
@@ -123,7 +127,9 @@ const Index = () => {
       </section>
 
       {/* Scroll Animation */}
-      <ScrollAnimation />
+      <Suspense fallback={<div className="h-screen bg-secondary" />}>
+        <ScrollAnimation />
+      </Suspense>
 
       {/* ── Featured Products — Asymmetric Grid ── */}
       <section className="relative py-16 md:py-24 mesh-gradient">
@@ -237,7 +243,7 @@ const Index = () => {
               <div className="flex justify-center">
                 <div className="relative">
                   <div className="absolute inset-0 bg-primary/10 rounded-full blur-[80px]" />
-                  <img src="/images/logo-motorex.png" alt="MOTOREX" className="relative max-w-[280px] w-full opacity-90 hover:opacity-100 transition-opacity duration-500" />
+                  <img src="/images/logo-motorex.png" alt="MOTOREX" loading="lazy" width={280} height={100} className="relative max-w-[280px] w-full opacity-90 hover:opacity-100 transition-opacity duration-500" />
                 </div>
               </div>
             </AnimateOnScroll>
@@ -247,7 +253,7 @@ const Index = () => {
 
       {/* ── Banners (Revendedor + Indique) ── */}
       <section className="relative w-full overflow-hidden">
-        <img src="/images/banner-revendedor.jpg" alt="Seja um Revendedor MOTOREX" className="w-full h-auto block" />
+        <img src="/images/banner-revendedor.jpg" alt="Seja um Revendedor MOTOREX" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="absolute bottom-0 left-0 p-6 md:p-10">
           <Button asChild className="font-heading uppercase tracking-wider border-beam hover-glow">
@@ -257,7 +263,7 @@ const Index = () => {
       </section>
 
       <section className="relative w-full overflow-hidden">
-        <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" className="w-full h-auto block" />
+        <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="absolute bottom-0 left-0 p-6 md:p-10">
           <Button asChild className="font-heading uppercase tracking-wider border-beam hover-glow">

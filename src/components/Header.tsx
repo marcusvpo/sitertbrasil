@@ -66,6 +66,9 @@ const Header = () => {
             <img
               src="/images/logo-motorex.png"
               alt="MOTOREX"
+              width={120}
+              height={32}
+              fetchPriority="high"
               className={cn("w-auto transition-all duration-500", scrolled ? "h-6" : "h-8")}
             />
           </Link>
