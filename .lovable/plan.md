@@ -1,167 +1,85 @@
 
 
-# Overhaul Visual Ultra-Premium — RT Brasil
+## Performance Optimization Plan — Mobile Focus
 
-Refatoração completa da camada visual do site RT Brasil para estética dark premium Awwwards-level, mantendo toda lógica de negócio intacta. Páginas de Parceiros não serão tocadas.
+### Problem Summary
 
----
+The site scores **62/100** on mobile performance. The biggest issues are:
 
-## Escopo: 10 arquivos em 6 etapas
+1. **ScrollAnimation loads 81 PNG frames (~77MB total)** on every page load — this is the #1 bottleneck
+2. **No image optimization** — banners/hero served as full-size JPG/PNG without modern formats, srcset, or sizing
+3. **LCP element (logo)** missing `fetchpriority="high"` and explicit dimensions
+4. **Render-blocking resources** — Google Fonts loaded synchronously
+5. **No code splitting** — all pages imported eagerly in App.tsx
+6. **No preconnect hints** for Supabase/Google Fonts origins
 
----
+### Plan
 
-## ETAPA 1 — CSS Global + Tailwind Config
+#### 1. Lazy-load ScrollAnimation (biggest win ~62MB saved)
 
-**`src/index.css`**
-- Substituir glassmorphism genérico por sistema dark premium com `bg-[#0a0a0a]`
-- Adicionar utilitários CSS puros:
-  - `.mesh-gradient` — fundo com radial-gradients sobrepostos ultra-desfocados (ciano + roxo) para volume
-  - `.border-beam` — animação de gradiente cônico girando na borda dos botões via `@property` + `conic-gradient`
-  - `.card-glare` — pseudo-elemento que segue variáveis CSS `--mx`/`--my` para brilho radial mouse-tracking
-  - `.neon-focus` — `box-shadow` difuso em inputs no `:focus-within` (brilho ciano vazando)
-  - `.gradient-border` — borda com gradiente usando `mask-composite` para cards de valores
-  - `.aurora-bg` — mesh gradient animado com keyframes de posição
-  - Partículas CSS (poeira flutuante) via pseudo-elementos animados
-- Ajustar `.glass` e `.glass-card` para tons mais escuros (opacidade reduzida, bordas mais sutis)
-- Remover `grain-overlay` excessivo
+The scroll animation loads 81 PNGs (~1MB each) immediately on mount. On mobile, this component should be lazy-loaded AND the frames should only start loading when the component enters the viewport.
 
-**`tailwind.config.ts`**
-- Adicionar keyframes: `border-beam` (rotação 360deg do gradiente cônico), `float-dust` (translate aleatório + fade), `glow-breathe` (pulsação de box-shadow suave)
-- Adicionar animações correspondentes
-- Manter todas as existentes intactas
+- Convert `ScrollAnimation` import in `Index.tsx` to `React.lazy()` with `Suspense`
+- Inside `ScrollAnimation.tsx`, use `IntersectionObserver` to only begin loading frames when the container is near the viewport
+- On mobile (`window.innerWidth < 768`), reduce frames to ~20 (every 4th frame) to cut download by 75%
 
----
+#### 2. Optimize images in Index.tsx
 
-## ETAPA 2 — Header como Dynamic Island
+- Add `fetchpriority="high"` to the hero image (`hero-motocross.jpg`)
+- Add explicit `width` and `height` attributes to all `<img>` tags (hero, banners, logos) to prevent CLS
+- Convert banner images to use `<picture>` with WebP source and JPG fallback (requires WebP versions in `/public/images/`)
+- Add `loading="lazy"` to below-the-fold images (banners, institutional logo)
 
-**`src/components/Header.tsx`**
-- Refatorar para "Floating Dynamic Island":
-  - Container fixo centralizado com `max-w-fit`, `rounded-full`, fundo `bg-[#0a0a0a]/80 backdrop-blur-2xl`, borda `border border-white/[0.06]`
-  - No scroll: diminui padding levemente via transição
-  - Item ativo: "pílula" de fundo animada com `layoutId` simulado via CSS (pseudo-elemento com `transition: left, width` baseado no índice ativo calculado com refs)
-  - Links com hover que revela underline sutil animado
-  - Logo à esquerda, nav pills no centro, CTA "Central de Atendimento" à direita com `border-beam`
-- Mobile: overlay fullscreen dark com links centralizados e entrada stagger
+#### 3. Fix LCP — Header logo
 
----
+The LCP element is the header logo. Changes to `Header.tsx`:
+- Add `fetchpriority="high"` to the logo `<img>`
+- Add explicit `width` and `height` attributes
+- Add a `<link rel="preload">` in `index.html` for `/images/logo-motorex.png`
 
-## ETAPA 3 — Home (`Index.tsx`)
+#### 4. Eliminate render-blocking Google Fonts
 
-**Hero Section** (substituir seções de título + ScrollAnimation):
-- `min-h-screen` com imagem `hero-motocross.jpg` em `position: fixed` para parallax nativo
-- Máscara pesada: `bg-gradient-to-t from-[#0a0a0a] via-[#0a0a0a]/60 to-transparent`
-- Tipografia gigante (clamp 80-140px) com `mix-blend-mode: difference` ou sobre a máscara
-- Partículas de poeira CSS flutuando (6-8 divs absolutas com `animation: float-dust`)
-- Manter `ScrollAnimation` como seção independente abaixo
+In `index.html`, change the Google Fonts `<link>` to use `media="print" onload="this.media='all'"` pattern, or switch to `font-display: optional` via a preconnect + async load approach:
+- Add `<link rel="preconnect" href="https://fonts.googleapis.com">` and `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>` to `<head>`
+- Load fonts asynchronously using the `media="print"` swap trick
 
-**Seção Vitrine** (Featured Products):
-- Layout assimétrico: primeiro produto em `col-span-2 row-span-2` (destaque grande), demais em grid normal
-- Cada card com efeito `.card-glare` (mouse tracking via `onMouseMove` setando `--mx`/`--my`)
-- Imagem com parallax no hover: `group-hover:scale-110` + overlay escuro `group-hover:bg-black/20`
-- Fundo com `.mesh-gradient` sutil atrás da seção
+#### 5. Add preconnect hints
 
-**Marquee de Depoimentos**:
-- Aplicar `transform: rotate(-2deg)` no container do marquee para efeito dinâmico de pista
-- Cards com `.gradient-border`
+In `index.html`, add:
+- `<link rel="preconnect" href="https://rxafivyrobvcsfglovsz.supabase.co">`
+- `<link rel="preconnect" href="https://cdn.gpteng.co">`
 
-**Banners (Revendedor, Indique)**:
-- Adicionar mesh gradient overlay em vez de gradient simples
-- CTAs com `border-beam`
+#### 6. Lazy-load routes (code splitting)
 
-**Contato Rápido**:
-- Fundo `bg-[#0a0a0a]` com `.mesh-gradient`, cards de contato com `.gradient-border`
+In `App.tsx`, convert non-critical page imports to `React.lazy()`:
+- Keep `Index` as eager (homepage)
+- Lazy-load: `Motorex`, `ProductDetail`, `SejaRevendedor`, `QuemSomos`, `Parceiros`, all partner pages, `IndiqueCidade`, `Depoimentos`, `CentralAtendimento`, admin pages
 
----
+This reduces the initial JS bundle significantly (est. savings ~137 KiB).
 
-## ETAPA 4 — Motorex (Catálogo)
+#### 7. Preload hero image
 
-**`src/pages/Motorex.tsx`**
-- Barra de filtros: pílulas com estilo neon quando ativas (`bg-primary/10 border border-primary text-primary shadow-[0_0_12px_hsl(197_100%_43.7%/0.3)]`), inativas com `bg-white/5 border-white/10`
-- Product cards: adicionar `onMouseMove`/`onMouseLeave` para `.card-glare` (brilho que segue o mouse)
-- Skeleton loading: shimmer cintilante via `background: linear-gradient(-90deg, ...)` animado com `@keyframes shimmer`
-- Grid mantém 2/3/4 colunas mas com gap maior e fundo `bg-[#0a0a0a]`
+In `index.html`, add:
+```html
+<link rel="preload" as="image" href="/images/hero-motocross.jpg">
+<link rel="preload" as="image" href="/images/logo-motorex.png">
+```
 
----
+### Files to modify
 
-## ETAPA 5 — Quem Somos
+| File | Changes |
+|---|---|
+| `index.html` | Preconnect hints, preload hero/logo, async Google Fonts |
+| `src/App.tsx` | Lazy imports for all routes except Index |
+| `src/pages/Index.tsx` | Lazy-load ScrollAnimation, add fetchpriority/width/height/loading to images |
+| `src/components/ScrollAnimation.tsx` | IntersectionObserver gate, reduced frames on mobile |
+| `src/components/Header.tsx` | Add fetchpriority="high" and dimensions to logo |
 
-**`src/pages/QuemSomos.tsx`**
-- Timeline como Sticky Scroll: layout `grid grid-cols-1 md:grid-cols-2`
-  - Coluna esquerda: `sticky top-20` com ano gigante + ícone, muda conforme scroll (via Intersection Observer nos itens da direita)
-  - Coluna direita: itens normais com espaçamento grande (`py-32`) para dar espaço de scroll
-- Grid de Valores: cada card com `.gradient-border` (borda gradiente iluminada via mask-composite)
-- Stats: números com glow sutil atrás (`text-shadow`)
-- Fundo geral `bg-[#0a0a0a]` com `.mesh-gradient`
+### Expected Impact
 
----
-
-## ETAPA 6 — Páginas de Formulário (Revendedor, Indique, Atendimento, Depoimentos)
-
-**`SejaRevendedor.tsx`, `IndiqueCidade.tsx`, `CentralAtendimento.tsx`**:
-- Headers com `.mesh-gradient` escuro
-- Formulários em card com fundo `bg-white/[0.03]`, borda `border-white/[0.08]`
-- Inputs com `.neon-focus`: no `focus-within`, brilho ciano difuso (`box-shadow: 0 0 20px hsl(197 100% 43.7% / 0.15)`)
-- Botão submit com `border-beam`
-- Cards de contato (CentralAtendimento) com `.gradient-border`
-
-**`Depoimentos.tsx`**:
-- Marquee com `transform: rotate(-2deg)` igual à Home
-- Cards com `.gradient-border`
-- CTA final com `.mesh-gradient` no fundo
-
-**`ProductDetail.tsx`**:
-- Glow radial atrás da imagem principal (`absolute, radial-gradient ciano, blur-3xl, opacity-20`)
-- Gallery com fundo `bg-[#0a0a0a]`, thumbnails com borda neon quando ativas
-- Price box com `.gradient-border`
-- Botão "Adicionar ao Carrinho" com `border-beam`
-
-**`Footer.tsx`**:
-- Fundo `bg-[#050505]`, borda top super sutil
-- Links com hover underline animado
-
----
-
-## Componentes auxiliares a criar
-
-1. **`src/components/GlareCard.tsx`** — Wrapper que aplica mouse tracking glare via `onMouseMove`, exporta para uso em Motorex e Index
-2. **`src/components/BorderBeamButton.tsx`** — Wrapper do Button com animação de borda giratória (ou integrado via classe CSS `.border-beam` no `index.css`)
-
----
-
-## Arquivos modificados/criados
-
-| Arquivo | Ação |
-|---------|------|
-| `src/index.css` | Reescrever utilidades visuais |
-| `tailwind.config.ts` | Adicionar keyframes/animações |
-| `src/components/Header.tsx` | Reescrever JSX (Dynamic Island) |
-| `src/pages/Index.tsx` | Reescrever JSX (Hero imersivo + vitrine assimétrica) |
-| `src/pages/Motorex.tsx` | Reescrever JSX (filtros neon + glare cards + shimmer) |
-| `src/pages/QuemSomos.tsx` | Reescrever JSX (sticky scroll timeline) |
-| `src/pages/SejaRevendedor.tsx` | Reescrever JSX (formulário premium) |
-| `src/pages/IndiqueCidade.tsx` | Reescrever JSX (formulário premium) |
-| `src/pages/CentralAtendimento.tsx` | Reescrever JSX (formulário + cards premium) |
-| `src/pages/Depoimentos.tsx` | Reescrever JSX (marquee inclinado + gradient borders) |
-| `src/pages/ProductDetail.tsx` | Reescrever JSX (glow + gallery premium) |
-| `src/components/Footer.tsx` | Reescrever JSX (dark premium) |
-
----
-
-## O que NÃO será alterado
-
-- `src/pages/Parceiros.tsx` e todo `/parceiros/*`
-- Toda lógica de negócio: hooks, queries, CartContext, Supabase, react-query
-- Componentes UI base do shadcn (button, input, etc.) — apenas classes aplicadas nos consumidores
-- Rotas do App.tsx
-- Admin pages
-- ScrollAnimation.tsx (mantido como seção na Home)
-
----
-
-## Execução
-
-Devido ao volume de código, a implementação será feita em 3 blocos:
-1. **Bloco A**: CSS + Tailwind + Header + Footer (infraestrutura visual)
-2. **Bloco B**: Index + Motorex + ProductDetail (páginas de produto)
-3. **Bloco C**: QuemSomos + SejaRevendedor + IndiqueCidade + CentralAtendimento + Depoimentos
+- **FCP**: ~3.9s → ~1.5s (async fonts + preloads)
+- **LCP**: ~7.9s → ~2.5s (preloaded logo, no render blocking)
+- **TTI**: ~7.9s → ~3s (code splitting + deferred animation)
+- **Total payload**: ~77MB → ~1MB on initial load (deferred animation frames)
+- **Performance score**: 62 → estimated 85-95
 
