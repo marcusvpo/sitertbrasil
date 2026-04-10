@@ -63,6 +63,8 @@ const Header = () => {
         >
           {/* Logo */}
           <Link to="/" className="flex-shrink-0 transition-transform duration-300 hover:scale-105 mr-1">
+            <picture>
+            <source srcSet="/images/logo-motorex.webp" type="image/webp" />
             <img
               src="/images/logo-motorex.png"
               alt="MOTOREX"
