@@ -4,6 +4,12 @@ const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
 const BUCKET = "animation";
 const TOTAL_FRAMES = 81;
 
+const IS_MOBILE = typeof window !== "undefined" && window.innerWidth < 768;
+const FRAME_STEP = IS_MOBILE ? 4 : 1;
+const ACTIVE_FRAMES = IS_MOBILE
+  ? Array.from({ length: Math.ceil(TOTAL_FRAMES / FRAME_STEP) }, (_, i) => i * FRAME_STEP + 1)
+  : Array.from({ length: TOTAL_FRAMES }, (_, i) => i + 1);
+
 const getFrameUrl = (index: number) => {
   const num = String(index).padStart(3, "0");
   return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/ezgif-frame-${num}.png`;
@@ -16,14 +22,37 @@ const ScrollAnimation = () => {
   const [loadedCount, setLoadedCount] = useState(0);
   const currentFrameRef = useRef(0);
   const rafRef = useRef<number>();
+  const [isVisible, setIsVisible] = useState(false);
 
+  // Only start loading when near viewport
   useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, []);
+
+  // Load frames only when visible
+  useEffect(() => {
+    if (!isVisible) return;
+
     const images: HTMLImageElement[] = [];
     let loaded = 0;
 
-    for (let i = 1; i <= TOTAL_FRAMES; i++) {
+    for (const frameNum of ACTIVE_FRAMES) {
       const img = new Image();
-      img.src = getFrameUrl(i);
+      img.src = getFrameUrl(frameNum);
       img.onload = () => {
         loaded++;
         setLoadedCount(loaded);
@@ -32,7 +61,7 @@ const ScrollAnimation = () => {
     }
 
     imagesRef.current = images;
-  }, []);
+  }, [isVisible]);
 
   const drawFrame = useCallback((frameIndex: number) => {
     const canvas = canvasRef.current;
@@ -67,6 +96,8 @@ const ScrollAnimation = () => {
     ctx.drawImage(img, drawX, drawY, drawW, drawH);
   }, []);
 
+  const totalActive = ACTIVE_FRAMES.length;
+
   useEffect(() => {
     const handleScroll = () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -79,8 +110,8 @@ const ScrollAnimation = () => {
         const scrollableHeight = container.offsetHeight - window.innerHeight;
         const scrollProgress = Math.max(0, Math.min(1, -rect.top / scrollableHeight));
         const frameIndex = Math.min(
-          TOTAL_FRAMES - 1,
-          Math.floor(scrollProgress * TOTAL_FRAMES)
+          totalActive - 1,
+          Math.floor(scrollProgress * totalActive)
         );
 
         if (frameIndex !== currentFrameRef.current) {
@@ -99,15 +130,15 @@ const ScrollAnimation = () => {
       window.removeEventListener("scroll", handleScroll);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
-  }, [loadedCount, drawFrame]);
+  }, [loadedCount, drawFrame, totalActive]);
 
-  const progress = Math.round((loadedCount / TOTAL_FRAMES) * 100);
+  const progress = Math.round((loadedCount / totalActive) * 100);
 
   return (
     <div
       ref={containerRef}
       className="relative bg-secondary"
-      style={{ height: `${TOTAL_FRAMES * 2.5}vh` }}
+      style={{ height: `${totalActive * (IS_MOBILE ? 8 : 2.5)}vh` }}
     >
       <div className="sticky top-16 md:top-20 w-full overflow-hidden" style={{ height: "calc(100vh - 5rem)" }}>
         <div className="container h-full py-4">
@@ -117,8 +148,7 @@ const ScrollAnimation = () => {
               className="w-full h-full"
               style={{ display: loadedCount > 0 ? "block" : "none" }}
             />
-            {/* Loading */}
-            {loadedCount < TOTAL_FRAMES && (
+            {loadedCount < totalActive && (
               <div className="absolute inset-0 bg-secondary flex flex-col items-center justify-center z-10">
                 <div className="w-48 h-1 bg-secondary-foreground/20 rounded-full overflow-hidden">
                   <div
