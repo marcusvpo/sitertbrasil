@@ -5,7 +5,7 @@ const BUCKET = "animation";
 const TOTAL_FRAMES = 81;
 
 const IS_MOBILE = typeof window !== "undefined" && window.innerWidth < 768;
-const FRAME_STEP = IS_MOBILE ? 4 : 1;
+const FRAME_STEP = IS_MOBILE ? 6 : 1;
 const ACTIVE_FRAMES = IS_MOBILE
   ? Array.from({ length: Math.ceil(TOTAL_FRAMES / FRAME_STEP) }, (_, i) => i * FRAME_STEP + 1)
   : Array.from({ length: TOTAL_FRAMES }, (_, i) => i + 1);
