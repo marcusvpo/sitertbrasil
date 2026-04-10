@@ -89,6 +89,7 @@ const Parceiros = () => {
                     <img
                       src={partner.image}
                       alt={partner.name}
+                      loading="lazy"
                       className="w-full h-auto block transition-transform duration-700 group-hover:scale-110"
                     />
                     {/* Gradient overlay */}

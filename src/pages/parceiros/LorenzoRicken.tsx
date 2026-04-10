@@ -171,6 +171,7 @@ const ParallaxSection = ({
       <img
         src={src}
         alt={alt}
+        loading="lazy"
         className="absolute inset-0 w-full h-full object-cover object-center will-change-transform"
         style={{ transform: `translateY(${offset}px)` }}
       />
