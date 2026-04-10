@@ -164,11 +164,10 @@ const ProductDetail = () => {
               )}
 
               {product.description && (
-                <div className="mb-8">
-                  <p className="text-muted-foreground whitespace-pre-wrap leading-relaxed text-sm">
-                    {product.description}
-                  </p>
-                </div>
+                <div
+                  className="mb-8 prose prose-sm prose-invert max-w-none text-muted-foreground leading-relaxed"
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
               )}
 
               {/* ── Price & Actions ── */}
