@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ArrowRight, Star, Phone, Mail, Instagram, Shield, Trophy, Zap, DollarSign, Truck, ShoppingCart } from "lucide-react";
+import { ArrowRight, Star, Phone, Mail, Instagram, Shield, Trophy, Zap, DollarSign, Truck, ShoppingCart, MapPin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { lazy, Suspense } from "react";
 const ScrollAnimation = lazy(() => import("@/components/ScrollAnimation"));
@@ -310,32 +310,65 @@ const Index = () => {
 
       {/* ── Quick Contact ── */}
       <section className="relative py-16 md:py-24 mesh-gradient">
-        <div className="container relative z-10 text-center">
-          <AnimateOnScroll>
+        <div className="container relative z-10">
+          <AnimateOnScroll className="text-center">
             <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Fale Conosco</span>
             <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 mb-8">Contato Rápido</h2>
           </AnimateOnScroll>
           <AnimateOnScroll animation="slide-up" delay={200}>
-            <div className="flex flex-col md:flex-row flex-wrap justify-center gap-6 md:gap-10 mb-8">
-              {[
-                { icon: Phone, label: "WhatsApp", href: "https://wa.me/5500000000000" },
-                { icon: Mail, label: "contato@rtbrasil.com.br", href: "mailto:contato@rtbrasil.com.br" },
-                { icon: Instagram, label: "@rtbrasil", href: "https://instagram.com/rtbrasil" },
-              ].map((c) => (
-                <a
-                  key={c.label}
-                  href={c.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
-                >
-                  <c.icon size={20} className="text-primary" /> {c.label}
-                </a>
-              ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
+              <a
+                href="https://wa.me/5516997964255"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
+              >
+                <Phone size={20} className="text-primary" /> (16) 99796-4255
+              </a>
+              <a
+                href="mailto:contato@rtbrasil.com.br"
+                className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
+              >
+                <Mail size={20} className="text-primary" /> contato@rtbrasil.com.br
+              </a>
+              <a
+                href="https://instagram.com/rtbrasil"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
+              >
+                <Instagram size={20} className="text-primary" /> @rtbrasil
+              </a>
+              <div className="gradient-border rounded-lg px-6 py-4 flex items-start gap-3 text-foreground/80 min-h-[44px]">
+                <MapPin size={20} className="text-primary flex-shrink-0 mt-0.5" />
+                <span className="text-sm">Av. Alfeu Martini, 790 - Distrito Industrial II, Jaboticabal - SP</span>
+              </div>
             </div>
-            <Button asChild size="lg" className="font-heading uppercase tracking-wider border-beam hover-glow">
-              <Link to="/central-atendimento">Central de Atendimento</Link>
-            </Button>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
+              <Button asChild size="lg" className="font-heading uppercase tracking-wider bg-green-600 hover:bg-green-700 text-white">
+                <a href="https://wa.me/5516997964255" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle className="mr-2" size={18} /> Chamar no WhatsApp
+                </a>
+              </Button>
+              <Button asChild size="lg" className="font-heading uppercase tracking-wider border-beam hover-glow">
+                <Link to="/central-atendimento">Central de Atendimento</Link>
+              </Button>
+            </div>
+
+            {/* Google Maps embed */}
+            <div className="rounded-lg overflow-hidden border border-foreground/10">
+              <iframe
+                title="Localização RT Brasil"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3716.5!2d-48.3222!3d-21.2547!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b8f4!2sAv.+Alfeu+Martini%2C+790+-+Distrito+Industrial+II%2C+Jaboticabal+-+SP!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+                width="100%"
+                height="300"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+              />
+            </div>
           </AnimateOnScroll>
         </div>
       </section>
