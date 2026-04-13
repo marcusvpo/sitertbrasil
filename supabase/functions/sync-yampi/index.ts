@@ -14,9 +14,9 @@ interface YampiProduct {
   slug: string;
   url: string;
   is_active: boolean;
-  texts?: { description?: string; short_description?: string } | { data?: { description?: string; short_description?: string } };
+  texts?: any;
   skus?: { data: Array<{ price_sale: number; price_discount: number; sku: string }> };
-  images?: { data: Array<{ id: number; url?: string; image_url?: string; src?: string; order: number }> } | Array<{ id: number; url?: string; image_url?: string; src?: string; order: number }>;
+  images?: any;
   categories?: { data: Array<{ id: number; name: string; slug: string }> };
   image_url?: string;
 }
@@ -40,7 +40,6 @@ Deno.serve(async (req) => {
     const supabaseServiceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!;
     const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY")!;
 
-    // Verify the user is admin
     const userClient = createClient(supabaseUrl, supabaseAnonKey, {
       global: { headers: { Authorization: authHeader } },
     });
@@ -52,7 +51,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Check admin role
     const adminClient = createClient(supabaseUrl, supabaseServiceKey);
     const { data: roleData } = await adminClient
       .from("user_roles")
@@ -68,7 +66,6 @@ Deno.serve(async (req) => {
       });
     }
 
-    // Fetch from Yampi
     const alias = Deno.env.get("YAMPI_ALIAS");
     const token = Deno.env.get("YAMPI_TOKEN");
     const secretKey = Deno.env.get("YAMPI_SECRET_KEY");
@@ -86,13 +83,13 @@ Deno.serve(async (req) => {
       "Content-Type": "application/json",
     };
 
-    // Paginate through all products
+    // ── Step 1: Paginate through all products ──
     let page = 1;
     let allProducts: YampiProduct[] = [];
     let hasMore = true;
 
     while (hasMore) {
-      const url = `${YAMPI_BASE}/${alias}/catalog/products?include=texts,skus,images,categories&limit=100&page=${page}`;
+      const url = `${YAMPI_BASE}/${alias}/catalog/products?include=texts,skus,categories&limit=100&page=${page}`;
       const resp = await fetch(url, { headers: yampiHeaders });
 
       if (!resp.ok) {
@@ -102,17 +99,6 @@ Deno.serve(async (req) => {
 
       const json = await resp.json();
       const products: YampiProduct[] = json.data || [];
-
-      // Log first product structure for debugging
-      if (page === 1 && products.length > 0) {
-        const sample = products[0];
-        console.log("Sample product keys:", Object.keys(sample));
-        console.log("Sample texts:", JSON.stringify(sample.texts));
-        console.log("Sample images type:", typeof sample.images, Array.isArray(sample.images));
-        console.log("Sample images:", JSON.stringify(sample.images)?.substring(0, 500));
-        console.log("Sample image_url:", (sample as any).image_url);
-      }
-
       allProducts = allProducts.concat(products);
 
       const meta = json.meta;
@@ -122,9 +108,10 @@ Deno.serve(async (req) => {
 
     let created = 0;
     let updated = 0;
+    let imagessynced = 0;
 
     for (const yp of allProducts) {
-      // Upsert category
+      // ── Upsert category ──
       let categoryId: string | null = null;
       const cat = yp.categories?.data?.[0];
       if (cat) {
@@ -139,9 +126,8 @@ Deno.serve(async (req) => {
         categoryId = catData?.id || null;
       }
 
-      // Map product
+      // ── Map product data ──
       const sku = yp.skus?.data?.[0];
-      // Extract texts - handle both {description} and {data: {description}} formats
       const textsObj = yp.texts as any;
       const description = textsObj?.description || textsObj?.data?.description || null;
       const shortDescription = textsObj?.short_description || textsObj?.data?.short_description || null;
@@ -190,53 +176,70 @@ Deno.serve(async (req) => {
         created++;
       }
 
-      // Sync images - handle both {data: [...]} and direct array formats
-      const imagesRaw = yp.images as any;
-      const imgData: any[] = Array.isArray(imagesRaw) ? imagesRaw : (imagesRaw?.data || []);
-      
-      // Also check for top-level image_url as fallback (like link_foto_principal in exports)
-      const fallbackImageUrl = (yp as any).image_url || (yp as any).thumb || null;
-
-      console.log(`Product ${yp.name}: ${imgData.length} images from API, fallback=${fallbackImageUrl ? 'yes' : 'no'}`);
-
-      // Remove old yampi images for this product
-      const { error: delError } = await adminClient
-        .from("product_images")
-        .delete()
-        .eq("product_id", productId)
-        .not("yampi_id", "is", null);
-
-      if (delError) {
-        console.error(`Delete images error for ${yp.name}:`, delError);
+      // ── Step 2: Fetch images separately per product via dedicated endpoint ──
+      let yampiImages: any[] = [];
+      try {
+        const imgResp = await fetch(
+          `${YAMPI_BASE}/${alias}/catalog/products/${yp.id}/images?limit=50`,
+          { headers: yampiHeaders }
+        );
+        if (imgResp.ok) {
+          const imgJson = await imgResp.json();
+          yampiImages = imgJson.data || [];
+        } else {
+          console.warn(`Failed to fetch images for product ${yp.id} (${yp.name}): ${imgResp.status}`);
+        }
+      } catch (imgErr) {
+        console.warn(`Error fetching images for product ${yp.id}:`, imgErr);
       }
 
-      if (imgData.length > 0) {
-        const imageRows = imgData.map((img: any, idx: number) => ({
-          product_id: productId,
-          yampi_id: img.id || null,
-          external_url: img.url || img.image_url || img.src || img.thumb || null,
-          storage_path: null,
-          sort_order: img.order ?? img.sort_order ?? idx,
-        }));
+      // Fallback: try images from the product include if dedicated endpoint returned nothing
+      if (yampiImages.length === 0) {
+        const imagesRaw = yp.images as any;
+        yampiImages = Array.isArray(imagesRaw) ? imagesRaw : (imagesRaw?.data || []);
+      }
 
-        console.log(`Inserting images for ${yp.name}:`, JSON.stringify(imageRows[0]));
+      console.log(`Product "${yp.name}" (yampi_id=${yp.id}): ${yampiImages.length} images found`);
 
-        const { error: imgError } = await adminClient.from("product_images").insert(imageRows);
-        if (imgError) {
-          console.error(`Insert images error for ${yp.name}:`, imgError);
-        }
-      } else if (fallbackImageUrl) {
-        // Use fallback image URL if no images array
-        const { error: imgError } = await adminClient.from("product_images").insert({
-          product_id: productId,
-          yampi_id: yp.id,
-          external_url: fallbackImageUrl,
-          storage_path: null,
-          sort_order: 0,
+      // ── Step 3: Upsert images — NEVER delete if we have nothing to replace ──
+      if (yampiImages.length > 0) {
+        const imageRows = yampiImages.map((img: any, idx: number) => {
+          const externalUrl = img.url || img.image_url || img.src || img.thumb || null;
+          return {
+            product_id: productId,
+            yampi_id: img.id || null,
+            external_url: externalUrl,
+            storage_path: null,
+            sort_order: img.order ?? img.sort_order ?? idx,
+          };
         });
-        if (imgError) {
-          console.error(`Insert fallback image error for ${yp.name}:`, imgError);
+
+        // Filter out images without a valid URL
+        const validImages = imageRows.filter((r: any) => r.external_url);
+
+        if (validImages.length > 0) {
+          // Remove old yampi images for this product ONLY when we have replacements
+          await adminClient
+            .from("product_images")
+            .delete()
+            .eq("product_id", productId)
+            .not("yampi_id", "is", null);
+
+          const { error: imgError } = await adminClient
+            .from("product_images")
+            .insert(validImages);
+
+          if (imgError) {
+            console.error(`Insert images error for ${yp.name}:`, imgError);
+          } else {
+            imagessynced += validImages.length;
+          }
+        } else {
+          console.warn(`Product "${yp.name}": all ${yampiImages.length} images had no valid URL, keeping existing images`);
         }
+      } else {
+        // No images from Yampi — keep whatever images exist, do NOT delete
+        console.log(`Product "${yp.name}": no images from Yampi, preserving existing images`);
       }
     }
 
@@ -246,6 +249,7 @@ Deno.serve(async (req) => {
         total: allProducts.length,
         created,
         updated,
+        imagesSync: imagessynced,
       }),
       {
         status: 200,
