@@ -7,10 +7,10 @@ import { Phone, Mail, Instagram, MapPin, CheckCircle, Send } from "lucide-react"
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 const contactCards = [
-  { icon: Phone, label: "WhatsApp", value: "(00) 00000-0000", href: "https://wa.me/5500000000000" },
+  { icon: Phone, label: "WhatsApp", value: "(16) 99796-4255", href: "https://wa.me/5516997964255" },
   { icon: Mail, label: "E-mail", value: "contato@rtbrasil.com.br", href: "mailto:contato@rtbrasil.com.br" },
   { icon: Instagram, label: "Instagram", value: "@rtbrasil", href: "https://instagram.com/rtbrasil" },
-  { icon: MapPin, label: "Endereço", value: "São Paulo, SP - Brasil", href: undefined },
+  { icon: MapPin, label: "Endereço", value: "Av. Alfeu Martini, 790 – Jaboticabal, SP", href: "https://www.google.com/maps?q=-21.250251492402167,-48.35034751806419" },
 ];
 
 const CentralAtendimento = () => {
@@ -105,6 +105,21 @@ const CentralAtendimento = () => {
             </AnimateOnScroll>
           )}
         </div>
+      </section>
+
+      {/* ── Mapa ── */}
+      <section className="border-t border-foreground/[0.04]">
+        <iframe
+          title="Localização RT Brasil"
+          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1000!2d-48.35034751806419!3d-21.250251492402167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjHCsDE1JzAwLjkiUyA0OMKwMjEnMDEuMyJX!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+          width="100%"
+          height="400"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="w-full"
+        />
       </section>
     </>
   );
