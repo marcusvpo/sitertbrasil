@@ -9,12 +9,14 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 import { getProductImageUrl } from "@/lib/image-utils";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const ProductDetail = () => {
   const { slug } = useParams();
   const { addToCart } = useCart();
   const [activeImage, setActiveImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const isMobile = useIsMobile();
 
   const { data: product, isLoading } = useQuery({
     queryKey: ["product-detail", slug],
@@ -66,10 +68,10 @@ const ProductDetail = () => {
           </Link>
         </Button>
 
-        <div className="grid md:grid-cols-2 gap-10 md:gap-14">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14">
           {/* ── Gallery ── */}
-          <AnimateOnScroll animation="fade-in-left">
-            <div>
+          <AnimateOnScroll animation={isMobile ? "fade-up" : "fade-in-left"} className="min-w-0">
+            <div className="min-w-0">
               <div className="relative aspect-square rounded-lg overflow-hidden bg-muted/20 border border-foreground/[0.06]">
                 {/* Radial glow behind product image */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -111,7 +113,7 @@ const ProductDetail = () => {
 
               {/* Thumbnails */}
               {images.length > 1 && (
-                <div className="flex gap-2 mt-3 overflow-x-auto pb-1">
+                <div className="mt-3 flex max-w-full gap-2 overflow-x-auto pb-1">
                   {images.map((img, i) => (
                     <button
                       key={img.id}
@@ -135,18 +137,18 @@ const ProductDetail = () => {
           </AnimateOnScroll>
 
           {/* ── Product Info ── */}
-          <AnimateOnScroll animation="fade-in-right">
-            <div>
+          <AnimateOnScroll animation={isMobile ? "fade-up" : "fade-in-right"} className="min-w-0">
+            <div className="min-w-0">
               {product.category && (
                 <span className="text-primary text-xs font-heading uppercase tracking-[0.2em]">
                   {product.category.name}
                 </span>
               )}
-              <h1 className="font-heading text-[clamp(2rem,5vw,3rem)] font-bold mt-1 mb-4 leading-[0.95]">
+              <h1 className="font-heading text-[clamp(2rem,5vw,3rem)] font-bold mt-1 mb-4 leading-[0.95] break-words">
                 {product.name}
               </h1>
 
-              <div className="flex items-center gap-3 mb-6">
+              <div className="mb-6 flex flex-wrap items-center gap-3">
                 {product.badge && (
                   <Badge className="bg-primary/10 text-primary border border-primary/20 font-heading uppercase tracking-wider text-xs">
                     {product.badge}
@@ -160,19 +162,19 @@ const ProductDetail = () => {
               </div>
 
               {product.short_description && (
-                <p className="text-foreground/70 mb-4 text-lg leading-relaxed">{product.short_description}</p>
+                <p className="text-foreground/70 mb-4 text-lg leading-relaxed break-words">{product.short_description}</p>
               )}
 
               {product.description && (
                 <div
-                  className="mb-8 prose prose-sm prose-invert max-w-none text-muted-foreground leading-relaxed [&_*]:!text-muted-foreground"
+                  className="mb-8 max-w-full overflow-hidden break-words prose prose-sm prose-invert text-muted-foreground leading-relaxed [&_*]:!max-w-full [&_*]:!text-muted-foreground [&_img]:h-auto [&_img]:max-w-full [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_td]:break-words [&_th]:break-words"
                   dangerouslySetInnerHTML={{ __html: product.description }}
                 />
               )}
 
               {/* ── Price & Actions ── */}
-              <div className="gradient-border rounded-lg p-6 space-y-5">
-                <div className="flex items-baseline gap-3">
+              <div className="gradient-border min-w-0 rounded-lg p-4 sm:p-6 space-y-5">
+                <div className="flex flex-wrap items-baseline gap-3">
                   {product.price ? (
                     <span className="font-heading text-3xl text-primary font-bold" style={{ textShadow: "0 0 30px hsl(197 100% 43.7% / 0.3)" }}>
                       R$ {Number(product.price).toFixed(2)}
@@ -187,10 +189,10 @@ const ProductDetail = () => {
                   )}
                 </div>
 
-                <div className="flex flex-col sm:flex-row gap-3">
+                <div className="flex min-w-0 flex-col gap-3 sm:flex-row">
                   {product.price ? (
                     <>
-                      <div className="flex items-center border border-foreground/10 rounded-md overflow-hidden h-11">
+                      <div className="flex max-w-full self-start overflow-hidden rounded-md border border-foreground/10 h-11">
                         <button
                           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
                           className="px-3 h-full text-muted-foreground hover:bg-foreground/5 transition-colors"
@@ -207,7 +209,7 @@ const ProductDetail = () => {
                       </div>
                       <Button
                         size="lg"
-                        className="font-heading uppercase tracking-wider flex-1 border-beam hover-glow"
+                        className="flex w-full whitespace-normal text-center font-heading uppercase tracking-wider border-beam hover-glow sm:flex-1"
                         onClick={() => {
                           addToCart(product, quantity);
                           setQuantity(1);
@@ -217,7 +219,7 @@ const ProductDetail = () => {
                       </Button>
                     </>
                   ) : (
-                    <Button asChild size="lg" className="font-heading uppercase tracking-wider flex-1">
+                    <Button asChild size="lg" className="flex w-full whitespace-normal text-center font-heading uppercase tracking-wider sm:flex-1">
                       <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
                         Consultar via WhatsApp
                       </a>
@@ -225,7 +227,7 @@ const ProductDetail = () => {
                   )}
                 </div>
 
-                <Button asChild variant="outline" className="w-full font-heading uppercase tracking-wider border-primary/20 text-primary hover:bg-primary/10">
+                <Button asChild variant="outline" className="flex w-full whitespace-normal text-center font-heading uppercase tracking-wider border-primary/20 text-primary hover:bg-primary/10">
                   <Link to="/seja-revendedor">Seja Revendedor</Link>
                 </Button>
               </div>
