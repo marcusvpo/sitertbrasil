@@ -1,85 +1,61 @@
 
 
-## Performance Optimization Plan — Mobile Focus
+## Plano: Corrigir sincronização de imagens via API Yampi
 
-### Problem Summary
-
-The site scores **62/100** on mobile performance. The biggest issues are:
-
-1. **ScrollAnimation loads 81 PNG frames (~77MB total)** on every page load — this is the #1 bottleneck
-2. **No image optimization** — banners/hero served as full-size JPG/PNG without modern formats, srcset, or sizing
-3. **LCP element (logo)** missing `fetchpriority="high"` and explicit dimensions
-4. **Render-blocking resources** — Google Fonts loaded synchronously
-5. **No code splitting** — all pages imported eagerly in App.tsx
-6. **No preconnect hints** for Supabase/Google Fonts origins
-
-### Plan
-
-#### 1. Lazy-load ScrollAnimation (biggest win ~62MB saved)
-
-The scroll animation loads 81 PNGs (~1MB each) immediately on mount. On mobile, this component should be lazy-loaded AND the frames should only start loading when the component enters the viewport.
-
-- Convert `ScrollAnimation` import in `Index.tsx` to `React.lazy()` with `Suspense`
-- Inside `ScrollAnimation.tsx`, use `IntersectionObserver` to only begin loading frames when the container is near the viewport
-- On mobile (`window.innerWidth < 768`), reduce frames to ~20 (every 4th frame) to cut download by 75%
-
-#### 2. Optimize images in Index.tsx
-
-- Add `fetchpriority="high"` to the hero image (`hero-motocross.jpg`)
-- Add explicit `width` and `height` attributes to all `<img>` tags (hero, banners, logos) to prevent CLS
-- Convert banner images to use `<picture>` with WebP source and JPG fallback (requires WebP versions in `/public/images/`)
-- Add `loading="lazy"` to below-the-fold images (banners, institutional logo)
-
-#### 3. Fix LCP — Header logo
-
-The LCP element is the header logo. Changes to `Header.tsx`:
-- Add `fetchpriority="high"` to the logo `<img>`
-- Add explicit `width` and `height` attributes
-- Add a `<link rel="preload">` in `index.html` for `/images/logo-motorex.png`
-
-#### 4. Eliminate render-blocking Google Fonts
-
-In `index.html`, change the Google Fonts `<link>` to use `media="print" onload="this.media='all'"` pattern, or switch to `font-display: optional` via a preconnect + async load approach:
-- Add `<link rel="preconnect" href="https://fonts.googleapis.com">` and `<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>` to `<head>`
-- Load fonts asynchronously using the `media="print"` swap trick
-
-#### 5. Add preconnect hints
-
-In `index.html`, add:
-- `<link rel="preconnect" href="https://rxafivyrobvcsfglovsz.supabase.co">`
-- `<link rel="preconnect" href="https://cdn.gpteng.co">`
-
-#### 6. Lazy-load routes (code splitting)
-
-In `App.tsx`, convert non-critical page imports to `React.lazy()`:
-- Keep `Index` as eager (homepage)
-- Lazy-load: `Motorex`, `ProductDetail`, `SejaRevendedor`, `QuemSomos`, `Parceiros`, all partner pages, `IndiqueCidade`, `Depoimentos`, `CentralAtendimento`, admin pages
-
-This reduces the initial JS bundle significantly (est. savings ~137 KiB).
-
-#### 7. Preload hero image
-
-In `index.html`, add:
-```html
-<link rel="preload" as="image" href="/images/hero-motocross.jpg">
-<link rel="preload" as="image" href="/images/logo-motorex.png">
+### Problema Raiz
+A Edge Function está usando o endpoint errado. A API da Yampi organiza imagens por **SKU**, não por produto. O endpoint correto é:
+```
+GET /v2/{alias}/catalog/skus/{skuId}/images
 ```
 
-### Files to modify
+Além disso, a estrutura de resposta da Yampi retorna URLs dentro de objetos aninhados (ex: `small.url`, `thumb.url`), mas o código atual tenta extrair de campos planos (`img.url`, `img.image_url`), resultando em `null` para todas as imagens.
 
-| File | Changes |
-|---|---|
-| `index.html` | Preconnect hints, preload hero/logo, async Google Fonts |
-| `src/App.tsx` | Lazy imports for all routes except Index |
-| `src/pages/Index.tsx` | Lazy-load ScrollAnimation, add fetchpriority/width/height/loading to images |
-| `src/components/ScrollAnimation.tsx` | IntersectionObserver gate, reduced frames on mobile |
-| `src/components/Header.tsx` | Add fetchpriority="high" and dimensions to logo |
+### Exemplo de resposta da Yampi (conforme documentação)
+```text
+{
+  "data": [
+    {
+      "id": 123,
+      "order": 1,
+      "small": { "width": 500, "height": 500, "url": "https://images.yampi.me/..." },
+      "thumb": { ... },
+      "filter_image_url": "https://..."
+    }
+  ]
+}
+```
 
-### Expected Impact
+### Alterações
 
-- **FCP**: ~3.9s → ~1.5s (async fonts + preloads)
-- **LCP**: ~7.9s → ~2.5s (preloaded logo, no render blocking)
-- **TTI**: ~7.9s → ~3s (code splitting + deferred animation)
-- **Total payload**: ~77MB → ~1MB on initial load (deferred animation frames)
-- **Performance score**: 62 → estimated 85-95
+**1. Edge Function `supabase/functions/sync-yampi/index.ts`**
+- Alterar o endpoint de busca de imagens de `/catalog/products/{id}/images` para `/catalog/skus/{skuId}/images`, usando o SKU ID do primeiro SKU de cada produto (já disponível em `yp.skus.data[0]`)
+- Incluir `include=images` na query de listagem de produtos como fallback adicional
+- Corrigir a extração de URL para buscar na estrutura correta: priorizar `img.small.url`, depois `img.thumb.url`, depois `img.filter_image_url`, e por último tentar campos planos como fallback
+- Adicionar log detalhado das URLs extraídas para debug
+
+**2. Frontend — sem alterações necessárias**
+O `getProductImageUrl()` em `src/lib/image-utils.ts` e os componentes já suportam `external_url` corretamente. O problema é exclusivamente que as URLs nunca chegam ao banco de dados.
+
+### Detalhes Técnicos
+
+Mudança principal na extração de URL:
+```text
+// ANTES (não funciona com a estrutura da Yampi):
+img.url || img.image_url || img.src || img.thumb
+
+// DEPOIS (compatível com resposta real):
+img.small?.url || img.thumb?.url || img.filter_image_url || img.url || img.image_url
+```
+
+Mudança no endpoint:
+```text
+// ANTES:
+/v2/{alias}/catalog/products/{productId}/images
+
+// DEPOIS:
+/v2/{alias}/catalog/skus/{skuId}/images
+```
+
+### Pós-deploy
+Após aprovar, será necessário fazer o redeploy da Edge Function via CLI do Supabase e re-executar a sincronização.
 
