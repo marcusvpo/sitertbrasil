@@ -49,7 +49,8 @@ create table public.product_categories (
   name text not null,
   slug text not null unique,
   sort_order int default 0,
-  created_at timestamptz default now()
+  created_at timestamptz default now(),
+  yampi_id bigint unique
 );
 alter table public.product_categories enable row level security;
 
@@ -80,7 +81,12 @@ create table public.products (
   is_active boolean default true,
   sort_order int default 0,
   created_at timestamptz default now(),
-  updated_at timestamptz default now()
+  updated_at timestamptz default now(),
+  yampi_id bigint unique,
+  yampi_slug text,
+  yampi_sku text,
+  yampi_url text,
+  synced_at timestamptz
 );
 alter table public.products enable row level security;
 
@@ -99,7 +105,9 @@ create policy "Admins can manage products"
 create table public.product_images (
   id uuid primary key default gen_random_uuid(),
   product_id uuid references public.products(id) on delete cascade not null,
-  storage_path text not null,
+  storage_path text,
+  external_url text,
+  yampi_id bigint,
   alt_text text,
   sort_order int default 0,
   created_at timestamptz default now()
