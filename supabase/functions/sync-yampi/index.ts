@@ -214,8 +214,12 @@ Deno.serve(async (req) => {
       // ── Step 3: Upsert images — NEVER delete if we have nothing to replace ──
       if (yampiImages.length > 0) {
         const imageRows = yampiImages.map((img: any, idx: number) => {
-          // Yampi returns URLs in nested objects: small.url, thumb.url, etc.
+          // Yampi returns URLs in nested objects — prioritize highest resolution
+          // Available fields: original, large, medium, small, thumb, filter_image_url
           const externalUrl =
+            img.original?.url ||
+            img.large?.url ||
+            img.medium?.url ||
             img.small?.url ||
             img.thumb?.url ||
             img.filter_image_url ||
@@ -223,6 +227,12 @@ Deno.serve(async (req) => {
             img.image_url ||
             img.src ||
             null;
+
+          // Log all available size keys for debugging
+          const availableSizes = ['original', 'large', 'medium', 'small', 'thumb']
+            .filter(k => img[k]?.url)
+            .map(k => `${k}:${img[k].url}`);
+          console.log(`Product "${yp.name}" img ${idx} sizes: [${availableSizes.join(', ')}]`);
 
           if (!externalUrl) {
             console.warn(`Product "${yp.name}" image ${idx}: no URL found in keys [${Object.keys(img).join(', ')}]`);
