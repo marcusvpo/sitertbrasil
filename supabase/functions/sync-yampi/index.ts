@@ -15,7 +15,7 @@ interface YampiProduct {
   url: string;
   is_active: boolean;
   texts?: any;
-  skus?: { data: Array<{ price_sale: number; price_discount: number; sku: string }> };
+  skus?: { data: Array<{ id: number; price_sale: number; price_discount: number; sku: string }> };
   images?: any;
   categories?: { data: Array<{ id: number; name: string; slug: string }> };
   image_url?: string;
@@ -89,7 +89,7 @@ Deno.serve(async (req) => {
     let hasMore = true;
 
     while (hasMore) {
-      const url = `${YAMPI_BASE}/${alias}/catalog/products?include=texts,skus,categories&limit=100&page=${page}`;
+      const url = `${YAMPI_BASE}/${alias}/catalog/products?include=texts,skus,images,categories&limit=100&page=${page}`;
       const resp = await fetch(url, { headers: yampiHeaders });
 
       if (!resp.ok) {
@@ -176,27 +176,37 @@ Deno.serve(async (req) => {
         created++;
       }
 
-      // ── Step 2: Fetch images separately per product via dedicated endpoint ──
+      // ── Step 2: Fetch images via SKU endpoint (Yampi organizes images by SKU) ──
+      const skuData = yp.skus?.data?.[0];
       let yampiImages: any[] = [];
-      try {
-        const imgResp = await fetch(
-          `${YAMPI_BASE}/${alias}/catalog/products/${yp.id}/images?limit=50`,
-          { headers: yampiHeaders }
-        );
-        if (imgResp.ok) {
-          const imgJson = await imgResp.json();
-          yampiImages = imgJson.data || [];
-        } else {
-          console.warn(`Failed to fetch images for product ${yp.id} (${yp.name}): ${imgResp.status}`);
+
+      if (skuData?.id) {
+        try {
+          const imgResp = await fetch(
+            `${YAMPI_BASE}/${alias}/catalog/skus/${skuData.id}/images?limit=50`,
+            { headers: yampiHeaders }
+          );
+          if (imgResp.ok) {
+            const imgJson = await imgResp.json();
+            yampiImages = imgJson.data || [];
+            console.log(`Product "${yp.name}": fetched ${yampiImages.length} images from SKU ${skuData.id}`);
+          } else {
+            console.warn(`Failed to fetch images for SKU ${skuData.id} (product ${yp.name}): ${imgResp.status}`);
+          }
+        } catch (imgErr) {
+          console.warn(`Error fetching images for SKU ${skuData.id}:`, imgErr);
         }
-      } catch (imgErr) {
-        console.warn(`Error fetching images for product ${yp.id}:`, imgErr);
+      } else {
+        console.warn(`Product "${yp.name}" has no SKU data, cannot fetch images`);
       }
 
-      // Fallback: try images from the product include if dedicated endpoint returned nothing
+      // Fallback: try images from the product include if SKU endpoint returned nothing
       if (yampiImages.length === 0) {
         const imagesRaw = yp.images as any;
         yampiImages = Array.isArray(imagesRaw) ? imagesRaw : (imagesRaw?.data || []);
+        if (yampiImages.length > 0) {
+          console.log(`Product "${yp.name}": using ${yampiImages.length} fallback images from product include`);
+        }
       }
 
       console.log(`Product "${yp.name}" (yampi_id=${yp.id}): ${yampiImages.length} images found`);
@@ -204,7 +214,22 @@ Deno.serve(async (req) => {
       // ── Step 3: Upsert images — NEVER delete if we have nothing to replace ──
       if (yampiImages.length > 0) {
         const imageRows = yampiImages.map((img: any, idx: number) => {
-          const externalUrl = img.url || img.image_url || img.src || img.thumb || null;
+          // Yampi returns URLs in nested objects: small.url, thumb.url, etc.
+          const externalUrl =
+            img.small?.url ||
+            img.thumb?.url ||
+            img.filter_image_url ||
+            img.url ||
+            img.image_url ||
+            img.src ||
+            null;
+
+          if (!externalUrl) {
+            console.warn(`Product "${yp.name}" image ${idx}: no URL found in keys [${Object.keys(img).join(', ')}]`);
+          } else {
+            console.log(`Product "${yp.name}" image ${idx}: ${externalUrl}`);
+          }
+
           return {
             product_id: productId,
             yampi_id: img.id || null,
