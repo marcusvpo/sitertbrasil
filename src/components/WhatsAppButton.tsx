@@ -9,9 +9,10 @@ const WhatsAppButton = () => (
     target="_blank"
     rel="noopener noreferrer"
     aria-label="Fale conosco pelo WhatsApp"
-    className="fixed bottom-6 right-6 z-50 flex items-center justify-center w-14 h-14 rounded-full bg-[#25D366] text-white shadow-lg hover:scale-110 hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] transition-all duration-300"
+    className="fixed bottom-6 right-6 z-50 flex items-center gap-3 rounded-full bg-[#25D366] text-white shadow-lg hover:scale-105 hover:shadow-[0_0_20px_rgba(37,211,102,0.4)] transition-all duration-300 pl-5 pr-4 py-3"
   >
-    <MessageCircle size={28} fill="white" strokeWidth={0} />
+    <span className="text-sm font-medium whitespace-nowrap">Fale conosco via WhatsApp</span>
+    <MessageCircle size={26} fill="white" strokeWidth={0} />
   </a>
 );
 
