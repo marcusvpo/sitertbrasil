@@ -271,18 +271,6 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="relative w-full overflow-hidden">
-        <picture>
-          <source srcSet="/images/banner-indique.webp" type="image/webp" />
-          <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
-        </picture>
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 p-6 md:p-10">
-          <Button asChild className="font-heading uppercase tracking-wider border-beam hover-glow">
-            <Link to="/indique-cidade">Indicar agora <ArrowRight className="ml-2" size={16} /></Link>
-          </Button>
-        </div>
-      </section>
 
       {/* ── Testimonials — Tilted Marquee ── */}
       <section className="py-16 md:py-24 overflow-hidden">
