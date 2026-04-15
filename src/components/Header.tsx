@@ -149,8 +149,8 @@ const Header = () => {
                 "font-heading uppercase text-xl tracking-wider py-3 transition-all duration-300 min-h-[44px] flex items-center",
                 mobileOpen ? "animate-fade-up" : "",
                 location.pathname === item.to
-                  ? "text-primary"
-                  : "text-foreground/60 hover:text-primary"
+                  ? item.label === "Motorex" ? "text-motorex" : "text-primary"
+                  : item.label === "Motorex" ? "text-motorex/60 hover:text-motorex" : "text-foreground/60 hover:text-primary"
               )}
               style={{ animationDelay: `${i * 60}ms` }}
             >
