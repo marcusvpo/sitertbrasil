@@ -11,6 +11,7 @@ import type { Product, ProductCategory, ProductImage } from "@/types/database";
 import { getProductImageUrl } from "@/lib/image-utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ProductDocumentation from "@/components/ProductDocumentation";
+import ProductRating from "@/components/ProductRating";
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -152,7 +153,9 @@ const ProductDetail = () => {
                 {product.name}
               </h1>
 
-              <div className="mb-6 flex flex-wrap items-center gap-3">
+              <ProductRating productName={product.name} size="md" />
+
+              <div className="mb-6 mt-3 flex flex-wrap items-center gap-3">
                 {product.badge && (
                   <Badge className="bg-primary/10 text-primary border border-primary/20 font-heading uppercase tracking-wider text-xs">
                     {product.badge}
