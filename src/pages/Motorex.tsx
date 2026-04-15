@@ -10,6 +10,7 @@ import GlareCard from "@/components/GlareCard";
 import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 import { getProductImageUrl } from "@/lib/image-utils";
+import ProductRating from "@/components/ProductRating";
 
 /* Shimmer skeleton for loading state */
 const ProductSkeleton = () => (
@@ -227,6 +228,7 @@ const Motorex = () => {
                             {product.short_description}
                           </p>
                         )}
+                        <ProductRating productName={product.name} size="sm" />
                         <div className="flex items-baseline gap-2 mt-2">
                           {product.price && (
                             <span className="font-heading text-primary font-bold text-sm md:text-base">
