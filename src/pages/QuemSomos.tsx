@@ -1,4 +1,3 @@
-import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Globe, Award, Calendar, Users, Heart, Target } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -27,26 +26,6 @@ const values = [
 ];
 
 const QuemSomos = () => {
-  const [activeTimelineIdx, setActiveTimelineIdx] = useState(0);
-  const timelineRefs = useRef<(HTMLDivElement | null)[]>([]);
-
-  /* Intersection Observer to update sticky panel */
-  useEffect(() => {
-    const observers: IntersectionObserver[] = [];
-    timelineRefs.current.forEach((el, idx) => {
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveTimelineIdx(idx);
-        },
-        { threshold: 0.5 }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-    return () => observers.forEach((o) => o.disconnect());
-  }, []);
-
   return (
     <>
       {/* Banner */}
@@ -66,11 +45,14 @@ const QuemSomos = () => {
             <p className="text-foreground/60 text-lg leading-relaxed">
               A RT Brasil é a distribuidora oficial da <span className="text-motorex font-semibold">MOTOREX</span> no Brasil, trazendo lubrificantes de alta performance com tecnologia suíça para pilotos, mecânicos e apaixonados por motocross.
             </p>
+            <p className="text-muted-foreground/50 text-sm mt-4">
+              Rt Brasil Importação e Comércio — CNPJ: 00.913.926/0001-78
+            </p>
           </AnimateOnScroll>
         </div>
       </section>
 
-      {/* ── Sticky Scroll Timeline ── */}
+      {/* ── Timeline Roadmap ── */}
       <section className="py-16 md:py-24 border-t border-foreground/[0.04]">
         <div className="container">
           <AnimateOnScroll className="text-center mb-16">
@@ -78,56 +60,42 @@ const QuemSomos = () => {
             <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2">Nossa História</h2>
           </AnimateOnScroll>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16">
-            {/* Left — Sticky panel */}
-            <div className="hidden md:block">
-              <div className="sticky top-24">
-                <div className="gradient-border rounded-xl p-8 text-center">
-                  {timeline.map((item, idx) => {
-                    const Icon = item.icon;
-                    return (
-                      <div
-                        key={item.year}
-                        className={`transition-all duration-500 ${
-                          idx === activeTimelineIdx ? "opacity-100" : "opacity-0 absolute inset-0 pointer-events-none"
-                        }`}
-                        style={{ position: idx === activeTimelineIdx ? "relative" : "absolute" }}
-                      >
-                        <Icon size={40} className="mx-auto text-primary mb-4" />
-                        <span
-                          className="font-heading text-[clamp(4rem,8vw,6rem)] font-bold text-gradient block leading-none"
-                        >
+          {/* Vertical Roadmap */}
+          <div className="relative max-w-3xl mx-auto">
+            {/* Central line */}
+            <div className="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-motorex/0 via-motorex/40 to-motorex/0 md:-translate-x-px" />
+
+            {timeline.map((item, i) => {
+              const Icon = item.icon;
+              const isEven = i % 2 === 0;
+              return (
+                <AnimateOnScroll key={item.year} animation="fade-up" delay={i * 100}>
+                  <div className={`relative flex items-start gap-6 mb-12 last:mb-0 md:gap-0 ${
+                    isEven ? "md:flex-row" : "md:flex-row-reverse"
+                  }`}>
+                    {/* Content card */}
+                    <div className={`ml-16 md:ml-0 md:w-[calc(50%-2rem)] ${
+                      isEven ? "md:pr-0 md:text-right" : "md:pl-0 md:text-left"
+                    }`}>
+                      <div className="gradient-border rounded-xl p-5 hover:shadow-[0_0_30px_hsl(var(--motorex)/0.1)] transition-all duration-500">
+                        <span className="font-heading text-2xl md:text-3xl font-bold text-motorex block mb-2">
                           {item.year}
                         </span>
+                        <p className="text-foreground/70 text-sm leading-relaxed">{item.text}</p>
                       </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
+                    </div>
 
-            {/* Right — Scrollable items */}
-            <div className="space-y-0">
-              {timeline.map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.year}
-                    ref={(el) => { timelineRefs.current[i] = el; }}
-                    className="py-16 md:py-24 first:pt-0 last:pb-0"
-                  >
-                    <AnimateOnScroll animation="fade-up" delay={i * 50}>
-                      {/* Mobile: show year inline */}
-                      <div className="md:hidden flex items-center gap-3 mb-3">
-                        <Icon size={24} className="text-primary" />
-                        <span className="font-heading text-3xl font-bold text-gradient">{item.year}</span>
-                      </div>
-                      <p className="text-foreground/70 text-lg leading-relaxed">{item.text}</p>
-                    </AnimateOnScroll>
+                    {/* Center dot */}
+                    <div className="absolute left-6 md:left-1/2 -translate-x-1/2 w-12 h-12 rounded-full bg-background border-2 border-motorex flex items-center justify-center z-10 shadow-[0_0_20px_hsl(var(--motorex)/0.3)]">
+                      <Icon size={18} className="text-motorex" />
+                    </div>
+
+                    {/* Spacer for opposite side (desktop) */}
+                    <div className="hidden md:block md:w-[calc(50%-2rem)]" />
                   </div>
-                );
-              })}
-            </div>
+                </AnimateOnScroll>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -143,10 +111,9 @@ const QuemSomos = () => {
             {stats.map((s, i) => (
               <AnimateOnScroll key={s.label} animation="scale-in" delay={i * 100}>
                 <div className="gradient-border text-center p-8 rounded-xl">
-                  <s.icon size={28} className="mx-auto text-primary mb-4" />
+                  <s.icon size={28} className="mx-auto text-motorex mb-4" />
                   <span
-                    className="font-heading text-4xl md:text-5xl font-bold text-gradient block"
-                    style={{ textShadow: "0 0 40px hsl(197 100% 43.7% / 0.2)" }}
+                    className="font-heading text-4xl md:text-5xl font-bold text-motorex block"
                   >
                     {s.value}
                   </span>
@@ -158,7 +125,7 @@ const QuemSomos = () => {
         </div>
       </section>
 
-      {/* ── Values — Gradient border cards ── */}
+      {/* ── Values ── */}
       <section className="py-16 md:py-24 border-t border-foreground/[0.04]">
         <div className="container">
           <AnimateOnScroll className="text-center mb-12">
@@ -168,9 +135,9 @@ const QuemSomos = () => {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {values.map((v, i) => (
               <AnimateOnScroll key={v.title} animation="fade-up" delay={i * 100}>
-                <div className="gradient-border p-7 rounded-xl text-center hover:shadow-[0_0_30px_hsl(197_100%_43.7%/0.1)] transition-all duration-500 h-full">
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-5">
-                    <v.icon size={24} className="text-primary" />
+                <div className="gradient-border p-7 rounded-xl text-center hover:shadow-[0_0_30px_hsl(var(--motorex)/0.1)] transition-all duration-500 h-full">
+                  <div className="w-14 h-14 rounded-full bg-motorex/10 flex items-center justify-center mx-auto mb-5">
+                    <v.icon size={24} className="text-motorex" />
                   </div>
                   <h3 className="font-heading text-lg font-bold mb-2">{v.title}</h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{v.text}</p>
@@ -192,7 +159,7 @@ const QuemSomos = () => {
               <p className="text-muted-foreground mb-8 max-w-md mx-auto">
                 Cadastre-se como revendedor e leve produtos de alta performance para sua região.
               </p>
-              <Button asChild size="lg" className="font-heading uppercase tracking-wider border-beam hover-glow">
+              <Button asChild size="lg" className="font-heading uppercase tracking-wider bg-motorex hover:bg-motorex/90 text-white border-beam hover-glow">
                 <Link to="/seja-revendedor">Seja Revendedor <ArrowRight className="ml-2" size={18} /></Link>
               </Button>
             </div>

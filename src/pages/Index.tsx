@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { ArrowRight, Star, Phone, Mail, Instagram, Shield, Trophy, Zap, DollarSign, Truck, ShoppingCart, MapPin, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { lazy, Suspense } from "react";
-const ScrollAnimation = lazy(() => import("@/components/ScrollAnimation"));
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import GlareCard from "@/components/GlareCard";
 import { supabase } from "@/integrations/supabase/client";
@@ -129,10 +127,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Scroll Animation */}
-      <Suspense fallback={<div className="h-screen bg-secondary" />}>
-        <ScrollAnimation />
-      </Suspense>
 
       {/* ── Featured Products — Asymmetric Grid ── */}
       <section className="relative py-16 md:py-24 mesh-gradient">
@@ -196,7 +190,7 @@ const Index = () => {
                       <span className="text-xs text-primary font-heading uppercase tracking-wider">{p.category?.name}</span>
                       <h3 className="font-heading text-lg font-semibold mt-1">{p.name}</h3>
                       {p.price && (
-                        <span className="font-heading text-primary font-bold text-sm mt-1 block">
+                        <span className="font-heading text-motorex font-bold text-sm mt-1 block">
                           R$ {Number(p.price).toFixed(2)}
                         </span>
                       )}
@@ -237,7 +231,7 @@ const Index = () => {
                     </AnimateOnScroll>
                   ))}
                 </ul>
-                <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-primary/30 text-primary hover:bg-primary/10">
+                <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-motorex/30 text-motorex hover:bg-motorex/10">
                   <Link to="/quem-somos">Saiba mais <ArrowRight className="ml-2" size={16} /></Link>
                 </Button>
               </div>
@@ -265,7 +259,7 @@ const Index = () => {
         </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
         <div className="absolute bottom-0 left-0 p-6 md:p-10">
-          <Button asChild className="font-heading uppercase tracking-wider border-beam hover-glow">
+          <Button asChild className="font-heading uppercase tracking-wider bg-motorex hover:bg-motorex/90 text-white border-beam hover-glow">
             <Link to="/seja-revendedor">Cadastre-se agora <ArrowRight className="ml-2" size={16} /></Link>
           </Button>
         </div>
@@ -302,7 +296,7 @@ const Index = () => {
           </div>
         </div>
         <AnimateOnScroll className="text-center mt-10">
-          <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-primary/30 text-primary hover:bg-primary/10">
+          <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-motorex/30 text-motorex hover:bg-motorex/10">
             <Link to="/depoimentos">Ver todos os depoimentos</Link>
           </Button>
         </AnimateOnScroll>
@@ -344,6 +338,9 @@ const Index = () => {
                 <span className="text-sm">Av. Alfeu Martini, 790 - Distrito Industrial II, Jaboticabal - SP</span>
               </div>
             </div>
+            <p className="text-center text-muted-foreground/60 text-xs mt-4">
+              Rt Brasil Importação e Comércio — CNPJ: 00.913.926/0001-78
+            </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
               <Button asChild size="lg" className="font-heading uppercase tracking-wider bg-green-600 hover:bg-green-700 text-white">
@@ -351,7 +348,7 @@ const Index = () => {
                   <MessageCircle className="mr-2" size={18} /> Chamar no WhatsApp
                 </a>
               </Button>
-              <Button asChild size="lg" className="font-heading uppercase tracking-wider border-beam hover-glow">
+              <Button asChild size="lg" className="font-heading uppercase tracking-wider bg-motorex hover:bg-motorex/90 text-white border-beam hover-glow">
                 <Link to="/central-atendimento">Central de Atendimento</Link>
               </Button>
             </div>
