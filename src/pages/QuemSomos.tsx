@@ -137,7 +137,7 @@ const QuemSomos = () => {
         <div className="container relative z-10">
           <AnimateOnScroll className="text-center mb-12">
             <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Números</span>
-            <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2">MOTOREX no Mundo</h2>
+            <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2"><span className="text-motorex">MOTOREX</span> no Mundo</h2>
           </AnimateOnScroll>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {stats.map((s, i) => (
@@ -187,7 +187,7 @@ const QuemSomos = () => {
           <AnimateOnScroll>
             <div className="gradient-border rounded-xl p-10 md:p-14 max-w-xl mx-auto">
               <h2 className="font-heading text-[clamp(1.5rem,4vw,2.5rem)] font-bold mb-4">
-                Quer fazer parte da rede MOTOREX?
+                Quer fazer parte da rede <span className="text-motorex">MOTOREX</span>?
               </h2>
               <p className="text-muted-foreground mb-8 max-w-md mx-auto">
                 Cadastre-se como revendedor e leve produtos de alta performance para sua região.
