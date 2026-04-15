@@ -68,20 +68,20 @@ const Footer = () => {
                 (16) 99796-4255
               </a>
               <a
-                href="mailto:contato@rtbrasil.com.br"
+                href="mailto:vendas@rtbrasilimport.com.br"
                 className="flex items-center gap-2.5 hover:text-primary transition-colors duration-300"
               >
                 <Mail size={14} className="text-primary/60" />
-                contato@rtbrasil.com.br
+                vendas@rtbrasilimport.com.br
               </a>
               <a
-                href="https://instagram.com/rtbrasil"
+                href="https://instagram.com/rtbrasil.motorex"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2.5 hover:text-primary transition-colors duration-300"
               >
                 <Instagram size={14} className="text-primary/60" />
-                @rtbrasil
+                @rtbrasil.motorex
               </a>
               <div className="flex items-start gap-2.5">
                 <MapPin size={14} className="mt-0.5 flex-shrink-0 text-primary/60" />

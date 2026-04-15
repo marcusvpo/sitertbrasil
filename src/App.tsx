@@ -22,7 +22,7 @@ const LorenzoRicken = lazy(() => import("./pages/parceiros/LorenzoRicken"));
 const RodrigoGaliotto = lazy(() => import("./pages/parceiros/RodrigoGaliotto"));
 const MarceloGaliotto = lazy(() => import("./pages/parceiros/MarceloGaliotto"));
 const OtavioOliveira = lazy(() => import("./pages/parceiros/OtavioOliveira"));
-const IndiqueCidade = lazy(() => import("./pages/IndiqueCidade"));
+
 const Depoimentos = lazy(() => import("./pages/Depoimentos"));
 const CentralAtendimento = lazy(() => import("./pages/CentralAtendimento"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
@@ -64,7 +64,7 @@ const App = () => (
               <Route path="/parceiros/rodrigo-galiotto" element={<RodrigoGaliotto />} />
               <Route path="/parceiros/marcelo-galiotto" element={<MarceloGaliotto />} />
               <Route path="/parceiros/otavio-oliveira" element={<OtavioOliveira />} />
-              <Route path="/indique-cidade" element={<IndiqueCidade />} />
+              
               <Route path="/depoimentos" element={<Depoimentos />} />
               <Route path="/central-atendimento" element={<CentralAtendimento />} />
             </Route>

@@ -271,18 +271,6 @@ const Index = () => {
         </div>
       </section>
 
-      <section className="relative w-full overflow-hidden">
-        <picture>
-          <source srcSet="/images/banner-indique.webp" type="image/webp" />
-          <img src="/images/banner-indique.jpg" alt="Indique sua Cidade" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
-        </picture>
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 p-6 md:p-10">
-          <Button asChild className="font-heading uppercase tracking-wider border-beam hover-glow">
-            <Link to="/indique-cidade">Indicar agora <ArrowRight className="ml-2" size={16} /></Link>
-          </Button>
-        </div>
-      </section>
 
       {/* ── Testimonials — Tilted Marquee ── */}
       <section className="py-16 md:py-24 overflow-hidden">
@@ -338,18 +326,18 @@ const Index = () => {
                 <Phone size={20} className="text-primary" /> (16) 99796-4255
               </a>
               <a
-                href="mailto:contato@rtbrasil.com.br"
+                href="mailto:vendas@rtbrasilimport.com.br"
                 className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
               >
-                <Mail size={20} className="text-primary" /> contato@rtbrasil.com.br
+                <Mail size={20} className="text-primary" /> vendas@rtbrasilimport.com.br
               </a>
               <a
-                href="https://instagram.com/rtbrasil"
+                href="https://instagram.com/rtbrasil.motorex"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
               >
-                <Instagram size={20} className="text-primary" /> @rtbrasil
+                <Instagram size={20} className="text-primary" /> @rtbrasil.motorex
               </a>
               <div className="gradient-border rounded-lg px-6 py-4 flex items-start gap-3 text-foreground/80 min-h-[44px]">
                 <MapPin size={20} className="text-primary flex-shrink-0 mt-0.5" />

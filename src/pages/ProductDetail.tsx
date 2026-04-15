@@ -71,11 +71,10 @@ const ProductDetail = () => {
         </Button>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-14">
-          {/* ── Gallery ── */}
+          {/* ── Left Column: Gallery + Description (scrollable) ── */}
           <AnimateOnScroll animation={isMobile ? "fade-up" : "fade-in-left"} className="min-w-0">
             <div className="min-w-0">
               <div className="relative aspect-square rounded-lg overflow-hidden bg-muted/20 border border-foreground/[0.06]">
-                {/* Radial glow behind product image */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <div className="w-3/4 h-3/4 rounded-full bg-primary/10 blur-[80px]" />
                 </div>
@@ -137,13 +136,27 @@ const ProductDetail = () => {
               )}
 
               {/* Documentation Card */}
-              <ProductDocumentation productName={product.name} />
+              <div className="mt-4">
+                <ProductDocumentation productName={product.name} />
+              </div>
+
+              {/* Description (scrollable area) */}
+              {product.short_description && (
+                <p className="text-foreground/70 mt-6 text-lg leading-relaxed break-words">{product.short_description}</p>
+              )}
+
+              {product.description && (
+                <div
+                  className="mt-4 max-w-full overflow-hidden break-words prose prose-sm prose-invert text-muted-foreground leading-relaxed [&_*]:!max-w-full [&_*]:!text-muted-foreground [&_img]:h-auto [&_img]:max-w-full [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_td]:break-words [&_th]:break-words"
+                  dangerouslySetInnerHTML={{ __html: product.description }}
+                />
+              )}
             </div>
           </AnimateOnScroll>
 
-          {/* ── Product Info ── */}
+          {/* ── Right Column: Product Info + Sticky Cart Card ── */}
           <AnimateOnScroll animation={isMobile ? "fade-up" : "fade-in-right"} className="min-w-0">
-            <div className="min-w-0">
+            <div className="min-w-0 md:sticky md:top-20">
               {product.category && (
                 <span className="text-primary text-xs font-heading uppercase tracking-[0.2em]">
                   {product.category.name}
@@ -168,18 +181,7 @@ const ProductDetail = () => {
                 )}
               </div>
 
-              {product.short_description && (
-                <p className="text-foreground/70 mb-4 text-lg leading-relaxed break-words">{product.short_description}</p>
-              )}
-
-              {product.description && (
-                <div
-                  className="mb-8 max-w-full overflow-hidden break-words prose prose-sm prose-invert text-muted-foreground leading-relaxed [&_*]:!max-w-full [&_*]:!text-muted-foreground [&_img]:h-auto [&_img]:max-w-full [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_td]:break-words [&_th]:break-words"
-                  dangerouslySetInnerHTML={{ __html: product.description }}
-                />
-              )}
-
-              {/* ── Price & Actions ── */}
+              {/* ── Price & Actions (sticky card) ── */}
               <div className="gradient-border min-w-0 rounded-lg p-4 sm:p-6 space-y-5">
                 <div className="flex flex-wrap items-baseline gap-3">
                   {product.price ? (
@@ -206,7 +208,7 @@ const ProductDetail = () => {
                         >
                           <Minus size={16} />
                         </button>
-                        <span className="px-4 font-heading text-foreground">{quantity}</span>
+                        <span className="px-4 font-heading text-foreground flex items-center">{quantity}</span>
                         <button
                           onClick={() => setQuantity((q) => q + 1)}
                           className="px-3 h-full text-muted-foreground hover:bg-foreground/5 transition-colors"
@@ -227,7 +229,7 @@ const ProductDetail = () => {
                     </>
                   ) : (
                     <Button asChild size="lg" className="flex w-full whitespace-normal text-center font-heading uppercase tracking-wider sm:flex-1">
-                      <a href="https://wa.me/5500000000000" target="_blank" rel="noopener noreferrer">
+                      <a href="https://wa.me/5516997964255" target="_blank" rel="noopener noreferrer">
                         Consultar via WhatsApp
                       </a>
                     </Button>
