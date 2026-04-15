@@ -98,7 +98,7 @@ const Index = () => {
           <div className="w-full md:w-1/2 md:text-right">
             <AnimateOnScroll animation="blur-in">
               <span className="inline-block font-heading uppercase text-primary text-xs tracking-[0.3em] mb-4">
-                Distribuidora Oficial MOTOREX no Brasil
+                Distribuidora Oficial <span className="text-motorex">MOTOREX</span> no Brasil
               </span>
             </AnimateOnScroll>
             <AnimateOnScroll animation="fade-up" delay={200}>
@@ -217,10 +217,10 @@ const Index = () => {
               <div>
                 <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Sobre</span>
                 <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 mb-6">
-                  RT Brasil + MOTOREX
+                  RT Brasil + <span className="text-motorex">MOTOREX</span>
                 </h2>
                 <p className="text-foreground/60 mb-4 leading-relaxed">
-                  A RT Brasil é distribuidora oficial da MOTOREX, marca suíça com mais de 100 anos de história e referência mundial em lubrificantes de alta performance.
+                  A RT Brasil é distribuidora oficial da <span className="text-motorex font-semibold">MOTOREX</span>, marca suíça com mais de 100 anos de história e referência mundial em lubrificantes de alta performance.
                 </p>
                 <p className="text-foreground/60 mb-6 leading-relaxed">
                   Nosso compromisso é levar ao mercado brasileiro produtos de qualidade comprovada em campeonatos mundiais, com pronta entrega e suporte especializado.

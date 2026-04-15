@@ -19,7 +19,7 @@ const Footer = () => {
               className="h-10 w-auto mb-4"
             />
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
-              Distribuidora oficial MOTOREX no Brasil. Lubrificantes de alta
+              Distribuidora oficial <span className="text-motorex font-semibold">MOTOREX</span> no Brasil. Lubrificantes de alta
               performance para motocross, enduro e off-road.
             </p>
           </div>
@@ -93,7 +93,7 @@ const Footer = () => {
 
         <div className="border-t border-foreground/[0.06] mt-10 pt-5 text-center text-xs text-muted-foreground/60">
           © {new Date().getFullYear()} RT Brasil. Todos os direitos reservados.
-          Distribuidora oficial MOTOREX.
+          Distribuidora oficial <span className="text-motorex">MOTOREX</span>.
         </div>
       </div>
     </footer>
