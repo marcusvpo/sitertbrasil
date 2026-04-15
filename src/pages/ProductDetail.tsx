@@ -234,8 +234,8 @@ const ProductDetail = () => {
                   )}
                 </div>
 
-                <Button asChild variant="outline" className="flex w-full whitespace-normal text-center font-heading uppercase tracking-wider border-primary/20 text-primary hover:bg-primary/10">
-                  <Link to="/seja-revendedor">Seja Revendedor</Link>
+                <Button asChild variant="outline" className="flex w-full whitespace-normal text-center font-heading uppercase tracking-wider border-motorex/20 text-motorex hover:bg-motorex/10">
+                  <Link to="/seja-revendedor">Seja Revendedor <span className="text-motorex font-bold">MOTOREX</span></Link>
                 </Button>
               </div>
             </div>
