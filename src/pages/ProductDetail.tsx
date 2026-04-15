@@ -134,6 +134,9 @@ const ProductDetail = () => {
                   ))}
                 </div>
               )}
+
+              {/* Documentation Card */}
+              <ProductDocumentation productName={product.name} />
             </div>
           </AnimateOnScroll>
 
