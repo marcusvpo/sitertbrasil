@@ -10,6 +10,7 @@ import GlareCard from "@/components/GlareCard";
 import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 import { getProductImageUrl } from "@/lib/image-utils";
+import ProductRating from "@/components/ProductRating";
 
 /* Shimmer skeleton for loading state */
 const ProductSkeleton = () => (
