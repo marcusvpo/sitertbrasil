@@ -61,10 +61,10 @@ const QuemSomos = () => {
           <AnimateOnScroll animation="blur-in">
             <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Quem Somos</span>
             <h1 className="font-heading text-[clamp(2.5rem,6vw,4.5rem)] font-bold mt-3 mb-6 leading-[0.9]">
-              RT Brasil + <span className="text-gradient">MOTOREX</span>
+              RT Brasil + <span className="text-motorex">MOTOREX</span>
             </h1>
             <p className="text-foreground/60 text-lg leading-relaxed">
-              A RT Brasil é a distribuidora oficial da MOTOREX no Brasil, trazendo lubrificantes de alta performance com tecnologia suíça para pilotos, mecânicos e apaixonados por motocross.
+              A RT Brasil é a distribuidora oficial da <span className="text-motorex font-semibold">MOTOREX</span> no Brasil, trazendo lubrificantes de alta performance com tecnologia suíça para pilotos, mecânicos e apaixonados por motocross.
             </p>
           </AnimateOnScroll>
         </div>
