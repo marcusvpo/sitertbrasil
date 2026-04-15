@@ -1,61 +1,42 @@
 
 
-## Plano: Corrigir sincronização de imagens via API Yampi
+## Plano de Alterações
 
-### Problema Raiz
-A Edge Function está usando o endpoint errado. A API da Yampi organiza imagens por **SKU**, não por produto. O endpoint correto é:
-```
-GET /v2/{alias}/catalog/skus/{skuId}/images
-```
+### 1. Remover Scroll Animation da Home
+- Remover o `<Suspense>` + `<ScrollAnimation />` (linhas 132-135 de `Index.tsx`)
+- Remover o lazy import do `ScrollAnimation` (linha 6)
 
-Além disso, a estrutura de resposta da Yampi retorna URLs dentro de objetos aninhados (ex: `small.url`, `thumb.url`), mas o código atual tenta extrair de campos planos (`img.url`, `img.image_url`), resultando em `null` para todas as imagens.
+### 2. Adicionar CNPJ em dados de contato
+Adicionar "Rt Brasil Importação e Comércio - CNPJ: 00.913.926/0001-78" em:
+- **`Footer.tsx`**: Na linha de copyright, junto ao nome RT Brasil
+- **`QuemSomos.tsx`**: Na seção intro, abaixo da descrição
+- **`Index.tsx`**: Na seção "Contato Rápido"
 
-### Exemplo de resposta da Yampi (conforme documentação)
-```text
-{
-  "data": [
-    {
-      "id": 123,
-      "order": 1,
-      "small": { "width": 500, "height": 500, "url": "https://images.yampi.me/..." },
-      "thumb": { ... },
-      "filter_image_url": "https://..."
-    }
-  ]
-}
-```
+### 3. Cor MOTOREX (#26ad97) em mais elementos
+Alterar a cor de vários botões e textos de `text-primary`/`bg-primary` para `text-motorex`/`bg-motorex`:
+- **Preços dos produtos** em `Motorex.tsx` e `ProductDetail.tsx` e cards da home
+- **Texto das categorias** (pills ativas) em `Motorex.tsx`
+- **Botões CTA**: "Saiba mais", "Cadastre-se agora", "Ver todos os depoimentos", "Central de Atendimento" em `Index.tsx`
+- **Botões de documentação** em `ProductDocumentation.tsx` (já parcialmente feito)
 
-### Alterações
+### 4. Descrição do produto ao lado direito com scroll fixo
+Reestruturar `ProductDetail.tsx`:
+- Mover `short_description` e `description` da coluna esquerda para a coluna direita
+- Posicioná-los entre o `ProductRating` e o card de preço/carrinho
+- Envolver a descrição em um bloco com `max-h-[300px] overflow-y-auto` para scroll interno
+- O card de preço/ações permanece sticky abaixo da descrição
 
-**1. Edge Function `supabase/functions/sync-yampi/index.ts`**
-- Alterar o endpoint de busca de imagens de `/catalog/products/{id}/images` para `/catalog/skus/{skuId}/images`, usando o SKU ID do primeiro SKU de cada produto (já disponível em `yp.skus.data[0]`)
-- Incluir `include=images` na query de listagem de produtos como fallback adicional
-- Corrigir a extração de URL para buscar na estrutura correta: priorizar `img.small.url`, depois `img.thumb.url`, depois `img.filter_image_url`, e por último tentar campos planos como fallback
-- Adicionar log detalhado das URLs extraídas para debug
+### 5. Timeline roadmap em QuemSomos
+Substituir o layout atual (sticky panel + scroll items) por um **roadmap vertical** com:
+- Linha central vertical com pontos/dots conectados
+- Itens alternando esquerda/direita (desktop) ou todos à direita (mobile)
+- Ano destacado no dot/node, texto ao lado
+- Remover o sticky panel que está desalinhado
 
-**2. Frontend — sem alterações necessárias**
-O `getProductImageUrl()` em `src/lib/image-utils.ts` e os componentes já suportam `external_url` corretamente. O problema é exclusivamente que as URLs nunca chegam ao banco de dados.
-
-### Detalhes Técnicos
-
-Mudança principal na extração de URL:
-```text
-// ANTES (não funciona com a estrutura da Yampi):
-img.url || img.image_url || img.src || img.thumb
-
-// DEPOIS (compatível com resposta real):
-img.small?.url || img.thumb?.url || img.filter_image_url || img.url || img.image_url
-```
-
-Mudança no endpoint:
-```text
-// ANTES:
-/v2/{alias}/catalog/products/{productId}/images
-
-// DEPOIS:
-/v2/{alias}/catalog/skus/{skuId}/images
-```
-
-### Pós-deploy
-Após aprovar, será necessário fazer o redeploy da Edge Function via CLI do Supabase e re-executar a sincronização.
+### Arquivos afetados
+- `src/pages/Index.tsx` — remover animation, adicionar CNPJ, cor motorex nos botões
+- `src/components/Footer.tsx` — adicionar CNPJ
+- `src/pages/QuemSomos.tsx` — adicionar CNPJ, refazer timeline como roadmap
+- `src/pages/ProductDetail.tsx` — mover descrição para coluna direita com scroll
+- `src/pages/Motorex.tsx` — cor motorex nos preços e categorias
 
