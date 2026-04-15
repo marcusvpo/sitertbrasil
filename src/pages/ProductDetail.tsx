@@ -58,25 +58,24 @@ const ProductDetail = () => {
   const hasDescription = product.short_description || product.description;
 
   return (
-    <section className="relative mesh-gradient overflow-hidden" style={{ height: isMobile ? 'auto' : 'calc(100vh - 64px)' }}>
-      <div className="container relative z-10 px-4 sm:px-6 lg:px-8 h-full flex flex-col py-4 md:py-6">
+    <section className="relative mesh-gradient overflow-x-hidden">
+      <div className="container relative z-10 px-4 sm:px-6 lg:px-8 py-6 md:py-8">
         {/* Back button */}
         <Button
           asChild
           variant="ghost"
-          className="text-muted-foreground hover:text-foreground mb-4 self-start flex-shrink-0"
+          className="text-muted-foreground hover:text-foreground mb-6"
         >
           <Link to="/motorex">
             <ArrowLeft size={18} className="mr-2" /> Voltar à vitrine
           </Link>
         </Button>
 
-        {/* Main content - fills remaining height */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10 flex-1 min-h-0">
-          {/* ── Left Column: Gallery + Documentation ── */}
-          <div className="min-w-0 flex flex-col min-h-0">
-            {/* Image */}
-            <div className="relative aspect-square rounded-lg overflow-hidden bg-muted/20 border border-foreground/[0.06] flex-shrink-0 max-h-[50vh] md:max-h-[55vh]">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+          {/* ── Left Column: Gallery + Thumbnails + Documentation ── */}
+          <div className="min-w-0">
+            {/* Main image */}
+            <div className="relative aspect-square rounded-lg overflow-hidden bg-muted/20 border border-foreground/[0.06]">
               <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                 <div className="w-3/4 h-3/4 rounded-full bg-primary/10 blur-[80px]" />
               </div>
@@ -116,12 +115,12 @@ const ProductDetail = () => {
 
             {/* Thumbnails */}
             {images.length > 1 && (
-              <div className="mt-2 flex max-w-full gap-2 overflow-x-auto pb-1 flex-shrink-0">
+              <div className="mt-3 flex max-w-full gap-2 overflow-x-auto pb-1">
                 {images.map((img, i) => (
                   <button
                     key={img.id}
                     onClick={() => setActiveImage(i)}
-                    className={`flex-shrink-0 w-14 h-14 rounded-md overflow-hidden border-2 transition-all duration-300 ${
+                    className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-all duration-300 ${
                       i === activeImage
                         ? "border-primary shadow-[0_0_10px_hsl(197_100%_43.7%/0.3)]"
                         : "border-foreground/10 opacity-50 hover:opacity-100"
@@ -137,46 +136,47 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Documentation */}
-            <div className="mt-2 flex-shrink-0">
+            {/* Documentation Card */}
+            <div className="mt-4">
               <ProductDocumentation productName={product.name} />
             </div>
           </div>
 
-          {/* ── Right Column: Product Info ── */}
-          <div className="min-w-0 flex flex-col min-h-0">
-            {/* Fixed header: category + name + rating + badges */}
-            <div className="flex-shrink-0">
-              {product.category && (
-                <span className="text-primary text-xs font-heading uppercase tracking-[0.2em]">
-                  {product.category.name}
-                </span>
+          {/* ── Right Column: Product Info + scrollable description + cart ── */}
+          <div className="min-w-0">
+            {/* Category */}
+            {product.category && (
+              <span className="text-primary text-xs font-heading uppercase tracking-[0.2em]">
+                {product.category.name}
+              </span>
+            )}
+
+            {/* Product name */}
+            <h1 className="font-heading text-[clamp(1.75rem,4vw,2.75rem)] font-bold mt-1 mb-3 leading-[0.95] break-words">
+              {product.name}
+            </h1>
+
+            {/* Rating */}
+            <ProductRating productName={product.name} size="md" />
+
+            {/* Badges */}
+            <div className="mb-4 mt-3 flex flex-wrap items-center gap-2">
+              {product.badge && (
+                <Badge className="bg-primary/10 text-primary border border-primary/20 font-heading uppercase tracking-wider text-xs">
+                  {product.badge}
+                </Badge>
               )}
-              <h1 className="font-heading text-[clamp(1.5rem,4vw,2.5rem)] font-bold mt-1 mb-2 leading-[0.95] break-words">
-                {product.name}
-              </h1>
-
-              <ProductRating productName={product.name} size="md" />
-
-              <div className="mb-3 mt-2 flex flex-wrap items-center gap-2">
-                {product.badge && (
-                  <Badge className="bg-primary/10 text-primary border border-primary/20 font-heading uppercase tracking-wider text-xs">
-                    {product.badge}
-                  </Badge>
-                )}
-                {product.volume && (
-                  <Badge variant="secondary" className="bg-foreground/5 text-muted-foreground border-0">
-                    {product.volume}
-                  </Badge>
-                )}
-              </div>
+              {product.volume && (
+                <Badge variant="secondary" className="bg-foreground/5 text-muted-foreground border-0">
+                  {product.volume}
+                </Badge>
+              )}
             </div>
 
-            {/* Scrollable description - only this part scrolls */}
+            {/* Scrollable description block — fixed height, only this scrolls */}
             {hasDescription && (
-              <div className="flex-1 min-h-0 mb-3 border border-foreground/[0.06] rounded-lg bg-muted/10 flex flex-col overflow-hidden"
-                   style={{ maxHeight: isMobile ? '200px' : undefined }}>
-                <div className="overflow-y-auto p-4 scrollbar-thin flex-1">
+              <div className="mb-4 h-[220px] border border-foreground/[0.06] rounded-lg bg-muted/10 overflow-hidden">
+                <div className="h-full overflow-y-auto p-4 scrollbar-thin">
                   {product.short_description && (
                     <p className="text-foreground/70 text-sm leading-relaxed break-words mb-3">{product.short_description}</p>
                   )}
@@ -190,8 +190,8 @@ const ProductDetail = () => {
               </div>
             )}
 
-            {/* Fixed footer: Price & Actions card */}
-            <div className="flex-shrink-0 gradient-border min-w-0 rounded-lg p-4 space-y-4">
+            {/* Price & Actions card */}
+            <div className="gradient-border min-w-0 rounded-lg p-4 sm:p-6 space-y-4">
               <div className="flex flex-wrap items-baseline gap-3">
                 {product.price ? (
                   <span className="font-heading text-3xl text-motorex font-bold" style={{ textShadow: "0 0 30px hsl(var(--motorex) / 0.3)" }}>
