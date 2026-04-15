@@ -16,13 +16,13 @@ const ProductDocumentation = ({ productName }: ProductDocumentationProps) => {
   return (
     <div className="gradient-border rounded-lg p-4 sm:p-6 space-y-4">
       <div className="flex items-center gap-2">
-        <FileText size={20} className="text-primary" />
+        <FileText size={20} className="text-motorex" />
         <h3 className="font-heading text-lg font-bold uppercase tracking-wider">
           Documentação Oficial
         </h3>
       </div>
       <p className="text-muted-foreground text-sm">
-        Acesse as fichas técnicas e de segurança oficiais da MOTOREX para este produto.
+        Acesse as fichas técnicas e de segurança oficiais da <span className="text-motorex font-semibold">MOTOREX</span> para este produto.
       </p>
       <div className="flex flex-col sm:flex-row gap-3">
         {docs.msds && (
@@ -30,7 +30,7 @@ const ProductDocumentation = ({ productName }: ProductDocumentationProps) => {
             href={docs.msds}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-md border border-primary/20 bg-primary/5 px-4 py-3 text-sm font-heading uppercase tracking-wider text-primary transition-colors hover:bg-primary/10"
+            className="flex items-center gap-2 rounded-md border border-motorex/20 bg-motorex/5 px-4 py-3 text-sm font-heading uppercase tracking-wider text-motorex transition-colors hover:bg-motorex/15"
           >
             <Shield size={16} />
             FISPQ / MSDS
@@ -41,7 +41,7 @@ const ProductDocumentation = ({ productName }: ProductDocumentationProps) => {
             href={docs.techInfo}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-2 rounded-md border border-primary/20 bg-primary/5 px-4 py-3 text-sm font-heading uppercase tracking-wider text-primary transition-colors hover:bg-primary/10"
+            className="flex items-center gap-2 rounded-md border border-motorex/20 bg-motorex/5 px-4 py-3 text-sm font-heading uppercase tracking-wider text-motorex transition-colors hover:bg-motorex/15"
           >
             <FileText size={16} />
             Ficha Técnica
