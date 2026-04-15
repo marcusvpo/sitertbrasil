@@ -10,6 +10,7 @@ import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 import { getProductImageUrl } from "@/lib/image-utils";
 import { useIsMobile } from "@/hooks/use-mobile";
+import ProductDocumentation from "@/components/ProductDocumentation";
 
 const ProductDetail = () => {
   const { slug } = useParams();
