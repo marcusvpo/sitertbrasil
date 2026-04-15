@@ -107,7 +107,7 @@ const Motorex = () => {
                 onClick={() => setActiveCategory(null)}
                 className={`px-3.5 py-1.5 text-[11px] font-heading uppercase tracking-wider rounded-full transition-all duration-300 ${
                   !activeCategory
-                    ? "bg-primary/15 border border-primary text-primary shadow-[0_0_12px_hsl(197_100%_43.7%/0.2)]"
+                    ? "bg-motorex/15 border border-motorex text-motorex shadow-[0_0_12px_hsl(var(--motorex)/0.2)]"
                     : "bg-foreground/5 border border-foreground/10 text-foreground/50 hover:text-foreground hover:border-foreground/20"
                 }`}
               >
@@ -119,7 +119,7 @@ const Motorex = () => {
                   onClick={() => setActiveCategory(activeCategory === cat.id ? null : cat.id)}
                   className={`px-3.5 py-1.5 text-[11px] font-heading uppercase tracking-wider rounded-full transition-all duration-300 ${
                     activeCategory === cat.id
-                      ? "bg-primary/15 border border-primary text-primary shadow-[0_0_12px_hsl(197_100%_43.7%/0.2)]"
+                      ? "bg-motorex/15 border border-motorex text-motorex shadow-[0_0_12px_hsl(var(--motorex)/0.2)]"
                       : "bg-foreground/5 border border-foreground/10 text-foreground/50 hover:text-foreground hover:border-foreground/20"
                   }`}
                 >
@@ -137,8 +137,8 @@ const Motorex = () => {
                     onClick={() => setActiveVolume(activeVolume === vol ? null : vol)}
                     className={`px-3 py-1 rounded-full text-[11px] font-heading uppercase tracking-wider transition-all duration-300 ${
                       activeVolume === vol
-                        ? "bg-primary/15 border border-primary text-primary"
-                        : "bg-foreground/5 border border-foreground/10 text-foreground/50 hover:text-foreground"
+                      ? "bg-motorex/15 border border-motorex text-motorex"
+                      : "bg-foreground/5 border border-foreground/10 text-foreground/50 hover:text-foreground"
                     }`}
                   >
                     {vol}
@@ -236,7 +236,7 @@ const Motorex = () => {
                         <ProductRating productName={product.name} size="sm" />
                         <div className="flex items-baseline gap-2 mt-2">
                           {product.price && (
-                            <span className="font-heading text-primary font-bold text-sm md:text-base">
+                            <span className="font-heading text-motorex font-bold text-sm md:text-base">
                               R$ {Number(product.price).toFixed(2)}
                             </span>
                           )}

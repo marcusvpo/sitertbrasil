@@ -185,7 +185,7 @@ const ProductDetail = () => {
               <div className="gradient-border min-w-0 rounded-lg p-4 sm:p-6 space-y-5">
                 <div className="flex flex-wrap items-baseline gap-3">
                   {product.price ? (
-                    <span className="font-heading text-3xl text-primary font-bold" style={{ textShadow: "0 0 30px hsl(197 100% 43.7% / 0.3)" }}>
+                    <span className="font-heading text-3xl text-motorex font-bold" style={{ textShadow: "0 0 30px hsl(var(--motorex) / 0.3)" }}>
                       R$ {Number(product.price).toFixed(2)}
                     </span>
                   ) : (

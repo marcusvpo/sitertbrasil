@@ -91,9 +91,10 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="border-t border-foreground/[0.06] mt-10 pt-5 text-center text-xs text-muted-foreground/60">
-          © {new Date().getFullYear()} RT Brasil. Todos os direitos reservados.
-          Distribuidora oficial <span className="text-motorex">MOTOREX</span>.
+        <div className="border-t border-foreground/[0.06] mt-10 pt-5 text-center text-xs text-muted-foreground/60 space-y-1">
+          <p>Rt Brasil Importação e Comércio — CNPJ: 00.913.926/0001-78</p>
+          <p>© {new Date().getFullYear()} RT Brasil. Todos os direitos reservados.
+          Distribuidora oficial <span className="text-motorex">MOTOREX</span>.</p>
         </div>
       </div>
     </footer>
