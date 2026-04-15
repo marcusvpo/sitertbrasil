@@ -338,18 +338,18 @@ const Index = () => {
                 <Phone size={20} className="text-primary" /> (16) 99796-4255
               </a>
               <a
-                href="mailto:contato@rtbrasil.com.br"
+                href="mailto:vendas@rtbrasilimport.com.br"
                 className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
               >
-                <Mail size={20} className="text-primary" /> contato@rtbrasil.com.br
+                <Mail size={20} className="text-primary" /> vendas@rtbrasilimport.com.br
               </a>
               <a
-                href="https://instagram.com/rtbrasil"
+                href="https://instagram.com/rtbrasil.motorex"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
               >
-                <Instagram size={20} className="text-primary" /> @rtbrasil
+                <Instagram size={20} className="text-primary" /> @rtbrasil.motorex
               </a>
               <div className="gradient-border rounded-lg px-6 py-4 flex items-start gap-3 text-foreground/80 min-h-[44px]">
                 <MapPin size={20} className="text-primary flex-shrink-0 mt-0.5" />

@@ -222,6 +222,11 @@ const Motorex = () => {
                         )}
                         <h3 className="font-heading text-sm md:text-base font-semibold mt-0.5 leading-tight">
                           {product.name}
+                          {product.volume && (
+                            <span className="text-muted-foreground font-normal text-xs ml-1.5">
+                              {product.volume}
+                            </span>
+                          )}
                         </h3>
                         {product.short_description && (
                           <p className="text-muted-foreground text-xs mt-1 line-clamp-2">

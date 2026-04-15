@@ -43,24 +43,24 @@ const SejaRevendedor = () => {
               <form onSubmit={handleSubmit} className="gradient-border rounded-xl p-7 md:p-10 space-y-5 bg-foreground/[0.02]">
                 <div className="neon-focus rounded-md">
                   <Label htmlFor="nome" className="text-foreground/80 text-sm mb-1.5 block">Nome Completo</Label>
-                  <Input id="nome" name="nome" placeholder="Seu nome completo" required className="bg-muted/30 border-foreground/10" />
+                  <Input id="nome" name="nome" placeholder="Seu nome completo" className="bg-muted/30 border-foreground/10" />
                 </div>
                 <div className="neon-focus rounded-md">
                   <Label htmlFor="empresa" className="text-foreground/80 text-sm mb-1.5 block">Nome da Empresa</Label>
-                  <Input id="empresa" name="empresa" placeholder="Nome da sua empresa" required className="bg-muted/30 border-foreground/10" />
+                  <Input id="empresa" name="empresa" placeholder="Nome da sua empresa" className="bg-muted/30 border-foreground/10" />
                 </div>
                 <div className="neon-focus rounded-md">
                   <Label htmlFor="email" className="text-foreground/80 text-sm mb-1.5 block">E-mail</Label>
-                  <Input id="email" name="email" type="email" placeholder="seu@email.com" required className="bg-muted/30 border-foreground/10" />
+                  <Input id="email" name="email" type="email" placeholder="seu@email.com" className="bg-muted/30 border-foreground/10" />
                 </div>
                 <div className="neon-focus rounded-md">
                   <Label htmlFor="whatsapp" className="text-foreground/80 text-sm mb-1.5 block">WhatsApp</Label>
-                  <Input id="whatsapp" name="whatsapp" type="tel" placeholder="(00) 00000-0000" required className="bg-muted/30 border-foreground/10" />
+                  <Input id="whatsapp" name="whatsapp" type="tel" placeholder="(00) 00000-0000" className="bg-muted/30 border-foreground/10" />
                 </div>
                 <div className="flex items-start gap-2 pt-1">
-                  <Checkbox id="consentimento" required />
+                  <Checkbox id="consentimento" />
                   <Label htmlFor="consentimento" className="text-sm text-muted-foreground leading-tight">
-                    Concordo em receber contato da RT Brasil sobre produtos e condições comerciais MOTOREX.
+                    Concordo em receber contato da RT Brasil sobre produtos e condições comerciais <span className="text-motorex font-semibold">MOTOREX</span>.
                   </Label>
                 </div>
                 <Button type="submit" className="w-full font-heading uppercase tracking-wider border-beam hover-glow">

@@ -8,8 +8,8 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 
 const contactCards = [
   { icon: Phone, label: "WhatsApp", value: "(16) 99796-4255", href: "https://wa.me/5516997964255" },
-  { icon: Mail, label: "E-mail", value: "contato@rtbrasil.com.br", href: "mailto:contato@rtbrasil.com.br" },
-  { icon: Instagram, label: "Instagram", value: "@rtbrasil", href: "https://instagram.com/rtbrasil" },
+  { icon: Mail, label: "E-mail", value: "vendas@rtbrasilimport.com.br", href: "mailto:vendas@rtbrasilimport.com.br" },
+  { icon: Instagram, label: "Instagram", value: "@rtbrasil.motorex", href: "https://instagram.com/rtbrasil.motorex" },
   { icon: MapPin, label: "Endereço", value: "Av. Alfeu Martini, 790 – Jaboticabal, SP", href: "https://www.google.com/maps?q=-21.250251492402167,-48.35034751806419" },
 ];
 
@@ -84,19 +84,19 @@ const CentralAtendimento = () => {
               <form onSubmit={handleSubmit} className="gradient-border rounded-xl p-7 md:p-10 space-y-5 bg-foreground/[0.02]">
                 <div className="neon-focus rounded-md">
                   <Label htmlFor="nome" className="text-foreground/80 text-sm mb-1.5 block">Nome</Label>
-                  <Input id="nome" name="nome" placeholder="Seu nome" required className="bg-muted/30 border-foreground/10" />
+                  <Input id="nome" name="nome" placeholder="Seu nome" className="bg-muted/30 border-foreground/10" />
                 </div>
                 <div className="neon-focus rounded-md">
                   <Label htmlFor="email" className="text-foreground/80 text-sm mb-1.5 block">E-mail</Label>
-                  <Input id="email" name="email" type="email" placeholder="seu@email.com" required className="bg-muted/30 border-foreground/10" />
+                  <Input id="email" name="email" type="email" placeholder="seu@email.com" className="bg-muted/30 border-foreground/10" />
                 </div>
                 <div className="neon-focus rounded-md">
                   <Label htmlFor="whatsapp" className="text-foreground/80 text-sm mb-1.5 block">WhatsApp</Label>
-                  <Input id="whatsapp" name="whatsapp" type="tel" placeholder="(00) 00000-0000" required className="bg-muted/30 border-foreground/10" />
+                  <Input id="whatsapp" name="whatsapp" type="tel" placeholder="(00) 00000-0000" className="bg-muted/30 border-foreground/10" />
                 </div>
                 <div className="neon-focus rounded-md">
                   <Label htmlFor="mensagem" className="text-foreground/80 text-sm mb-1.5 block">Como podemos te ajudar?</Label>
-                  <Textarea id="mensagem" name="mensagem" placeholder="Descreva sua dúvida ou solicitação..." required className="bg-muted/30 border-foreground/10" rows={5} />
+                  <Textarea id="mensagem" name="mensagem" placeholder="Descreva sua dúvida ou solicitação..." className="bg-muted/30 border-foreground/10" rows={5} />
                 </div>
                 <Button type="submit" className="w-full font-heading uppercase tracking-wider border-beam hover-glow">
                   Enviar mensagem
