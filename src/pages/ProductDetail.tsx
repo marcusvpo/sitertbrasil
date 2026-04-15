@@ -135,22 +135,10 @@ const ProductDetail = () => {
                 </div>
               )}
 
-              {/* Documentation Card */}
+               {/* Documentation Card */}
               <div className="mt-4">
                 <ProductDocumentation productName={product.name} />
               </div>
-
-              {/* Description (scrollable area) */}
-              {product.short_description && (
-                <p className="text-foreground/70 mt-6 text-lg leading-relaxed break-words">{product.short_description}</p>
-              )}
-
-              {product.description && (
-                <div
-                  className="mt-4 max-w-full overflow-hidden break-words prose prose-sm prose-invert text-muted-foreground leading-relaxed [&_*]:!max-w-full [&_*]:!text-muted-foreground [&_img]:h-auto [&_img]:max-w-full [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_td]:break-words [&_th]:break-words"
-                  dangerouslySetInnerHTML={{ __html: product.description }}
-                />
-              )}
             </div>
           </AnimateOnScroll>
 
@@ -168,6 +156,20 @@ const ProductDetail = () => {
 
               <ProductRating productName={product.name} size="md" />
 
+              {/* Description (scrollable block) */}
+              {(product.short_description || product.description) && (
+                <div className="mt-4 mb-4 max-h-[280px] overflow-y-auto pr-2 border border-foreground/[0.06] rounded-lg p-4 bg-muted/10 scrollbar-thin">
+                  {product.short_description && (
+                    <p className="text-foreground/70 text-sm leading-relaxed break-words mb-3">{product.short_description}</p>
+                  )}
+                  {product.description && (
+                    <div
+                      className="max-w-full overflow-hidden break-words prose prose-sm prose-invert text-muted-foreground leading-relaxed [&_*]:!max-w-full [&_*]:!text-muted-foreground [&_img]:h-auto [&_img]:max-w-full [&_pre]:whitespace-pre-wrap [&_pre]:break-words [&_table]:block [&_table]:max-w-full [&_table]:overflow-x-auto [&_td]:break-words [&_th]:break-words"
+                      dangerouslySetInnerHTML={{ __html: product.description }}
+                    />
+                  )}
+                </div>
+              )}
               <div className="mb-6 mt-3 flex flex-wrap items-center gap-3">
                 {product.badge && (
                   <Badge className="bg-primary/10 text-primary border border-primary/20 font-heading uppercase tracking-wider text-xs">
