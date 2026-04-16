@@ -16,7 +16,7 @@ const Footer = () => {
             <img
               src="/images/logo-motorex.png"
               alt="RT Brasil"
-              className="h-10 w-auto mb-4"
+              className="h-14 w-auto mb-4"
             />
             <p className="text-muted-foreground text-sm leading-relaxed max-w-xs">
               Distribuidora oficial <span className="text-motorex font-semibold">MOTOREX</span> no Brasil. Lubrificantes de alta

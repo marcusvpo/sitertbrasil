@@ -71,7 +71,7 @@ const Header = () => {
               width={120}
               height={32}
               fetchPriority="high"
-              className={cn("w-auto transition-all duration-500", scrolled ? "h-6" : "h-8")}
+              className={cn("w-auto transition-all duration-500", scrolled ? "h-8" : "h-10")}
             />
             </picture>
           </Link>
