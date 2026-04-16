@@ -97,7 +97,7 @@ const Depoimentos = () => (
             </p>
             <Button asChild size="lg" className="font-heading uppercase tracking-wider border-beam hover-glow">
               <a
-                href="https://wa.me/5500000000000?text=Olá! Gostaria de deixar um depoimento sobre os produtos MOTOREX."
+                href="https://wa.me/5516997964255?text=Olá! Gostaria de deixar um depoimento sobre os produtos MOTOREX."
                 target="_blank"
                 rel="noopener noreferrer"
               >
