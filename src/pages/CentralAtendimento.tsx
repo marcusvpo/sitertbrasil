@@ -18,6 +18,15 @@ const CentralAtendimento = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const nome = formData.get("nome")?.toString() || "";
+    const email = formData.get("email")?.toString() || "";
+    const whatsapp = formData.get("whatsapp")?.toString() || "";
+    const mensagem = formData.get("mensagem")?.toString() || "";
+    const subject = encodeURIComponent("Contato via site - Central de Atendimento");
+    const body = encodeURIComponent(`Nome: ${nome}\nE-mail: ${email}\nWhatsApp: ${whatsapp}\n\nMensagem:\n${mensagem}`);
+    window.open(`mailto:vendas@rtbrasilimport.com.br?subject=${subject}&body=${body}`, "_self");
     setSubmitted(true);
   };
 
@@ -108,18 +117,21 @@ const CentralAtendimento = () => {
       </section>
 
       {/* ── Mapa ── */}
-      <section className="border-t border-foreground/[0.04]">
-        <iframe
-          title="Localização RT Brasil"
-          src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1000!2d-48.35034751806419!3d-21.250251492402167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjHCsDE1JzAwLjkiUyA0OMKwMjEnMDEuMyJX!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
-          width="100%"
-          height="400"
-          style={{ border: 0 }}
-          allowFullScreen
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-          className="w-full"
-        />
+      <section className="border-t border-foreground/[0.04] py-10">
+        <div className="container">
+          <div className="max-w-2xl mx-auto rounded-2xl overflow-hidden border border-foreground/10">
+            <iframe
+              title="Localização RT Brasil"
+              src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1000!2d-48.35034751806419!3d-21.250251492402167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjHCsDE1JzAwLjkiUyA0OMKwMjEnMDEuMyJX!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+              width="100%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
       </section>
     </>
   );

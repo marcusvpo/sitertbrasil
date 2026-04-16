@@ -11,6 +11,15 @@ const SejaRevendedor = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const formData = new FormData(form);
+    const nome = formData.get("nome")?.toString() || "";
+    const empresa = formData.get("empresa")?.toString() || "";
+    const email = formData.get("email")?.toString() || "";
+    const whatsapp = formData.get("whatsapp")?.toString() || "";
+    const subject = encodeURIComponent("Cadastro de Revendedor - Site RT Brasil");
+    const body = encodeURIComponent(`Nome: ${nome}\nEmpresa: ${empresa}\nE-mail: ${email}\nWhatsApp: ${whatsapp}`);
+    window.open(`mailto:vendas@rtbrasilimport.com.br?subject=${subject}&body=${body}`, "_self");
     setSubmitted(true);
   };
 
