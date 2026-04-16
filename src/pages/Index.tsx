@@ -207,34 +207,34 @@ const Index = () => {
       </section>
 
       {/* ── Institutional ── */}
-      <section className="relative py-16 md:py-24 overflow-hidden bg-motorex/10">
+      <section className="relative py-16 md:py-24 overflow-hidden bg-motorex">
         <div className="container relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimateOnScroll animation="fade-in-left">
               <div>
-                <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Sobre</span>
+                <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Sobre</span>
                 <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 mb-6">
                   RT Brasil + <span className="text-motorex">MOTOREX</span>
                 </h2>
-                <p className="text-foreground/60 mb-4 leading-relaxed">
-                  A RT Brasil é distribuidora oficial da <span className="text-motorex font-semibold">MOTOREX</span>, marca suíça com mais de 100 anos de história e referência mundial em lubrificantes de alta performance.
+                <p className="text-white/80 mb-4 leading-relaxed">
+                  A RT Brasil é distribuidora oficial da <span className="text-white font-semibold">MOTOREX</span>, marca suíça com mais de 100 anos de história e referência mundial em lubrificantes de alta performance.
                 </p>
-                <p className="text-foreground/60 mb-6 leading-relaxed">
+                <p className="text-white/80 mb-6 leading-relaxed">
                   Nosso compromisso é levar ao mercado brasileiro produtos de qualidade comprovada em campeonatos mundiais, com pronta entrega e suporte especializado.
                 </p>
                 <ul className="space-y-3 mb-8">
                   {benefits.map((item, i) => (
                     <AnimateOnScroll key={item.text} animation="slide-up" delay={i * 80}>
-                      <li className="flex items-center gap-3 text-foreground/70">
-                        <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                          <item.icon size={16} className="text-primary" />
+                      <li className="flex items-center gap-3 text-white/80">
+                        <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
+                          <item.icon size={16} className="text-white" />
                         </div>
                         <span className="text-sm">{item.text}</span>
                       </li>
                     </AnimateOnScroll>
                   ))}
                 </ul>
-                <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-motorex/30 text-motorex hover:bg-motorex/10">
+                <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-white/40 text-white hover:bg-white/10">
                   <Link to="/quem-somos">Saiba mais <ArrowRight className="ml-2" size={16} /></Link>
                 </Button>
               </div>
@@ -306,11 +306,11 @@ const Index = () => {
       </section>
 
       {/* ── Quick Contact ── */}
-      <section className="relative py-16 md:py-24 bg-motorex/10">
+      <section className="relative py-16 md:py-24 bg-motorex">
         <div className="container relative z-10">
           <AnimateOnScroll className="text-center">
-            <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Fale Conosco</span>
-            <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 mb-8">Contato Rápido</h2>
+            <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Fale Conosco</span>
+            <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 mb-8 text-white">Contato Rápido</h2>
           </AnimateOnScroll>
           <AnimateOnScroll animation="slide-up" delay={200}>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
@@ -318,30 +318,30 @@ const Index = () => {
                 href="https://wa.me/5516997964255"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
+                className="rounded-lg px-6 py-4 flex items-center gap-3 text-white/90 bg-white/10 border border-white/20 hover:bg-white/20 transition-colors duration-300 min-h-[44px]"
               >
-                <Phone size={20} className="text-primary" /> (16) 99796-4255
+                <Phone size={20} className="text-white" /> (16) 99796-4255
               </a>
               <a
                 href="mailto:vendas@rtbrasilimport.com.br"
-                className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
+                className="rounded-lg px-6 py-4 flex items-center gap-3 text-white/90 bg-white/10 border border-white/20 hover:bg-white/20 transition-colors duration-300 min-h-[44px]"
               >
-                <Mail size={20} className="text-primary" /> vendas@rtbrasilimport.com.br
+                <Mail size={20} className="text-white" /> vendas@rtbrasilimport.com.br
               </a>
               <a
                 href="https://instagram.com/rtbrasil.motorex"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="gradient-border rounded-lg px-6 py-4 flex items-center gap-3 text-foreground/80 hover:text-primary transition-colors duration-300 min-h-[44px]"
+                className="rounded-lg px-6 py-4 flex items-center gap-3 text-white/90 bg-white/10 border border-white/20 hover:bg-white/20 transition-colors duration-300 min-h-[44px]"
               >
-                <Instagram size={20} className="text-primary" /> @rtbrasil.motorex
+                <Instagram size={20} className="text-white" /> @rtbrasil.motorex
               </a>
-              <div className="gradient-border rounded-lg px-6 py-4 flex items-start gap-3 text-foreground/80 min-h-[44px]">
-                <MapPin size={20} className="text-primary flex-shrink-0 mt-0.5" />
+              <div className="rounded-lg px-6 py-4 flex items-start gap-3 text-white/90 bg-white/10 border border-white/20 min-h-[44px]">
+                <MapPin size={20} className="text-white flex-shrink-0 mt-0.5" />
                 <span className="text-sm">Av. Alfeu Martini, 790 - Distrito Industrial II, Jaboticabal - SP</span>
               </div>
             </div>
-            <p className="text-center text-muted-foreground/60 text-xs mt-4">
+            <p className="text-center text-white/60 text-xs mt-4">
               Rt Brasil Importação e Comércio — CNPJ: 00.913.926/0001-78
             </p>
 
