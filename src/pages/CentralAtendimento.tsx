@@ -48,7 +48,7 @@ const CentralAtendimento = () => {
       </section>
 
       {/* ── Contact Cards — gradient borders ── */}
-      <section className="py-10 md:py-16 bg-motorex">
+      <section className="py-12 md:py-20 section-motorex-glow-intense">
         <div className="container">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {contactCards.map((c, i) => (

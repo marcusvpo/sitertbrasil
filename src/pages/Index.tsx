@@ -206,11 +206,8 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ── Gradient transition: dark → motorex ── */}
-      <div className="h-24 bg-gradient-to-b from-background to-motorex" />
-
       {/* ── Institutional ── */}
-      <section className="relative py-16 md:py-24 overflow-hidden bg-motorex">
+      <section className="relative py-20 md:py-32 overflow-hidden section-motorex-glow-intense">
         <div className="container relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimateOnScroll animation="fade-in-left">
@@ -256,9 +253,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-
-      {/* ── Gradient transition: motorex → dark ── */}
-      <div className="h-24 bg-gradient-to-b from-motorex to-background" />
 
       {/* ── Banners (Revendedor + Indique) ── */}
       <section className="relative w-full overflow-hidden">
@@ -311,11 +305,8 @@ const Index = () => {
         </AnimateOnScroll>
       </section>
 
-      {/* ── Gradient transition: dark → motorex ── */}
-      <div className="h-24 bg-gradient-to-b from-background to-motorex" />
-
       {/* ── Quick Contact ── */}
-      <section className="relative py-16 md:py-24 bg-motorex">
+      <section className="relative py-20 md:py-28 section-motorex-glow-intense">
         <div className="container relative z-10">
           <AnimateOnScroll className="text-center">
             <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Fale Conosco</span>
