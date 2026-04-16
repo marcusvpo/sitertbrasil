@@ -31,11 +31,11 @@ const SejaRevendedor = () => {
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
       </section>
 
-      <section className="relative py-12 md:py-20 mesh-gradient">
+      <section className="relative py-12 md:py-20 bg-motorex">
         <div className="container relative z-10 max-w-xl">
           <AnimateOnScroll className="text-center mb-8">
-            <h1 className="font-heading text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[0.9]">
-              Cadastro de <span className="text-gradient">Revendedor</span>
+            <h1 className="font-heading text-[clamp(2.5rem,6vw,4.5rem)] font-bold leading-[0.9] text-white">
+              Cadastro de <span className="text-white/90">Revendedor</span>
             </h1>
           </AnimateOnScroll>
 
@@ -49,7 +49,7 @@ const SejaRevendedor = () => {
             </AnimateOnScroll>
           ) : (
             <AnimateOnScroll animation="fade-up">
-              <form onSubmit={handleSubmit} className="gradient-border rounded-xl p-7 md:p-10 space-y-5 bg-foreground/[0.02]">
+              <form onSubmit={handleSubmit} className="bg-white/10 border border-white/20 rounded-xl p-7 md:p-10 space-y-5">
                 <div className="neon-focus rounded-md">
                   <Label htmlFor="nome" className="text-foreground/80 text-sm mb-1.5 block">Nome Completo</Label>
                   <Input id="nome" name="nome" placeholder="Seu nome completo" className="bg-muted/30 border-foreground/10" />
@@ -72,7 +72,7 @@ const SejaRevendedor = () => {
                     Concordo em receber contato da RT Brasil sobre produtos e condições comerciais <span className="text-motorex font-semibold">MOTOREX</span>.
                   </Label>
                 </div>
-                <Button type="submit" className="w-full font-heading uppercase tracking-wider border-beam hover-glow">
+                <Button type="submit" className="w-full font-heading uppercase tracking-wider bg-white text-motorex hover:bg-white/90">
                   Enviar cadastro
                 </Button>
               </form>
