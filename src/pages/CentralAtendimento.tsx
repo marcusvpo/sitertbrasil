@@ -3,8 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Phone, Mail, Instagram, MapPin, CheckCircle, Send } from "lucide-react";
+import { Phone, Mail, Instagram, MapPin, CheckCircle, Send, Loader2 } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const contactCards = [
   { icon: Phone, label: "WhatsApp", value: "(16) 99796-4255", href: "https://wa.me/5516997964255" },
@@ -15,18 +17,32 @@ const contactCards = [
 
 const CentralAtendimento = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-    const nome = formData.get("nome")?.toString() || "";
-    const email = formData.get("email")?.toString() || "";
-    const whatsapp = formData.get("whatsapp")?.toString() || "";
-    const mensagem = formData.get("mensagem")?.toString() || "";
-    const subject = encodeURIComponent("Contato via site - Central de Atendimento");
-    const body = encodeURIComponent(`Nome: ${nome}\nE-mail: ${email}\nWhatsApp: ${whatsapp}\n\nMensagem:\n${mensagem}`);
-    window.open(`mailto:vendas@rtbrasilimport.com.br?subject=${subject}&body=${body}`, "_self");
+    const nome = formData.get("nome")?.toString().trim() || "";
+    const email = formData.get("email")?.toString().trim() || "";
+    const whatsapp = formData.get("whatsapp")?.toString().trim() || "";
+    const mensagem = formData.get("mensagem")?.toString().trim() || "";
+
+    if (!nome || !email || !mensagem) {
+      toast.error("Preencha nome, e-mail e mensagem.");
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.from("contato_submissions").insert({
+      nome, email, whatsapp, mensagem,
+    });
+    setLoading(false);
+
+    if (error) {
+      toast.error("Erro ao enviar mensagem. Tente novamente.");
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -107,8 +123,8 @@ const CentralAtendimento = () => {
                   <Label htmlFor="mensagem" className="text-foreground/80 text-sm mb-1.5 block">Como podemos te ajudar?</Label>
                   <Textarea id="mensagem" name="mensagem" placeholder="Descreva sua dúvida ou solicitação..." className="bg-muted/30 border-foreground/10" rows={5} />
                 </div>
-                <Button type="submit" className="w-full font-heading uppercase tracking-wider border-beam hover-glow">
-                  Enviar mensagem
+                <Button type="submit" disabled={loading} className="w-full font-heading uppercase tracking-wider border-beam hover-glow">
+                  {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Enviando...</> : "Enviar mensagem"}
                 </Button>
               </form>
             </AnimateOnScroll>

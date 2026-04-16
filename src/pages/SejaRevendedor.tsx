@@ -3,23 +3,44 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { CheckCircle } from "lucide-react";
+import { CheckCircle, Loader2 } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const SejaRevendedor = () => {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const form = e.target as HTMLFormElement;
     const formData = new FormData(form);
-    const nome = formData.get("nome")?.toString() || "";
-    const empresa = formData.get("empresa")?.toString() || "";
-    const email = formData.get("email")?.toString() || "";
-    const whatsapp = formData.get("whatsapp")?.toString() || "";
-    const subject = encodeURIComponent("Cadastro de Revendedor - Site RT Brasil");
-    const body = encodeURIComponent(`Nome: ${nome}\nEmpresa: ${empresa}\nE-mail: ${email}\nWhatsApp: ${whatsapp}`);
-    window.open(`mailto:vendas@rtbrasilimport.com.br?subject=${subject}&body=${body}`, "_self");
+    const nome = formData.get("nome")?.toString().trim() || "";
+    const empresa = formData.get("empresa")?.toString().trim() || "";
+    const email = formData.get("email")?.toString().trim() || "";
+    const whatsapp = formData.get("whatsapp")?.toString().trim() || "";
+    const consentimento = formData.get("consentimento") === "on";
+
+    if (!nome || !email) {
+      toast.error("Preencha nome e e-mail.");
+      return;
+    }
+    if (!consentimento) {
+      toast.error("É necessário concordar com o contato comercial.");
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase.from("revendedor_submissions").insert({
+      nome, empresa, email, whatsapp, consentimento,
+    });
+    setLoading(false);
+
+    if (error) {
+      toast.error("Erro ao enviar cadastro. Tente novamente.");
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -67,13 +88,13 @@ const SejaRevendedor = () => {
                   <Input id="whatsapp" name="whatsapp" type="tel" placeholder="(00) 00000-0000" className="bg-muted/30 border-foreground/10" />
                 </div>
                 <div className="flex items-start gap-2 pt-1">
-                  <Checkbox id="consentimento" />
+                  <Checkbox id="consentimento" name="consentimento" />
                   <Label htmlFor="consentimento" className="text-sm text-muted-foreground leading-tight">
                     Concordo em receber contato da RT Brasil sobre produtos e condições comerciais <span className="text-motorex font-semibold">MOTOREX</span>.
                   </Label>
                 </div>
-                <Button type="submit" className="w-full font-heading uppercase tracking-wider bg-motorex text-white hover:bg-motorex/90">
-                  Enviar cadastro
+                <Button type="submit" disabled={loading} className="w-full font-heading uppercase tracking-wider bg-motorex text-white hover:bg-motorex/90">
+                  {loading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Enviando...</> : "Enviar cadastro"}
                 </Button>
               </form>
             </AnimateOnScroll>
