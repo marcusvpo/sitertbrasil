@@ -1,44 +1,55 @@
 
 
-## Plano de Alterações
+## Reformulação Visual — Degradês Suaves + Carrossel Corrigido
 
-### 1. Carrossel de fotos na Home (após hero)
-- Criar componente `HomeCarousel.tsx` usando Embla Carousel com autoplay (5s)
-- Buscar imagens do bucket Supabase `carrossel` via `supabase.storage.from('carrossel').list()`
-- Cards de tamanho uniforme (aspect-ratio 16:9), borda `border-motorex` (#26ad97)
-- Efeitos: fade/scale nas transições, glow sutil nos cards, animação de entrada
-- Inserir na `Index.tsx` entre a hero e a seção "Produtos em Destaque"
+### Diagnóstico
+1. **Degradês** atuais usam `h-24` com gradiente abrupto — resultado pesado e artificial.
+2. **Carrossel** busca imagens do bucket corretamente via `supabase.storage.from("carrossel").list()`, mas os placeholders Unsplash aparecem porque o bucket pode retornar arquivos ocultos (como `.emptyFolderPlaceholder`). Os cards são pequenos (`basis-[33%]`).
+3. **Seções `bg-motorex` puras** criam blocos sólidos demais — precisam de gradientes internos e transições orgânicas.
 
-### 2. Mesclagem de cores MOTOREX (#26ad97) no site
-- Adicionar backgrounds `bg-motorex` em seções alternadas (Institucional, Contato Rápido, etc.)
-- Ajustar textos para `text-white` ou `text-background` nessas seções para contraste
-- Manter preto/azul nas demais seções (Hero, Depoimentos, Vitrine)
-- Aplicar gradientes de transição entre seções escuras e verdes
+### Plano
 
-### 3. Aumentar logo no Header e Footer
-- **Header**: logo `h-8` → `h-10` (normal), `h-6` → `h-8` (scrolled)
-- **Footer**: logo `h-10` → `h-14`
+#### 1. Carrossel — Cards maiores + imagens do bucket
+- Remover `PLACEHOLDER_IMAGES` — se o bucket estiver vazio, não renderiza.
+- Gerar URLs explicitamente para `motorex1.jpg` até `motorex12.jpg` em vez de usar `.list()`.
+- Cards maiores: `basis-[90%] sm:basis-[70%] md:basis-[55%] lg:basis-[45%]`.
+- Bordas `border-motorex` (#26ad97) com glow `shadow-[0_0_25px_rgba(38,173,151,0.4)]` no card ativo.
+- Background: gradiente sutil `bg-gradient-to-b from-background via-motorex/20 to-background` em vez de `bg-motorex` sólido.
 
-### 4. Formulários enviando email para vendas@rtbrasilimport.com.br
-- Criar Edge Function `send-contact-form` que recebe os dados do formulário e envia email via `mailto:` link ou integração
-- Como não há infraestrutura de email configurada, a abordagem mais simples: usar `mailto:` com dados preenchidos ou configurar envio via Supabase Edge Function
-- Alternativa prática: usar `handleSubmit` para montar um `mailto:` link com os dados do formulário e abrir no navegador, ou salvar no banco e notificar
-- **Implementação**: Criar tabela `form_submissions` no Supabase para armazenar os envios, e usar Edge Function para enviar email — OU — usar a abordagem simples de `mailto:` URL com dados codificados
+#### 2. Degradês suaves — abordagem Awwwards
+Substituir todos os blocos `h-24 bg-gradient-to-b` por transições mais longas e orgânicas diretamente nas seções:
+- Remover os `<div className="h-24 bg-gradient-to-b ...">` separados.
+- Cada seção que antes era `bg-motorex` sólida agora usa `bg-gradient-to-b from-background via-motorex/30 to-background` (ou variações com `via-motorex/15` a `via-motorex/40` conforme contexto).
+- Seção Institucional (Home): `bg-gradient-to-b from-motorex/5 via-motorex/25 to-motorex/5` com padding maior (`py-24 md:py-32`).
+- Seção Contato Rápido (Home): `bg-gradient-to-b from-background via-motorex/20 to-background`.
+- Footer: manter `bg-motorex` sólido (fixo conforme pedido).
+- Header: manter `bg-motorex/95` (fixo conforme pedido).
 
-### 5. Corrigir WhatsApp em /depoimentos
-- Alterar `href` de `https://wa.me/5500000000000` para `https://wa.me/5516997964255`
+#### 3. Páginas secundárias — mesma filosofia
+- **QuemSomos** seção Stats: `bg-gradient-to-b from-background via-motorex/25 to-background` em vez de `bg-motorex`.
+- **Depoimentos** CTA: `bg-gradient-to-b from-background via-motorex/30 to-background`.
+- **CentralAtendimento** contact cards: gradiente sutil no container.
+- Ajustar cores de texto nessas seções (manter legibilidade com `text-white` nas áreas mais escuras e `text-foreground` nas claras).
 
-### 6. Ajustar card de mapa na Home
-- Envolver iframe em container com `max-w-2xl mx-auto rounded-2xl overflow-hidden`
-- Usar mesma URL de embed do mapa da `CentralAtendimento.tsx` (coordenadas exatas: -21.250251, -48.350347)
-
-### 7. Fundo branco no texto "Distribuidora Oficial MOTOREX no Brasil" na hero
-- Adicionar `bg-white/90 text-background px-4 py-1.5 rounded` no `<span>` do subtítulo
+#### 4. CSS global — utilitário de transição
+Adicionar classe `.section-motorex-glow` no `index.css`:
+```css
+.section-motorex-glow {
+  background: linear-gradient(180deg, 
+    hsl(0 0% 4%) 0%, 
+    hsl(164 64% 41% / 0.18) 30%, 
+    hsl(164 64% 41% / 0.25) 50%, 
+    hsl(164 64% 41% / 0.18) 70%, 
+    hsl(0 0% 4%) 100%
+  );
+}
+```
 
 ### Arquivos afetados
-- **Criar**: `src/components/HomeCarousel.tsx`
-- **Editar**: `src/pages/Index.tsx`, `src/components/Header.tsx`, `src/components/Footer.tsx`, `src/pages/Depoimentos.tsx`, `src/pages/SejaRevendedor.tsx`, `src/pages/CentralAtendimento.tsx`
-
-### Nota sobre formulários
-Para envio real de email, será necessário configurar uma Edge Function ou usar a infraestrutura de email do Lovable. A abordagem mais rápida seria salvar os dados numa tabela Supabase `form_submissions` e usar `mailto:` como fallback, ou configurar email via Lovable Cloud.
+- `src/components/HomeCarousel.tsx` — URLs explícitas, cards maiores, bg gradiente
+- `src/pages/Index.tsx` — remover divs de transição, aplicar gradientes nas seções
+- `src/pages/QuemSomos.tsx` — seção Stats com gradiente suave
+- `src/pages/Depoimentos.tsx` — CTA com gradiente suave
+- `src/pages/CentralAtendimento.tsx` — gradiente sutil
+- `src/index.css` — classe utilitária `.section-motorex-glow`
 
