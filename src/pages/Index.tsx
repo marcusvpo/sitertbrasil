@@ -4,6 +4,7 @@ import { ArrowRight, Star, Phone, Mail, Instagram, Shield, Trophy, Zap, DollarSi
 import { Button } from "@/components/ui/button";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import GlareCard from "@/components/GlareCard";
+import HomeCarousel from "@/components/HomeCarousel";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
@@ -95,7 +96,7 @@ const Index = () => {
         <div className="relative z-10 container pb-20 md:pb-28 flex justify-end">
           <div className="w-full md:w-1/2 md:text-right">
             <AnimateOnScroll animation="blur-in">
-              <span className="inline-block font-heading uppercase text-primary text-xs tracking-[0.3em] mb-4">
+              <span className="inline-block font-heading uppercase text-xs tracking-[0.3em] mb-4 bg-white/90 text-background px-4 py-1.5 rounded">
                 Distribuidora Oficial <span className="text-motorex">MOTOREX</span> no Brasil
               </span>
             </AnimateOnScroll>
@@ -127,6 +128,8 @@ const Index = () => {
         </div>
       </section>
 
+      {/* ── Image Carousel ── */}
+      <HomeCarousel />
 
       {/* ── Featured Products — Asymmetric Grid ── */}
       <section className="relative py-16 md:py-24 mesh-gradient">
@@ -204,7 +207,7 @@ const Index = () => {
       </section>
 
       {/* ── Institutional ── */}
-      <section className="relative py-16 md:py-24 overflow-hidden">
+      <section className="relative py-16 md:py-24 overflow-hidden bg-motorex/10">
         <div className="container relative z-10">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <AnimateOnScroll animation="fade-in-left">
@@ -303,7 +306,7 @@ const Index = () => {
       </section>
 
       {/* ── Quick Contact ── */}
-      <section className="relative py-16 md:py-24 mesh-gradient">
+      <section className="relative py-16 md:py-24 bg-motorex/10">
         <div className="container relative z-10">
           <AnimateOnScroll className="text-center">
             <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Fale Conosco</span>
@@ -354,10 +357,10 @@ const Index = () => {
             </div>
 
             {/* Google Maps embed */}
-            <div className="rounded-lg overflow-hidden border border-foreground/10">
+            <div className="max-w-2xl mx-auto rounded-2xl overflow-hidden border border-foreground/10">
               <iframe
                 title="Localização RT Brasil"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1858.2!2d-48.32556!3d-21.25472!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94b8f5e5a4c5d3e7%3A0x0!2sAv.+Alfeu+Martini%2C+790+-+Distrito+Industrial+II%2C+Jaboticabal+-+SP%2C+14887-208!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
+                src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1000!2d-48.35034751806419!3d-21.250251492402167!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjHCsDE1JzAwLjkiUyA0OMKwMjEnMDEuMyJX!5e0!3m2!1spt-BR!2sbr!4v1700000000000"
                 width="100%"
                 height="300"
                 style={{ border: 0 }}
