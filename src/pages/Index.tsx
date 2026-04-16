@@ -206,6 +206,9 @@ const Index = () => {
         </div>
       </section>
 
+      {/* ── Gradient transition: dark → motorex ── */}
+      <div className="h-24 bg-gradient-to-b from-background to-motorex" />
+
       {/* ── Institutional ── */}
       <section className="relative py-16 md:py-24 overflow-hidden bg-motorex">
         <div className="container relative z-10">
@@ -214,7 +217,7 @@ const Index = () => {
               <div>
                 <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Sobre</span>
                 <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 mb-6">
-                  RT Brasil + <span className="text-motorex">MOTOREX</span>
+                  RT Brasil + <span className="text-white">MOTOREX</span>
                 </h2>
                 <p className="text-white/80 mb-4 leading-relaxed">
                   A RT Brasil é distribuidora oficial da <span className="text-white font-semibold">MOTOREX</span>, marca suíça com mais de 100 anos de história e referência mundial em lubrificantes de alta performance.
@@ -241,7 +244,7 @@ const Index = () => {
             </AnimateOnScroll>
             <AnimateOnScroll animation="fade-in-right">
               <div className="flex justify-center">
-                <div className="relative">
+                <div className="relative bg-background/80 rounded-2xl p-8 backdrop-blur-sm">
                   <div className="absolute inset-0 bg-primary/10 rounded-full blur-[80px]" />
                   <picture>
                     <source srcSet="/images/logo-motorex.webp" type="image/webp" />
@@ -253,6 +256,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* ── Gradient transition: motorex → dark ── */}
+      <div className="h-24 bg-gradient-to-b from-motorex to-background" />
 
       {/* ── Banners (Revendedor + Indique) ── */}
       <section className="relative w-full overflow-hidden">
@@ -304,6 +310,9 @@ const Index = () => {
           </Button>
         </AnimateOnScroll>
       </section>
+
+      {/* ── Gradient transition: dark → motorex ── */}
+      <div className="h-24 bg-gradient-to-b from-background to-motorex" />
 
       {/* ── Quick Contact ── */}
       <section className="relative py-16 md:py-24 bg-motorex">

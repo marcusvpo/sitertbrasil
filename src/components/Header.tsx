@@ -56,7 +56,7 @@ const Header = () => {
         <div
           className={cn(
             "flex items-center gap-2 rounded-full border transition-all duration-500",
-            "bg-background/80 backdrop-blur-2xl border-foreground/[0.06]",
+            "bg-motorex/95 backdrop-blur-2xl border-white/10",
             "shadow-[0_4px_30px_hsl(0_0%_0%/0.4)]",
             scrolled ? "px-3 py-1" : "px-4 py-1.5"
           )}
@@ -80,7 +80,7 @@ const Header = () => {
           <nav ref={navContainerRef} className="hidden lg:flex items-center relative">
             {/* Animated pill behind active item */}
             <div
-              className="absolute h-7 rounded-full bg-primary/10 border border-primary/20 transition-all duration-300 ease-out"
+              className="absolute h-7 rounded-full bg-white/15 border border-white/20 transition-all duration-300 ease-out"
               style={{
                 left: pillStyle.left,
                 width: pillStyle.width,
@@ -96,8 +96,8 @@ const Header = () => {
                 className={cn(
                   "relative px-3 py-1.5 text-[11px] font-heading uppercase tracking-wider transition-colors duration-300 whitespace-nowrap",
                   location.pathname === item.to
-                    ? item.label === "Motorex" ? "text-motorex" : "text-primary"
-                    : item.label === "Motorex" ? "text-motorex/60 hover:text-motorex" : "text-foreground/50 hover:text-foreground"
+                    ? "text-white font-semibold"
+                    : "text-white/70 hover:text-white"
                 )}
               >
                 {item.label}
@@ -109,7 +109,7 @@ const Header = () => {
             <CartIcon />
             <Link
               to="/central-atendimento"
-              className="relative flex items-center font-heading uppercase text-[11px] tracking-wider px-4 py-1.5 rounded-full border-beam text-primary-foreground bg-primary btn-clip hover:shadow-[0_0_20px_hsl(197_100%_43.7%/0.3)] transition-all duration-300"
+              className="relative flex items-center font-heading uppercase text-[11px] tracking-wider px-4 py-1.5 rounded-full border-beam text-motorex bg-white btn-clip hover:bg-white/90 transition-all duration-300"
             >
               Central de Atendimento
             </Link>
@@ -119,8 +119,8 @@ const Header = () => {
           <div className="lg:hidden ml-auto flex items-center gap-1">
             <CartIcon />
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="text-foreground p-2 transition-transform duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
+          onClick={() => setMobileOpen(!mobileOpen)}
+              className="text-white p-2 transition-transform duration-300 hover:scale-110 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Menu"
             >
               {mobileOpen ? <X size={22} /> : <Menu size={22} />}
@@ -149,8 +149,8 @@ const Header = () => {
                 "font-heading uppercase text-xl tracking-wider py-3 transition-all duration-300 min-h-[44px] flex items-center",
                 mobileOpen ? "animate-fade-up" : "",
                 location.pathname === item.to
-                  ? item.label === "Motorex" ? "text-motorex" : "text-primary"
-                  : item.label === "Motorex" ? "text-motorex/60 hover:text-motorex" : "text-foreground/60 hover:text-primary"
+                  ? "text-motorex"
+                  : "text-foreground/60 hover:text-motorex"
               )}
               style={{ animationDelay: `${i * 60}ms` }}
             >
