@@ -48,22 +48,22 @@ const CentralAtendimento = () => {
       </section>
 
       {/* ── Contact Cards — gradient borders ── */}
-      <section className="py-10 md:py-16 border-t border-foreground/[0.04]">
+      <section className="py-10 md:py-16 bg-motorex">
         <div className="container">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {contactCards.map((c, i) => (
               <AnimateOnScroll key={c.label} animation="scale-in" delay={i * 100}>
-                <div className="gradient-border rounded-xl p-7 text-center hover:shadow-[0_0_30px_hsl(197_100%_43.7%/0.1)] transition-all duration-500 h-full">
-                  <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                    <c.icon size={24} className="text-primary" />
+                <div className="bg-white/10 border border-white/20 rounded-xl p-7 text-center hover:bg-white/15 transition-all duration-500 h-full">
+                  <div className="w-14 h-14 rounded-full bg-white/15 flex items-center justify-center mx-auto mb-4">
+                    <c.icon size={24} className="text-white" />
                   </div>
-                  <h3 className="font-heading text-sm font-semibold mb-1">{c.label}</h3>
+                  <h3 className="font-heading text-sm font-semibold mb-1 text-white">{c.label}</h3>
                   {c.href ? (
-                    <a href={c.href} target="_blank" rel="noopener noreferrer" className="text-muted-foreground text-sm hover:text-primary transition-colors">
+                    <a href={c.href} target="_blank" rel="noopener noreferrer" className="text-white/70 text-sm hover:text-white transition-colors">
                       {c.value}
                     </a>
                   ) : (
-                    <p className="text-muted-foreground text-sm">{c.value}</p>
+                    <p className="text-white/70 text-sm">{c.value}</p>
                   )}
                 </div>
               </AnimateOnScroll>

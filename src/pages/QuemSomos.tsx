@@ -101,23 +101,21 @@ const QuemSomos = () => {
       </section>
 
       {/* ── Stats ── */}
-      <section className="relative py-16 md:py-24 border-t border-foreground/[0.04] mesh-gradient">
+      <section className="relative py-16 md:py-24 bg-motorex">
         <div className="container relative z-10">
           <AnimateOnScroll className="text-center mb-12">
-            <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Números</span>
-            <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2"><span className="text-motorex">MOTOREX</span> no Mundo</h2>
+            <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Números</span>
+            <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 text-white"><span className="text-white">MOTOREX</span> no Mundo</h2>
           </AnimateOnScroll>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
             {stats.map((s, i) => (
               <AnimateOnScroll key={s.label} animation="scale-in" delay={i * 100}>
-                <div className="gradient-border text-center p-8 rounded-xl">
-                  <s.icon size={28} className="mx-auto text-motorex mb-4" />
-                  <span
-                    className="font-heading text-4xl md:text-5xl font-bold text-motorex block"
-                  >
+                <div className="bg-white/10 border border-white/20 text-center p-8 rounded-xl">
+                  <s.icon size={28} className="mx-auto text-white mb-4" />
+                  <span className="font-heading text-4xl md:text-5xl font-bold text-white block">
                     {s.value}
                   </span>
-                  <span className="text-muted-foreground text-sm mt-2 block">{s.label}</span>
+                  <span className="text-white/70 text-sm mt-2 block">{s.label}</span>
                 </div>
               </AnimateOnScroll>
             ))}

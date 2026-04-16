@@ -84,18 +84,18 @@ const Depoimentos = () => (
     </section>
 
     {/* ── CTA ── */}
-    <section className="relative py-16 md:py-24 border-t border-foreground/[0.04] mesh-gradient">
+    <section className="relative py-16 md:py-24 bg-motorex">
       <div className="container relative z-10 text-center">
         <AnimateOnScroll>
-          <div className="gradient-border rounded-xl p-10 md:p-14 max-w-xl mx-auto">
-            <MessageCircle size={40} className="mx-auto text-primary mb-5" />
-            <h2 className="font-heading text-[clamp(1.5rem,4vw,2.5rem)] font-bold mb-3">
+          <div className="bg-white/10 border border-white/20 rounded-xl p-10 md:p-14 max-w-xl mx-auto">
+            <MessageCircle size={40} className="mx-auto text-white mb-5" />
+            <h2 className="font-heading text-[clamp(1.5rem,4vw,2.5rem)] font-bold mb-3 text-white">
               Tem um depoimento?
             </h2>
-            <p className="text-muted-foreground mb-8 max-w-md mx-auto">
+            <p className="text-white/70 mb-8 max-w-md mx-auto">
               Compartilhe sua experiência com produtos MOTOREX e ajude outros a conhecerem a marca.
             </p>
-            <Button asChild size="lg" className="font-heading uppercase tracking-wider border-beam hover-glow">
+            <Button asChild size="lg" className="font-heading uppercase tracking-wider bg-white text-motorex hover:bg-white/90">
               <a
                 href="https://wa.me/5516997964255?text=Olá! Gostaria de deixar um depoimento sobre os produtos MOTOREX."
                 target="_blank"
