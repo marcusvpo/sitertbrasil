@@ -2,41 +2,43 @@
 
 ## Plano de Alterações
 
-### 1. Remover Scroll Animation da Home
-- Remover o `<Suspense>` + `<ScrollAnimation />` (linhas 132-135 de `Index.tsx`)
-- Remover o lazy import do `ScrollAnimation` (linha 6)
+### 1. Carrossel de fotos na Home (após hero)
+- Criar componente `HomeCarousel.tsx` usando Embla Carousel com autoplay (5s)
+- Buscar imagens do bucket Supabase `carrossel` via `supabase.storage.from('carrossel').list()`
+- Cards de tamanho uniforme (aspect-ratio 16:9), borda `border-motorex` (#26ad97)
+- Efeitos: fade/scale nas transições, glow sutil nos cards, animação de entrada
+- Inserir na `Index.tsx` entre a hero e a seção "Produtos em Destaque"
 
-### 2. Adicionar CNPJ em dados de contato
-Adicionar "Rt Brasil Importação e Comércio - CNPJ: 00.913.926/0001-78" em:
-- **`Footer.tsx`**: Na linha de copyright, junto ao nome RT Brasil
-- **`QuemSomos.tsx`**: Na seção intro, abaixo da descrição
-- **`Index.tsx`**: Na seção "Contato Rápido"
+### 2. Mesclagem de cores MOTOREX (#26ad97) no site
+- Adicionar backgrounds `bg-motorex` em seções alternadas (Institucional, Contato Rápido, etc.)
+- Ajustar textos para `text-white` ou `text-background` nessas seções para contraste
+- Manter preto/azul nas demais seções (Hero, Depoimentos, Vitrine)
+- Aplicar gradientes de transição entre seções escuras e verdes
 
-### 3. Cor MOTOREX (#26ad97) em mais elementos
-Alterar a cor de vários botões e textos de `text-primary`/`bg-primary` para `text-motorex`/`bg-motorex`:
-- **Preços dos produtos** em `Motorex.tsx` e `ProductDetail.tsx` e cards da home
-- **Texto das categorias** (pills ativas) em `Motorex.tsx`
-- **Botões CTA**: "Saiba mais", "Cadastre-se agora", "Ver todos os depoimentos", "Central de Atendimento" em `Index.tsx`
-- **Botões de documentação** em `ProductDocumentation.tsx` (já parcialmente feito)
+### 3. Aumentar logo no Header e Footer
+- **Header**: logo `h-8` → `h-10` (normal), `h-6` → `h-8` (scrolled)
+- **Footer**: logo `h-10` → `h-14`
 
-### 4. Descrição do produto ao lado direito com scroll fixo
-Reestruturar `ProductDetail.tsx`:
-- Mover `short_description` e `description` da coluna esquerda para a coluna direita
-- Posicioná-los entre o `ProductRating` e o card de preço/carrinho
-- Envolver a descrição em um bloco com `max-h-[300px] overflow-y-auto` para scroll interno
-- O card de preço/ações permanece sticky abaixo da descrição
+### 4. Formulários enviando email para vendas@rtbrasilimport.com.br
+- Criar Edge Function `send-contact-form` que recebe os dados do formulário e envia email via `mailto:` link ou integração
+- Como não há infraestrutura de email configurada, a abordagem mais simples: usar `mailto:` com dados preenchidos ou configurar envio via Supabase Edge Function
+- Alternativa prática: usar `handleSubmit` para montar um `mailto:` link com os dados do formulário e abrir no navegador, ou salvar no banco e notificar
+- **Implementação**: Criar tabela `form_submissions` no Supabase para armazenar os envios, e usar Edge Function para enviar email — OU — usar a abordagem simples de `mailto:` URL com dados codificados
 
-### 5. Timeline roadmap em QuemSomos
-Substituir o layout atual (sticky panel + scroll items) por um **roadmap vertical** com:
-- Linha central vertical com pontos/dots conectados
-- Itens alternando esquerda/direita (desktop) ou todos à direita (mobile)
-- Ano destacado no dot/node, texto ao lado
-- Remover o sticky panel que está desalinhado
+### 5. Corrigir WhatsApp em /depoimentos
+- Alterar `href` de `https://wa.me/5500000000000` para `https://wa.me/5516997964255`
+
+### 6. Ajustar card de mapa na Home
+- Envolver iframe em container com `max-w-2xl mx-auto rounded-2xl overflow-hidden`
+- Usar mesma URL de embed do mapa da `CentralAtendimento.tsx` (coordenadas exatas: -21.250251, -48.350347)
+
+### 7. Fundo branco no texto "Distribuidora Oficial MOTOREX no Brasil" na hero
+- Adicionar `bg-white/90 text-background px-4 py-1.5 rounded` no `<span>` do subtítulo
 
 ### Arquivos afetados
-- `src/pages/Index.tsx` — remover animation, adicionar CNPJ, cor motorex nos botões
-- `src/components/Footer.tsx` — adicionar CNPJ
-- `src/pages/QuemSomos.tsx` — adicionar CNPJ, refazer timeline como roadmap
-- `src/pages/ProductDetail.tsx` — mover descrição para coluna direita com scroll
-- `src/pages/Motorex.tsx` — cor motorex nos preços e categorias
+- **Criar**: `src/components/HomeCarousel.tsx`
+- **Editar**: `src/pages/Index.tsx`, `src/components/Header.tsx`, `src/components/Footer.tsx`, `src/pages/Depoimentos.tsx`, `src/pages/SejaRevendedor.tsx`, `src/pages/CentralAtendimento.tsx`
+
+### Nota sobre formulários
+Para envio real de email, será necessário configurar uma Edge Function ou usar a infraestrutura de email do Lovable. A abordagem mais rápida seria salvar os dados numa tabela Supabase `form_submissions` e usar `mailto:` como fallback, ou configurar email via Lovable Cloud.
 
