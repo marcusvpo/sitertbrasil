@@ -101,7 +101,7 @@ const QuemSomos = () => {
       </section>
 
       {/* ── Stats ── */}
-      <section className="relative py-16 md:py-24 bg-motorex">
+      <section className="relative py-20 md:py-28 section-motorex-glow-intense">
         <div className="container relative z-10">
           <AnimateOnScroll className="text-center mb-12">
             <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Números</span>

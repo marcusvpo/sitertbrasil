@@ -84,7 +84,7 @@ const Depoimentos = () => (
     </section>
 
     {/* ── CTA ── */}
-    <section className="relative py-16 md:py-24 bg-motorex">
+    <section className="relative py-20 md:py-28 section-motorex-glow-intense">
       <div className="container relative z-10 text-center">
         <AnimateOnScroll>
           <div className="bg-white/10 border border-white/20 rounded-xl p-10 md:p-14 max-w-xl mx-auto">
