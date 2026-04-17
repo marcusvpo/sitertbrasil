@@ -213,40 +213,33 @@
     border-radius: 0 !important;
   }
 
-  /* ── MOTOREX glow section — smooth dual-brand gradient (RT cyan + MOTOREX teal) ── */
-  .section-motorex-glow {
+  /* ── MOTOREX section — pure brand color, no muddy gradient ── */
+  .section-motorex-pure {
+    background: hsl(var(--motorex));
+    color: hsl(0 0% 100%);
     position: relative;
-    background: hsl(0 0% 4%);
     isolation: isolate;
   }
-  .section-motorex-glow::before {
+  .section-motorex-pure::before {
     content: '';
     position: absolute;
     inset: 0;
     z-index: -1;
     pointer-events: none;
-    background:
-      radial-gradient(ellipse 70% 55% at 18% 30%, hsl(197 100% 43.7% / 0.18) 0%, transparent 65%),
-      radial-gradient(ellipse 65% 60% at 82% 70%, hsl(164 64% 41% / 0.22) 0%, transparent 65%),
-      linear-gradient(180deg, hsl(0 0% 4%) 0%, hsl(195 50% 8%) 50%, hsl(0 0% 4%) 100%);
+    opacity: 0.07;
+    background-image:
+      linear-gradient(hsl(0 0% 100%) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(0 0% 100%) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black, transparent 85%);
   }
 
+  /* Legacy aliases — pure brand color, no gradient to black */
+  .section-motorex-glow,
   .section-motorex-glow-intense {
-    position: relative;
-    background: hsl(0 0% 4%);
-    isolation: isolate;
-  }
-  .section-motorex-glow-intense::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 80% 60% at 15% 25%, hsl(197 100% 43.7% / 0.22) 0%, transparent 60%),
-      radial-gradient(ellipse 75% 65% at 85% 75%, hsl(164 64% 41% / 0.28) 0%, transparent 60%),
-      radial-gradient(ellipse 50% 40% at 50% 50%, hsl(180 55% 20% / 0.25) 0%, transparent 70%),
-      linear-gradient(180deg, hsl(0 0% 4%) 0%, hsl(190 45% 9%) 50%, hsl(0 0% 4%) 100%);
+    background: hsl(var(--motorex));
+    color: hsl(0 0% 100%);
   }
 }
 
