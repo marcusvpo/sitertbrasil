@@ -51,7 +51,7 @@ const LojasParceirasCarousel = () => {
             Lojas que confiam na <span className="text-gradient">RT Brasil</span>
           </h2>
           <p className="text-foreground/60 mt-3 max-w-xl mx-auto text-sm md:text-base">
-            Revendedores oficiais MOTOREX em todo o Brasil
+            Revendedores oficiais <span className="text-motorex font-semibold">MOTOREX</span> em todo o Brasil
           </p>
         </AnimateOnScroll>
       </div>
