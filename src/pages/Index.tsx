@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import GlareCard from "@/components/GlareCard";
 import HomeCarousel from "@/components/HomeCarousel";
+import LojasParceirasCarousel from "@/components/LojasParceirasCarousel";
 import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
@@ -130,6 +131,9 @@ const Index = () => {
 
       {/* ── Image Carousel ── */}
       <HomeCarousel />
+
+      {/* ── Lojas Parceiras Marquee ── */}
+      <LojasParceirasCarousel />
 
       {/* ── Featured Products — Asymmetric Grid ── */}
       <section className="relative py-16 md:py-24 mesh-gradient">
