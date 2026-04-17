@@ -3,10 +3,11 @@ import { Instagram, Phone, Mail, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-motorex border-t border-white/10">
-      {/* Subtle mesh gradient */}
-      <div className="absolute inset-0 pointer-events-none opacity-30">
-        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-[120px]" />
+    <footer className="relative bg-background border-t border-white/10">
+      {/* Subtle motorex glow accent */}
+      <div className="absolute inset-0 pointer-events-none opacity-40">
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-motorex/10 rounded-full blur-[120px]" />
+        <div className="absolute top-0 right-1/4 w-80 h-80 bg-primary/8 rounded-full blur-[120px]" />
       </div>
 
       <div className="container relative py-10 md:py-14">
