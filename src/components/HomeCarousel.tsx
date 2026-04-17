@@ -53,11 +53,11 @@ const HomeCarousel = () => {
                         : "border-motorex/20 scale-[0.93] opacity-50"
                     }`}
                   >
-                    <div className="aspect-square">
+                    <div className="aspect-[4/5]">
                       <img
                         src={url}
                         alt={`MOTOREX galeria ${i + 1}`}
-                        className="w-full h-full object-contain transition-transform duration-700 hover:scale-105"
+                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                         loading="lazy"
                       />
                     </div>
