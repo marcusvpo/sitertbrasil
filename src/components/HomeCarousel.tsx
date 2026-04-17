@@ -44,20 +44,20 @@ const HomeCarousel = () => {
               return (
                 <div
                   key={i}
-                  className="min-w-0 shrink-0 grow-0 basis-[90%] sm:basis-[70%] md:basis-[55%] lg:basis-[45%] pl-5 transition-all duration-500"
+                  className="min-w-0 shrink-0 grow-0 basis-[85%] sm:basis-[60%] md:basis-[45%] lg:basis-[36%] pl-5 transition-all duration-500"
                 >
                   <div
-                    className={`relative rounded-xl overflow-hidden border-2 transition-all duration-700 ${
+                    className={`relative rounded-xl overflow-hidden border-2 transition-all duration-700 bg-background ${
                       isActive
                         ? "border-motorex shadow-[0_0_30px_rgba(38,173,151,0.4)] scale-100"
                         : "border-motorex/20 scale-[0.93] opacity-50"
                     }`}
                   >
-                    <div className="aspect-video">
+                    <div className="aspect-square">
                       <img
                         src={url}
                         alt={`MOTOREX galeria ${i + 1}`}
-                        className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+                        className="w-full h-full object-contain transition-transform duration-700 hover:scale-105"
                         loading="lazy"
                       />
                     </div>
