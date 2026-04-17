@@ -1,55 +1,76 @@
 
 
-## Reformulação Visual — Degradês Suaves + Carrossel Corrigido
+## Carrossel "Lojas Parceiras" — Home + Página Parceiros
 
-### Diagnóstico
-1. **Degradês** atuais usam `h-24` com gradiente abrupto — resultado pesado e artificial.
-2. **Carrossel** busca imagens do bucket corretamente via `supabase.storage.from("carrossel").list()`, mas os placeholders Unsplash aparecem porque o bucket pode retornar arquivos ocultos (como `.emptyFolderPlaceholder`). Os cards são pequenos (`basis-[33%]`).
-3. **Seções `bg-motorex` puras** criam blocos sólidos demais — precisam de gradientes internos e transições orgânicas.
+### Objetivo
+Criar uma seção com carrossel infinito (marquee) exibindo logos de 22 lojas parceiras, com link para o site de cada uma, presente tanto na Home quanto em `/parceiros`.
 
-### Plano
+### Componente novo: `src/components/LojasParceirasCarousel.tsx`
 
-#### 1. Carrossel — Cards maiores + imagens do bucket
-- Remover `PLACEHOLDER_IMAGES` — se o bucket estiver vazio, não renderiza.
-- Gerar URLs explicitamente para `motorex1.jpg` até `motorex12.jpg` em vez de usar `.list()`.
-- Cards maiores: `basis-[90%] sm:basis-[70%] md:basis-[55%] lg:basis-[45%]`.
-- Bordas `border-motorex` (#26ad97) com glow `shadow-[0_0_25px_rgba(38,173,151,0.4)]` no card ativo.
-- Background: gradiente sutil `bg-gradient-to-b from-background via-motorex/20 to-background` em vez de `bg-motorex` sólido.
+**Comportamento:**
+- Marquee horizontal com auto-scroll contínuo (CSS `@keyframes` infinito, sem pulos).
+- Pausa no hover.
+- Direção: esquerda → direita (ou vice-versa, padrão LTR).
+- Loop perfeito duplicando a lista de logos (técnica clássica de marquee CSS).
+- Cada card é um `<a target="_blank" rel="noopener noreferrer">` linkando para o site da loja.
 
-#### 2. Degradês suaves — abordagem Awwwards
-Substituir todos os blocos `h-24 bg-gradient-to-b` por transições mais longas e orgânicas diretamente nas seções:
-- Remover os `<div className="h-24 bg-gradient-to-b ...">` separados.
-- Cada seção que antes era `bg-motorex` sólida agora usa `bg-gradient-to-b from-background via-motorex/30 to-background` (ou variações com `via-motorex/15` a `via-motorex/40` conforme contexto).
-- Seção Institucional (Home): `bg-gradient-to-b from-motorex/5 via-motorex/25 to-motorex/5` com padding maior (`py-24 md:py-32`).
-- Seção Contato Rápido (Home): `bg-gradient-to-b from-background via-motorex/20 to-background`.
-- Footer: manter `bg-motorex` sólido (fixo conforme pedido).
-- Header: manter `bg-motorex/95` (fixo conforme pedido).
+**Layout dos cards (uniformes):**
+- Tamanho fixo: `w-[180px] h-[100px]` (proporção ~16:9, compatível com logos horizontais e quadradas).
+- Fundo branco `bg-white` com border `border-motorex/20`, `rounded-lg`.
+- Logo dentro com `object-contain` + `padding` interno (p-4) → garante imagem completa, sem corte/escala forçada.
+- Hover: leve scale + glow cyan sutil + tooltip com nome da loja e cidade.
 
-#### 3. Páginas secundárias — mesma filosofia
-- **QuemSomos** seção Stats: `bg-gradient-to-b from-background via-motorex/25 to-background` em vez de `bg-motorex`.
-- **Depoimentos** CTA: `bg-gradient-to-b from-background via-motorex/30 to-background`.
-- **CentralAtendimento** contact cards: gradiente sutil no container.
-- Ajustar cores de texto nessas seções (manter legibilidade com `text-white` nas áreas mais escuras e `text-foreground` nas claras).
+**Header da seção:**
+- Tag (Oswald uppercase): "Rede de Revendedores"
+- Título: "Lojas que confiam na **RT Brasil**" (RT Brasil em cyan)
+- Subtítulo: "Revendedores oficiais MOTOREX em todo o Brasil"
 
-#### 4. CSS global — utilitário de transição
-Adicionar classe `.section-motorex-glow` no `index.css`:
-```css
-.section-motorex-glow {
-  background: linear-gradient(180deg, 
-    hsl(0 0% 4%) 0%, 
-    hsl(164 64% 41% / 0.18) 30%, 
-    hsl(164 64% 41% / 0.25) 50%, 
-    hsl(164 64% 41% / 0.18) 70%, 
-    hsl(0 0% 4%) 100%
-  );
-}
+### Dados (array dentro do componente)
+
+Array de 22 objetos `{ nome, cidade, uf, url, logo }`.
+
+**Observações importantes sobre os dados fornecidos:**
+1. `logo-spinellioffroad` está sem extensão — vou assumir `.png` (confirmar visualmente após).
+2. `Mercado MX` e `MotoX MX1` têm a mesma URL (`mercadomx.com.br`) — vou manter conforme passado.
+3. URLs do Instagram serão tratadas igual (target=_blank).
+
+### URL das imagens
+```ts
+const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
+const getLogoUrl = (file: string) =>
+  `${SUPABASE_URL}/storage/v1/object/public/parceiros/lojas-logos/${file}`;
 ```
 
+### CSS (em `src/index.css`)
+Adicionar keyframe `marquee` para scroll horizontal infinito:
+```css
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-marquee {
+  animation: marquee 60s linear infinite;
+}
+.animate-marquee:hover { animation-play-state: paused; }
+```
+
+Container usa `flex w-max` com a lista duplicada (`[...lojas, ...lojas]`) para loop sem corte. Wrapper externo com `overflow-hidden` e máscara fade nas bordas (`mask-image: linear-gradient(...)`).
+
+### Integração
+
+**`src/pages/Index.tsx`:** inserir `<LojasParceirasCarousel />` entre seções existentes — sugestão: logo após `HomeCarousel` (galeria MOTOREX) e antes do CTA final. Confirmo localização final ao implementar lendo o arquivo.
+
+**`src/pages/Parceiros.tsx`:** inserir antes do bloco CTA "Quer ser um parceiro RT Brasil?". Mantém a estética de game preservada (constraint do projeto) — o carrossel é uma seção independente com estilo Dark Premium, separada visualmente por padding generoso.
+
 ### Arquivos afetados
-- `src/components/HomeCarousel.tsx` — URLs explícitas, cards maiores, bg gradiente
-- `src/pages/Index.tsx` — remover divs de transição, aplicar gradientes nas seções
-- `src/pages/QuemSomos.tsx` — seção Stats com gradiente suave
-- `src/pages/Depoimentos.tsx` — CTA com gradiente suave
-- `src/pages/CentralAtendimento.tsx` — gradiente sutil
-- `src/index.css` — classe utilitária `.section-motorex-glow`
+- `src/components/LojasParceirasCarousel.tsx` (novo)
+- `src/index.css` (keyframe marquee + classe `.animate-marquee`)
+- `src/pages/Index.tsx` (importar + inserir seção)
+- `src/pages/Parceiros.tsx` (importar + inserir seção)
+
+### Pontos a validar pós-implementação
+- Logo `spinellioffroad` carrega (extensão correta?).
+- Logos com fundos transparentes (.png/.webp) ficam legíveis no card branco.
+- Logos `.jpg/.jpeg` (com fundo próprio) não destoam visualmente.
+- Performance do marquee em mobile (60s loop é suave).
 
