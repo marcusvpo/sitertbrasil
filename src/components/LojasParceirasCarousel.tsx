@@ -73,14 +73,24 @@ const LojasParceirasCarousel = () => {
               target="_blank"
               rel="noopener noreferrer"
               title={`${loja.nome} — ${loja.cidade}/${loja.uf}`}
-              className="group shrink-0 w-[180px] h-[100px] bg-white rounded-lg border border-motorex/20 p-4 flex items-center justify-center transition-all duration-300 hover:scale-105 hover:border-primary hover:shadow-[0_0_25px_hsl(197_100%_43.7%/0.35)]"
+              className="group shrink-0 w-[180px] flex flex-col items-center gap-2"
             >
-              <img
-                src={getLogoUrl(loja.logo)}
-                alt={`Logo ${loja.nome}`}
-                loading="lazy"
-                className="max-w-full max-h-full object-contain"
-              />
+              <div className="w-[180px] h-[100px] bg-white rounded-lg border border-motorex/20 p-4 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:border-primary group-hover:shadow-[0_0_25px_hsl(197_100%_43.7%/0.35)]">
+                <img
+                  src={getLogoUrl(loja.logo)}
+                  alt={`Logo ${loja.nome}`}
+                  loading="lazy"
+                  className="max-w-full max-h-full object-contain"
+                />
+              </div>
+              <div className="text-center">
+                <p className="font-heading uppercase text-xs tracking-wider text-foreground leading-tight">
+                  {loja.nome}
+                </p>
+                <p className="text-[11px] text-foreground/50 mt-0.5">
+                  {loja.cidade} – {loja.uf}
+                </p>
+              </div>
             </a>
           ))}
         </div>
