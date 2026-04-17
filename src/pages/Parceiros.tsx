@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { Trophy, ChevronRight, Instagram } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
+import LojasParceirasCarousel from "@/components/LojasParceirasCarousel";
 
 const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
 const getPartnerImage = (path: string) =>
@@ -134,6 +135,12 @@ const Parceiros = () => {
           ))}
         </div>
 
+      </div>
+
+      {/* Lojas Parceiras Marquee */}
+      <LojasParceirasCarousel />
+
+      <div className="container">
         {/* CTA to become a partner */}
         <AnimateOnScroll animation="fade-up" delay={400}>
           <div className="mt-16 text-center">
