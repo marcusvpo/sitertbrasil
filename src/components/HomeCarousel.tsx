@@ -33,7 +33,7 @@ const HomeCarousel = () => {
         <AnimateOnScroll className="text-center mb-10">
           <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Galeria</span>
           <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 text-white">
-            Mundo <span className="text-background">MOTOREX</span>
+            Mundo <span className="text-white">MOTOREX</span>
           </h2>
         </AnimateOnScroll>
 
