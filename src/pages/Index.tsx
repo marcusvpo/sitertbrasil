@@ -211,50 +211,63 @@ const Index = () => {
       </section>
 
       {/* ── Institutional ── */}
-      <section className="relative py-20 md:py-32 overflow-hidden section-motorex-glow-intense">
+      <section className="relative py-24 md:py-36 overflow-hidden section-motorex-glow-intense">
+        {/* Decorative blurred orbs */}
+        <div className="absolute -top-32 -left-32 w-[500px] h-[500px] rounded-full bg-motorex/20 blur-[120px] pointer-events-none" />
+        <div className="absolute -bottom-40 -right-20 w-[600px] h-[600px] rounded-full bg-primary/15 blur-[140px] pointer-events-none" />
+
         <div className="container relative z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <AnimateOnScroll animation="fade-in-left">
-              <div>
-                <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Sobre</span>
-                <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 mb-6">
-                  RT Brasil + <span className="text-white">MOTOREX</span>
-                </h2>
-                <p className="text-white/80 mb-4 leading-relaxed">
-                  A RT Brasil é distribuidora oficial da <span className="text-white font-semibold">MOTOREX</span>, marca suíça com mais de 100 anos de história e referência mundial em lubrificantes de alta performance.
-                </p>
-                <p className="text-white/80 mb-6 leading-relaxed">
-                  Nosso compromisso é levar ao mercado brasileiro produtos de qualidade comprovada em campeonatos mundiais, com pronta entrega e suporte especializado.
-                </p>
-                <ul className="space-y-3 mb-8">
-                  {benefits.map((item, i) => (
-                    <AnimateOnScroll key={item.text} animation="slide-up" delay={i * 80}>
-                      <li className="flex items-center gap-3 text-white/80">
-                        <div className="w-9 h-9 rounded-full bg-white/15 flex items-center justify-center flex-shrink-0">
-                          <item.icon size={16} className="text-white" />
-                        </div>
-                        <span className="text-sm">{item.text}</span>
-                      </li>
-                    </AnimateOnScroll>
-                  ))}
-                </ul>
-                <Button asChild variant="outline" className="font-heading uppercase tracking-wider border-white/40 text-white hover:bg-white/10">
-                  <Link to="/quem-somos">Saiba mais <ArrowRight className="ml-2" size={16} /></Link>
-                </Button>
-              </div>
-            </AnimateOnScroll>
-            <AnimateOnScroll animation="fade-in-right">
-              <div className="flex justify-center">
-                <div className="relative bg-background/80 rounded-2xl p-8 backdrop-blur-sm">
-                  <div className="absolute inset-0 bg-primary/10 rounded-full blur-[80px]" />
-                  <picture>
-                    <source srcSet="/images/logo-motorex.webp" type="image/webp" />
-                    <img src="/images/logo-motorex.png" alt="MOTOREX" loading="lazy" width={280} height={100} className="relative max-w-[280px] w-full opacity-90 hover:opacity-100 transition-opacity duration-500" />
-                  </picture>
+          {/* Header centralizado */}
+          <AnimateOnScroll animation="fade-up" className="text-center max-w-3xl mx-auto mb-16 md:mb-20">
+            <span className="font-heading uppercase text-motorex text-xs tracking-[0.4em]">
+              Sobre nós
+            </span>
+            <h2 className="font-heading text-[clamp(2.25rem,5.5vw,4rem)] font-bold mt-3 mb-6 uppercase leading-[0.95]">
+              RT Brasil <span className="text-motorex">+</span> <span className="text-gradient">MOTOREX</span>
+            </h2>
+            <p className="text-foreground/70 text-base md:text-lg leading-relaxed">
+              Distribuidora oficial da <span className="text-motorex font-semibold">MOTOREX</span> no Brasil — marca suíça com mais de 100 anos forjando lubrificantes que vencem campeonatos mundiais.
+              Trazemos performance comprovada, pronta entrega e suporte técnico para quem exige o máximo da sua máquina.
+            </p>
+          </AnimateOnScroll>
+
+          {/* Grid de benefícios — cards maiores, modernos */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mb-14">
+            {benefits.map((item, i) => (
+              <AnimateOnScroll key={item.text} animation="fade-up" delay={i * 100}>
+                <div className="group relative h-full glass-card rounded-2xl p-6 md:p-7 overflow-hidden transition-all duration-500 hover:-translate-y-2">
+                  {/* Glow accent */}
+                  <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-motorex/30 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                  <div className="relative flex items-start gap-4">
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-gradient-to-br from-motorex to-motorex/60 flex items-center justify-center flex-shrink-0 shadow-[0_8px_24px_rgba(38,173,151,0.35)] group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                      <item.icon className="w-7 h-7 md:w-8 md:h-8 text-white" strokeWidth={2} />
+                    </div>
+                    <div className="flex-1 pt-1">
+                      <span className="font-heading uppercase text-motorex/70 text-[10px] tracking-[0.2em] block mb-1">
+                        0{i + 1}
+                      </span>
+                      <p className="font-heading uppercase text-foreground text-base md:text-lg leading-tight font-semibold">
+                        {item.text}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </AnimateOnScroll>
+              </AnimateOnScroll>
+            ))}
           </div>
+
+          {/* CTA centralizado */}
+          <AnimateOnScroll animation="fade-up" delay={300} className="text-center">
+            <Button
+              asChild
+              className="font-heading uppercase tracking-wider bg-motorex hover:bg-motorex/90 text-white px-8 py-6 text-sm md:text-base hover-glow shadow-[0_8px_30px_rgba(38,173,151,0.4)]"
+            >
+              <Link to="/quem-somos">
+                Conheça nossa história <ArrowRight className="ml-2" size={18} />
+              </Link>
+            </Button>
+          </AnimateOnScroll>
         </div>
       </section>
 
