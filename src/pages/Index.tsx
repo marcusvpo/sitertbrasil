@@ -234,11 +234,11 @@ const Index = () => {
               <AnimateOnScroll key={item.text} animation="fade-up" delay={i * 100}>
                 <div className="group relative h-full rounded-2xl p-6 md:p-7 overflow-hidden transition-all duration-500 hover:-translate-y-2 bg-background border border-white/10 hover:border-white/30 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
                   <div className="relative flex items-start gap-4">
-                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-motorex flex items-center justify-center flex-shrink-0 ring-2 ring-white/20 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 ring-2 ring-white/30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
                       <item.icon className="w-7 h-7 md:w-8 md:h-8 text-white" strokeWidth={2} />
                     </div>
                     <div className="flex-1 pt-1">
-                      <span className="font-heading uppercase text-motorex text-[10px] tracking-[0.2em] block mb-1">
+                      <span className="font-heading uppercase text-white/60 text-[10px] tracking-[0.2em] block mb-1">
                         0{i + 1}
                       </span>
                       <p className="font-heading uppercase text-foreground text-base md:text-lg leading-tight font-semibold">
@@ -362,7 +362,7 @@ const Index = () => {
                   <MessageCircle className="mr-2" size={18} /> Chamar no WhatsApp
                 </a>
               </Button>
-              <Button asChild size="lg" className="font-heading uppercase tracking-wider bg-motorex hover:bg-motorex/90 text-white border-beam hover-glow">
+              <Button asChild size="lg" className="font-heading uppercase tracking-wider bg-background hover:bg-background/90 text-white border border-white/20 hover:border-white/40">
                 <Link to="/central-atendimento">Central de Atendimento</Link>
               </Button>
             </div>
