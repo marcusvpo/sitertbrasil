@@ -213,25 +213,40 @@
     border-radius: 0 !important;
   }
 
-  /* ── MOTOREX glow section — smooth organic gradient ── */
+  /* ── MOTOREX glow section — smooth dual-brand gradient (RT cyan + MOTOREX teal) ── */
   .section-motorex-glow {
-    background: linear-gradient(180deg, 
-      hsl(0 0% 4%) 0%, 
-      hsl(164 64% 41% / 0.15) 25%, 
-      hsl(164 64% 41% / 0.22) 50%, 
-      hsl(164 64% 41% / 0.15) 75%, 
-      hsl(0 0% 4%) 100%
-    );
+    position: relative;
+    background: hsl(0 0% 4%);
+    isolation: isolate;
+  }
+  .section-motorex-glow::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 55% at 18% 30%, hsl(197 100% 43.7% / 0.18) 0%, transparent 65%),
+      radial-gradient(ellipse 65% 60% at 82% 70%, hsl(164 64% 41% / 0.22) 0%, transparent 65%),
+      linear-gradient(180deg, hsl(0 0% 4%) 0%, hsl(195 50% 8%) 50%, hsl(0 0% 4%) 100%);
   }
 
   .section-motorex-glow-intense {
-    background: linear-gradient(180deg, 
-      hsl(0 0% 4%) 0%, 
-      hsl(164 64% 41% / 0.25) 20%, 
-      hsl(164 64% 41% / 0.35) 50%, 
-      hsl(164 64% 41% / 0.25) 80%, 
-      hsl(0 0% 4%) 100%
-    );
+    position: relative;
+    background: hsl(0 0% 4%);
+    isolation: isolate;
+  }
+  .section-motorex-glow-intense::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 80% 60% at 15% 25%, hsl(197 100% 43.7% / 0.22) 0%, transparent 60%),
+      radial-gradient(ellipse 75% 65% at 85% 75%, hsl(164 64% 41% / 0.28) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 50% 50%, hsl(180 55% 20% / 0.25) 0%, transparent 70%),
+      linear-gradient(180deg, hsl(0 0% 4%) 0%, hsl(190 45% 9%) 50%, hsl(0 0% 4%) 100%);
   }
 }
 
