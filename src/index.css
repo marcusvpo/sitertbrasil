@@ -213,7 +213,7 @@
     border-radius: 0 !important;
   }
 
-  /* ── MOTOREX section — pure brand color (for blocks that should be 100% MOTOREX) ── */
+  /* ── MOTOREX section — pure brand color, no muddy gradient ── */
   .section-motorex-pure {
     background: hsl(var(--motorex));
     color: hsl(0 0% 100%);
@@ -235,25 +235,11 @@
     -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black, transparent 85%);
   }
 
-  /* ── MOTOREX glow section — smooth gradient back to black ── */
-  .section-motorex-glow {
-    background: linear-gradient(180deg,
-      hsl(0 0% 4%) 0%,
-      hsl(164 64% 41% / 0.15) 25%,
-      hsl(164 64% 41% / 0.22) 50%,
-      hsl(164 64% 41% / 0.15) 75%,
-      hsl(0 0% 4%) 100%
-    );
-  }
-
+  /* Legacy aliases — pure brand color, no gradient to black */
+  .section-motorex-glow,
   .section-motorex-glow-intense {
-    background: linear-gradient(180deg,
-      hsl(0 0% 4%) 0%,
-      hsl(164 64% 41% / 0.25) 20%,
-      hsl(164 64% 41% / 0.35) 50%,
-      hsl(164 64% 41% / 0.25) 80%,
-      hsl(0 0% 4%) 100%
-    );
+    background: hsl(var(--motorex));
+    color: hsl(0 0% 100%);
   }
 }
 
