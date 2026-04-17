@@ -31,9 +31,9 @@ const HomeCarousel = () => {
     <section className="relative py-16 md:py-24 overflow-hidden section-motorex-glow">
       <div className="container relative z-10">
         <AnimateOnScroll className="text-center mb-10">
-          <span className="font-heading uppercase text-motorex text-xs tracking-[0.3em]">Galeria</span>
-          <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2">
-            Mundo <span className="text-motorex">MOTOREX</span>
+          <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Galeria</span>
+          <h2 className="font-heading text-[clamp(2rem,5vw,3.5rem)] font-bold mt-2 text-white">
+            Mundo <span className="text-background">MOTOREX</span>
           </h2>
         </AnimateOnScroll>
 
@@ -49,8 +49,8 @@ const HomeCarousel = () => {
                   <div
                     className={`relative rounded-xl overflow-hidden border-2 transition-all duration-700 bg-background ${
                       isActive
-                        ? "border-motorex shadow-[0_0_30px_rgba(38,173,151,0.4)] scale-100"
-                        : "border-motorex/20 scale-[0.93] opacity-50"
+                        ? "border-white shadow-[0_0_30px_rgba(0,0,0,0.45)] scale-100"
+                        : "border-white/20 scale-[0.93] opacity-60"
                     }`}
                   >
                     <div className="aspect-[4/5]">
@@ -79,8 +79,8 @@ const HomeCarousel = () => {
               onClick={() => emblaApi?.scrollTo(i)}
               className={`h-2 rounded-full transition-all duration-300 ${
                 i === selectedIndex
-                  ? "bg-motorex w-7"
-                  : "bg-motorex/25 w-2 hover:bg-motorex/50"
+                  ? "bg-white w-7"
+                  : "bg-white/30 w-2 hover:bg-white/60"
               }`}
               aria-label={`Ir para slide ${i + 1}`}
             />
