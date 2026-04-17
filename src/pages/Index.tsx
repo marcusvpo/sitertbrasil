@@ -25,6 +25,7 @@ const benefits = [
   { icon: Trophy, text: "Rendimento superior" },
   { icon: DollarSign, text: "Preço justo e competitivo" },
   { icon: Truck, text: "Pronta entrega em 1-2 dias" },
+  { icon: MessageCircle, text: "Suporte técnico especializado" },
 ];
 
 /* Dust particle positions for hero */
