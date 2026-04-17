@@ -232,13 +232,15 @@ const Index = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6 mb-14">
             {benefits.map((item, i) => (
               <AnimateOnScroll key={item.text} animation="fade-up" delay={i * 100}>
-                <div className="group relative h-full rounded-2xl p-6 md:p-7 overflow-hidden transition-all duration-500 hover:-translate-y-2 bg-background border border-white/10 hover:border-white/30 shadow-[0_10px_40px_rgba(0,0,0,0.25)]">
+                <div className="group relative h-full rounded-2xl p-6 md:p-7 overflow-hidden transition-all duration-500 hover:-translate-y-2 bg-background border border-primary/30 hover:border-primary/60 shadow-[0_10px_40px_rgba(0,0,0,0.35)] hover:shadow-[0_15px_50px_hsl(197_100%_43.7%/0.25)]">
+                  {/* Cyan accent glow on hover */}
+                  <div className="absolute -top-12 -right-12 w-32 h-32 rounded-full bg-primary/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
                   <div className="relative flex items-start gap-4">
-                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-white/10 flex items-center justify-center flex-shrink-0 ring-2 ring-white/30 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-500">
-                      <item.icon className="w-7 h-7 md:w-8 md:h-8 text-white" strokeWidth={2} />
+                    <div className="w-14 h-14 md:w-16 md:h-16 rounded-xl bg-primary/15 flex items-center justify-center flex-shrink-0 ring-2 ring-primary/40 group-hover:ring-primary/70 group-hover:scale-110 group-hover:rotate-3 transition-all duration-500">
+                      <item.icon className="w-7 h-7 md:w-8 md:h-8 text-primary" strokeWidth={2} />
                     </div>
                     <div className="flex-1 pt-1">
-                      <span className="font-heading uppercase text-white/60 text-[10px] tracking-[0.2em] block mb-1">
+                      <span className="font-heading uppercase text-primary text-[10px] tracking-[0.2em] block mb-1">
                         0{i + 1}
                       </span>
                       <p className="font-heading uppercase text-foreground text-base md:text-lg leading-tight font-semibold">
