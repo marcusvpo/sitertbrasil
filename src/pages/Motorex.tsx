@@ -165,6 +165,124 @@ const Motorex = () => {
               <p className="text-muted-foreground font-heading uppercase">Nenhum produto encontrado</p>
               <p className="text-muted-foreground/60 text-sm mt-1">Tente outro filtro ou busca.</p>
             </div>
+          ) : !activeCategory && !activeVolume && !search ? (
+            <div className="space-y-14 md:space-y-20">
+              {categories.map((cat) => {
+                const catProducts = filtered.filter((p) => p.category_id === cat.id);
+                if (catProducts.length === 0) return null;
+                return (
+                  <div key={cat.id}>
+                    <AnimateOnScroll animation="fade-up">
+                      <div className="flex items-end justify-between mb-5 md:mb-7 gap-4">
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="h-px flex-1 max-w-[40px] bg-gradient-to-r from-transparent to-motorex/60" />
+                          <h2 className="font-heading uppercase text-xl md:text-3xl tracking-wider text-foreground whitespace-nowrap">
+                            {cat.name}
+                          </h2>
+                          <span className="text-motorex/70 text-xs font-heading tracking-widest">
+                            {String(catProducts.length).padStart(2, "0")}
+                          </span>
+                        </div>
+                        <button
+                          onClick={() => setActiveCategory(cat.id)}
+                          className="text-[10px] md:text-xs font-heading uppercase tracking-wider text-muted-foreground hover:text-motorex transition-colors whitespace-nowrap"
+                        >
+                          Ver tudo →
+                        </button>
+                      </div>
+                    </AnimateOnScroll>
+                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
+                      {catProducts.map((product, i) => (
+                        <AnimateOnScroll key={product.id} animation="fade-up" delay={(i % 4) * 80}>
+                          <GlareCard>
+                            <Link
+                              to={`/motorex/${product.slug}`}
+                              className="group block glass-card rounded-lg overflow-hidden transition-all duration-500 h-full"
+                            >
+                              <div className="relative aspect-square overflow-hidden">
+                                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                  <div className="w-1/2 h-1/2 rounded-full bg-primary/8 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                                </div>
+                                {product.images?.[0] ? (
+                                  <img
+                                    src={getProductImageUrl(product.images[0])}
+                                    alt={product.name}
+                                    className="relative z-[1] w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                    loading="lazy"
+                                  />
+                                ) : (
+                                  <div className="w-full h-full flex items-center justify-center">
+                                    <span className="font-heading text-muted-foreground text-lg uppercase">
+                                      {product.name}
+                                    </span>
+                                  </div>
+                                )}
+                                <div className="absolute inset-0 bg-background/0 group-hover:bg-background/20 transition-colors duration-500 z-[2]" />
+                                {product.badge && (
+                                  <span className="absolute top-2 left-2 z-[3] bg-primary text-primary-foreground text-[9px] font-heading uppercase tracking-wider px-2 py-0.5 btn-clip">
+                                    {product.badge}
+                                  </span>
+                                )}
+                                {product.price && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      e.stopPropagation();
+                                      addToCart(product);
+                                    }}
+                                    className="absolute bottom-0 inset-x-0 z-[3] bg-primary/90 backdrop-blur-sm text-primary-foreground py-2.5 flex items-center justify-center gap-2 font-heading uppercase text-xs tracking-wider translate-y-full group-hover:translate-y-0 transition-transform duration-300"
+                                  >
+                                    <ShoppingCart size={14} /> Adicionar
+                                  </button>
+                                )}
+                              </div>
+                              <div className="p-3 md:p-4">
+                                {product.category && (
+                                  <span className="text-primary text-[10px] font-heading uppercase tracking-wider">
+                                    {product.category.name}
+                                  </span>
+                                )}
+                                <h3 className="font-heading text-sm md:text-base font-semibold mt-0.5 leading-tight">
+                                  {product.name}
+                                  {product.volume && (
+                                    <span className="text-muted-foreground font-normal text-xs ml-1.5">
+                                      {product.volume}
+                                    </span>
+                                  )}
+                                </h3>
+                                {product.short_description && (
+                                  <p className="text-muted-foreground text-xs mt-1 line-clamp-2">
+                                    {product.short_description}
+                                  </p>
+                                )}
+                                <ProductRating productName={product.name} size="sm" />
+                                <div className="flex items-baseline gap-2 mt-2">
+                                  {product.price && (
+                                    <span className="font-heading text-motorex font-bold text-sm md:text-base">
+                                      R$ {Number(product.price).toFixed(2)}
+                                    </span>
+                                  )}
+                                  {product.compare_price && (
+                                    <span className="text-muted-foreground/50 text-xs line-through">
+                                      R$ {Number(product.compare_price).toFixed(2)}
+                                    </span>
+                                  )}
+                                  {product.volume && (
+                                    <Badge variant="secondary" className="text-[9px] bg-foreground/5 text-muted-foreground border-0 ml-auto">
+                                      {product.volume}
+                                    </Badge>
+                                  )}
+                                </div>
+                              </div>
+                            </Link>
+                          </GlareCard>
+                        </AnimateOnScroll>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           ) : (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
               {filtered.map((product, i) => (
