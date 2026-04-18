@@ -389,7 +389,8 @@ const Index = () => {
           </AnimateOnScroll>
         </div>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 
