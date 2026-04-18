@@ -275,10 +275,6 @@
     @apply section-motorex-pure;
   }
 
-  /* Kept for backwards compat — now a no-op since base section has no fade */
-  .section-motorex-no-bottom-fade {
-    /* nothing — base section already has solid edges */
-  }
 
   /* ── Aurora Bridge — organic green/cyan blobs that bleed from a dark
      section toward an adjacent green MOTOREX section, dissolving the seam.
