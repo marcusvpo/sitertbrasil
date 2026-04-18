@@ -225,6 +225,27 @@
       linear-gradient(hsl(0 0% 100% / 0.05) 1px, transparent 1px),
       linear-gradient(90deg, hsl(0 0% 100% / 0.05) 1px, transparent 1px);
     background-size: 56px 56px;
+    /* Organic edge dissolve — combines TWO radial masks (left/right offset)
+       so the edge is wavy and irregular, not a straight horizontal line.
+       Black = visible green, transparent = reveals dark page bg. */
+    -webkit-mask-image:
+      radial-gradient(ellipse 80% 120% at 30% 50%, black 55%, transparent 95%),
+      radial-gradient(ellipse 80% 120% at 70% 50%, black 55%, transparent 95%);
+    -webkit-mask-composite: source-over;
+    mask-image:
+      radial-gradient(ellipse 80% 120% at 30% 50%, black 55%, transparent 95%),
+      radial-gradient(ellipse 80% 120% at 70% 50%, black 55%, transparent 95%);
+    mask-composite: add;
+  }
+
+  /* Modifier — the green section's bottom edge stays SHARP (e.g. before footer) */
+  .section-motorex-no-bottom-fade {
+    -webkit-mask-image:
+      radial-gradient(ellipse 80% 200% at 30% 100%, black 60%, transparent 98%),
+      radial-gradient(ellipse 80% 200% at 70% 100%, black 60%, transparent 98%) !important;
+    mask-image:
+      radial-gradient(ellipse 80% 200% at 30% 100%, black 60%, transparent 98%),
+      radial-gradient(ellipse 80% 200% at 70% 100%, black 60%, transparent 98%) !important;
   }
 
   /* RT cyan accent glows — organic painterly hints inside the green section */
