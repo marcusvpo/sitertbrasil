@@ -271,19 +271,24 @@
         hsl(var(--motorex) / 0.18) 45%,
         transparent 70%),
 
-      /* GREEN BLOOM 2 — "Contato Rápido" (~88% down) */
-      radial-gradient(ellipse 75% 18% at 50% 88%,
-        hsl(var(--motorex) / 0.95) 0%,
-        hsl(var(--motorex) / 0.78) 22%,
-        hsl(var(--motorex) / 0.40) 42%,
-        hsl(var(--rt-navy) / 0.50) 60%,
-        transparent 78%),
-      radial-gradient(ellipse 30% 9% at 22% 84%,
-        hsl(var(--motorex) / 0.50) 0%,
-        transparent 70%),
-      radial-gradient(ellipse 30% 9% at 80% 91%,
-        hsl(var(--motorex) / 0.50) 0%,
-        transparent 70%),
+      /* GREEN BLOOM 2 — "Contato Rápido" → Footer (anchored bottom, huge & solid).
+         Pushed below 100% so the green color reaches FULL strength at the page edge,
+         meeting the footer's own green seamlessly with no visible seam. */
+      radial-gradient(ellipse 95% 38% at 50% 102%,
+        hsl(var(--motorex) / 1) 0%,
+        hsl(var(--motorex) / 0.92) 25%,
+        hsl(var(--motorex) / 0.65) 45%,
+        hsl(var(--motorex) / 0.30) 65%,
+        hsl(var(--rt-navy) / 0.45) 80%,
+        transparent 95%),
+      radial-gradient(ellipse 45% 16% at 18% 92%,
+        hsl(var(--motorex) / 0.70) 0%,
+        hsl(var(--motorex) / 0.25) 50%,
+        transparent 75%),
+      radial-gradient(ellipse 45% 16% at 82% 95%,
+        hsl(var(--motorex) / 0.70) 0%,
+        hsl(var(--motorex) / 0.25) 50%,
+        transparent 75%),
 
       /* RT navy halos — smooth black→green transition zones */
       radial-gradient(ellipse 90% 14% at 50% 26%,
