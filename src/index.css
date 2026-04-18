@@ -242,25 +242,24 @@
     inset: 0;
     z-index: 0;
     pointer-events: none;
+    /* Sequence: green (center) -> white -> dark gray -> black (edges) */
     background:
       linear-gradient(
         to bottom,
-        hsl(var(--background)) 0%,
-        hsl(var(--background) / 0.95) 3%,
-        hsl(var(--background) / 0.82) 7%,
-        hsl(var(--background) / 0.65) 12%,
-        hsl(var(--background) / 0.45) 18%,
-        hsl(var(--background) / 0.25) 25%,
-        hsl(var(--background) / 0.1) 32%,
-        transparent 40%,
-        transparent 60%,
-        hsl(var(--background) / 0.1) 68%,
-        hsl(var(--background) / 0.25) 75%,
-        hsl(var(--background) / 0.45) 82%,
-        hsl(var(--background) / 0.65) 88%,
-        hsl(var(--background) / 0.82) 93%,
-        hsl(var(--background) / 0.95) 97%,
-        hsl(var(--background)) 100%
+        hsl(0 0% 0%) 0%,
+        hsl(0 0% 5%) 5%,
+        hsl(0 0% 18%) 11%,
+        hsl(0 0% 45% / 0.7) 17%,
+        hsl(0 0% 90% / 0.45) 22%,
+        hsl(0 0% 100% / 0.18) 27%,
+        transparent 35%,
+        transparent 65%,
+        hsl(0 0% 100% / 0.18) 73%,
+        hsl(0 0% 90% / 0.45) 78%,
+        hsl(0 0% 45% / 0.7) 83%,
+        hsl(0 0% 18%) 89%,
+        hsl(0 0% 5%) 95%,
+        hsl(0 0% 0%) 100%
       );
   }
   .section-motorex-pure > * {
