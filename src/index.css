@@ -273,6 +273,23 @@
   .section-motorex-glow-intense {
     @apply section-motorex-pure;
   }
+
+  /* Modifier — keep top fade, remove bottom fade (pure color at bottom) */
+  .section-motorex-no-bottom-fade::after {
+    background:
+      linear-gradient(
+        to bottom,
+        hsl(var(--background)) 0%,
+        hsl(var(--background) / 0.95) 3%,
+        hsl(var(--background) / 0.82) 7%,
+        hsl(var(--background) / 0.65) 12%,
+        hsl(var(--background) / 0.45) 18%,
+        hsl(var(--background) / 0.25) 25%,
+        hsl(var(--background) / 0.1) 32%,
+        transparent 40%,
+        transparent 100%
+      ) !important;
+  }
 }
 
 @layer utilities {
