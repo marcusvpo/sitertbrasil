@@ -137,7 +137,7 @@ const Index = () => {
       <LojasParceirasCarousel />
 
       {/* ── Featured Products — Asymmetric Grid ── */}
-      <section className="relative py-16 md:py-24 mesh-gradient">
+      <section className="relative py-16 md:py-24 mesh-gradient bleed-from-below">
         <div className="container relative z-10">
           <AnimateOnScroll className="text-center mb-12">
             <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Vitrine</span>
