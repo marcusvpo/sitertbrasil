@@ -3,7 +3,7 @@ import { Instagram, Phone, Mail, MapPin } from "lucide-react";
 
 const Footer = () => {
   return (
-    <footer className="relative bg-motorex border-t border-white/10">
+    <footer className="footer-painted relative">
       {/* Subtle mesh gradient */}
       <div className="absolute inset-0 pointer-events-none opacity-30">
         <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-white/5 rounded-full blur-[120px]" />
