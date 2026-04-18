@@ -214,55 +214,17 @@
     border-radius: 0 !important;
   }
 
-  /* ── MOTOREX section — pure brand color, sharp edges.
-     Transition to dark sections is handled by .bleed-from-below / .bleed-from-above
-     applied to the ADJACENT dark sections (Aurora Bridge approach). */
+  /* ── MOTOREX section — TRANSPARENT. The brand color is painted by the
+     global .ambient-canvas behind the page. NO background, NO mask, NO border. */
   .section-motorex-pure {
     color: hsl(0 0% 100%);
     position: relative;
     isolation: isolate;
-    background-color: hsl(var(--motorex));
+    background-color: transparent;
     background-image:
-      linear-gradient(hsl(0 0% 100% / 0.05) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(0 0% 100% / 0.05) 1px, transparent 1px);
+      linear-gradient(hsl(0 0% 100% / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(0 0% 100% / 0.04) 1px, transparent 1px);
     background-size: 56px 56px;
-    /* Organic edge dissolve — combines TWO radial masks (left/right offset)
-       so the edge is wavy and irregular, not a straight horizontal line.
-       Black = visible green, transparent = reveals dark page bg. */
-    -webkit-mask-image:
-      radial-gradient(ellipse 80% 120% at 30% 50%, black 55%, transparent 95%),
-      radial-gradient(ellipse 80% 120% at 70% 50%, black 55%, transparent 95%);
-    -webkit-mask-composite: source-over;
-    mask-image:
-      radial-gradient(ellipse 80% 120% at 30% 50%, black 55%, transparent 95%),
-      radial-gradient(ellipse 80% 120% at 70% 50%, black 55%, transparent 95%);
-    mask-composite: add;
-  }
-
-  /* Modifier — the green section's bottom edge stays SHARP (e.g. before footer) */
-  .section-motorex-no-bottom-fade {
-    -webkit-mask-image:
-      radial-gradient(ellipse 80% 200% at 30% 100%, black 60%, transparent 98%),
-      radial-gradient(ellipse 80% 200% at 70% 100%, black 60%, transparent 98%) !important;
-    mask-image:
-      radial-gradient(ellipse 80% 200% at 30% 100%, black 60%, transparent 98%),
-      radial-gradient(ellipse 80% 200% at 70% 100%, black 60%, transparent 98%) !important;
-  }
-
-  /* RT cyan accent glows — organic painterly hints inside the green section */
-  .section-motorex-pure::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 45% 35% at 12% 8%,
-        hsl(197 90% 35% / 0.22) 0%,
-        transparent 70%),
-      radial-gradient(ellipse 40% 30% at 88% 92%,
-        hsl(197 80% 30% / 0.18) 0%,
-        transparent 70%);
   }
 
   .section-motorex-pure > * {
@@ -270,82 +232,77 @@
     z-index: 1;
   }
 
-  /* Legacy aliases */
+  /* Legacy aliases — no-ops, kept so existing markup still compiles */
   .section-motorex-glow,
   .section-motorex-glow-intense {
     @apply section-motorex-pure;
   }
-
-
-  /* ── Aurora Bridge — organic green/cyan blobs that bleed from a dark
-     section toward an adjacent green MOTOREX section, dissolving the seam.
-     Apply to the DARK section that touches a green section. */
-  .bleed-from-below {
-    position: relative;
-    z-index: 0;
-  }
-  .bleed-from-below::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 340px;
-    pointer-events: none;
-    z-index: 0;
-    background:
-      radial-gradient(ellipse 65% 95% at 22% 105%,
-        hsl(var(--motorex) / 0.55) 0%,
-        hsl(var(--motorex) / 0.28) 35%,
-        transparent 65%),
-      radial-gradient(ellipse 55% 80% at 78% 110%,
-        hsl(var(--motorex) / 0.45) 0%,
-        hsl(var(--motorex) / 0.20) 40%,
-        transparent 70%),
-      radial-gradient(ellipse 40% 55% at 50% 120%,
-        hsl(197 100% 38% / 0.28) 0%,
-        transparent 65%),
-      radial-gradient(ellipse 30% 45% at 8% 95%,
-        hsl(var(--motorex) / 0.30) 0%,
-        transparent 60%);
-  }
-  .bleed-from-below > * {
-    position: relative;
-    z-index: 1;
-  }
-
+  .section-motorex-no-bottom-fade,
+  .bleed-from-below,
   .bleed-from-above {
-    position: relative;
-    z-index: 0;
+    /* intentionally empty — Ambient Canvas handles all transitions globally */
   }
-  .bleed-from-above::before {
-    content: '';
+
+  /* ── Ambient Canvas — Painterly Background ─────────────────────────────
+     The ONLY place the MOTOREX green color exists on the home page.
+     Sits behind ALL content, painting massive radial blooms that emerge from
+     the dark page background. No rectangles, no edges, no seams.
+     Three colors layered: black (page) → navy (--rt-navy) → green (--motorex). */
+  .ambient-canvas {
     position: absolute;
-    left: 0;
-    right: 0;
-    top: 0;
-    height: 340px;
+    inset: 0;
     pointer-events: none;
     z-index: 0;
+    overflow: hidden;
     background:
-      radial-gradient(ellipse 65% 95% at 28% -5%,
+      /* GREEN BLOOM 1 — institutional "Sobre nós" (~38% down) */
+      radial-gradient(ellipse 70% 22% at 50% 38%,
+        hsl(var(--motorex) / 0.95) 0%,
+        hsl(var(--motorex) / 0.75) 18%,
+        hsl(var(--motorex) / 0.35) 38%,
+        hsl(var(--rt-navy) / 0.55) 55%,
+        transparent 72%),
+      radial-gradient(ellipse 35% 12% at 18% 33%,
         hsl(var(--motorex) / 0.55) 0%,
-        hsl(var(--motorex) / 0.28) 35%,
-        transparent 65%),
-      radial-gradient(ellipse 55% 80% at 75% -10%,
-        hsl(var(--motorex) / 0.45) 0%,
-        hsl(var(--motorex) / 0.20) 40%,
+        hsl(var(--motorex) / 0.20) 45%,
         transparent 70%),
-      radial-gradient(ellipse 40% 55% at 50% -20%,
-        hsl(197 100% 38% / 0.28) 0%,
-        transparent 65%),
-      radial-gradient(ellipse 30% 45% at 92% 5%,
-        hsl(var(--motorex) / 0.30) 0%,
-        transparent 60%);
-  }
-  .bleed-from-above > * {
-    position: relative;
-    z-index: 1;
+      radial-gradient(ellipse 32% 10% at 85% 44%,
+        hsl(var(--motorex) / 0.50) 0%,
+        hsl(var(--motorex) / 0.18) 45%,
+        transparent 70%),
+
+      /* GREEN BLOOM 2 — "Contato Rápido" (~88% down) */
+      radial-gradient(ellipse 75% 18% at 50% 88%,
+        hsl(var(--motorex) / 0.95) 0%,
+        hsl(var(--motorex) / 0.78) 22%,
+        hsl(var(--motorex) / 0.40) 42%,
+        hsl(var(--rt-navy) / 0.50) 60%,
+        transparent 78%),
+      radial-gradient(ellipse 30% 9% at 22% 84%,
+        hsl(var(--motorex) / 0.50) 0%,
+        transparent 70%),
+      radial-gradient(ellipse 30% 9% at 80% 91%,
+        hsl(var(--motorex) / 0.50) 0%,
+        transparent 70%),
+
+      /* RT navy halos — smooth black→green transition zones */
+      radial-gradient(ellipse 90% 14% at 50% 26%,
+        hsl(var(--rt-navy) / 0.70) 0%,
+        transparent 75%),
+      radial-gradient(ellipse 90% 14% at 50% 50%,
+        hsl(var(--rt-navy) / 0.55) 0%,
+        transparent 75%),
+      radial-gradient(ellipse 90% 14% at 50% 76%,
+        hsl(var(--rt-navy) / 0.65) 0%,
+        transparent 75%),
+
+      /* Subtle cyan accent glows (RT brand hint) */
+      radial-gradient(ellipse 25% 8% at 12% 40%,
+        hsl(197 90% 35% / 0.18) 0%,
+        transparent 70%),
+      radial-gradient(ellipse 25% 8% at 88% 86%,
+        hsl(197 90% 35% / 0.16) 0%,
+        transparent 70%);
   }
 }
 
