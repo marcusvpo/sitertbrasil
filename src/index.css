@@ -296,6 +296,20 @@
         hsl(var(--rt-navy) / 0.65) 0%,
         transparent 75%),
 
+      /* Dealer Network band (~16% down) — darker navy wash so the section
+         reads as deep/moody but still part of the same continuous painting */
+      radial-gradient(ellipse 95% 10% at 50% 16%,
+        hsl(var(--rt-navy) / 0.85) 0%,
+        hsl(var(--rt-navy) / 0.55) 35%,
+        hsl(var(--rt-navy) / 0.25) 65%,
+        transparent 85%),
+      radial-gradient(ellipse 30% 8% at 20% 14%,
+        hsl(215 50% 14% / 0.55) 0%,
+        transparent 75%),
+      radial-gradient(ellipse 30% 8% at 80% 18%,
+        hsl(215 50% 14% / 0.55) 0%,
+        transparent 75%),
+
       /* Subtle cyan accent glows (RT brand hint) */
       radial-gradient(ellipse 25% 8% at 12% 40%,
         hsl(197 90% 35% / 0.18) 0%,
