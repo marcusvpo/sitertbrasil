@@ -323,6 +323,41 @@
         hsl(197 90% 35% / 0.16) 0%,
         transparent 70%);
   }
+
+  /* ── Footer Painted — extends the Ambient Canvas painting all the way to
+     the bottom edge. Solid #26ad97 body, but the TOP edge dissolves via an
+     organic mask so it merges seamlessly with the green bloom above. */
+  .footer-painted {
+    position: relative;
+    color: hsl(0 0% 100%);
+    background-color: hsl(var(--motorex));
+    /* Organic top-edge dissolve — irregular, not a straight line */
+    -webkit-mask-image:
+      radial-gradient(ellipse 90% 180% at 30% 100%, black 55%, transparent 92%),
+      radial-gradient(ellipse 90% 180% at 70% 100%, black 55%, transparent 92%);
+    -webkit-mask-composite: source-over;
+    mask-image:
+      radial-gradient(ellipse 90% 180% at 30% 100%, black 55%, transparent 92%),
+      radial-gradient(ellipse 90% 180% at 70% 100%, black 55%, transparent 92%);
+    mask-composite: add;
+    /* Generous padding-top so the dissolved area doesn't eat the content */
+    padding-top: 4rem;
+  }
+  .footer-painted::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 50% 40% at 15% 10%,
+        hsl(197 90% 35% / 0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 45% 35% at 88% 90%,
+        hsl(197 80% 30% / 0.15) 0%, transparent 70%);
+  }
+  .footer-painted > * {
+    position: relative;
+    z-index: 1;
+  }
 }
 
 @layer utilities {
