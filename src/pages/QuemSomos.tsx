@@ -27,7 +27,9 @@ const values = [
 
 const QuemSomos = () => {
   return (
-    <>
+    <div className="relative">
+      <div aria-hidden className="ambient-canvas-page" />
+      <div className="relative z-10">
       {/* Banner */}
       <section className="relative w-full overflow-hidden">
         <img src="/images/banner-quemsomos.jpg" alt="Fábrica MOTOREX na Suíça" className="w-full h-auto block" />

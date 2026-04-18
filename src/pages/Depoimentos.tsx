@@ -45,7 +45,9 @@ const TestimonialCard = ({ d }: { d: typeof depoimentos[0] }) => (
 );
 
 const Depoimentos = () => (
-  <>
+  <div className="relative">
+    <div aria-hidden className="ambient-canvas-page" />
+    <div className="relative z-10">
     {/* ── Header ── */}
     <section className="relative py-16 md:py-24 mesh-gradient">
       <div className="container relative z-10 text-center">
