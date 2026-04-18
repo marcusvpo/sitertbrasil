@@ -213,13 +213,14 @@
     border-radius: 0 !important;
   }
 
-  /* ── MOTOREX section — pure brand color, no muddy gradient ── */
+  /* ── MOTOREX section — pure brand color with smooth edge fade ── */
   .section-motorex-pure {
     background: hsl(var(--motorex));
     color: hsl(0 0% 100%);
     position: relative;
     isolation: isolate;
   }
+  /* Subtle grid texture */
   .section-motorex-pure::before {
     content: '';
     position: absolute;
@@ -234,12 +235,25 @@
     mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black, transparent 85%);
     -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black, transparent 85%);
   }
+  /* Smooth fade-to-dark on top & bottom edges (transition into dark sections) */
+  .section-motorex-pure::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 8%, transparent 92%, hsl(var(--background)) 100%);
+  }
+  .section-motorex-pure > * {
+    position: relative;
+    z-index: 1;
+  }
 
-  /* Legacy aliases — pure brand color, no gradient to black */
+  /* Legacy aliases — same smooth-edge treatment */
   .section-motorex-glow,
   .section-motorex-glow-intense {
-    background: hsl(var(--motorex));
-    color: hsl(0 0% 100%);
+    @apply section-motorex-pure;
   }
 }
 
