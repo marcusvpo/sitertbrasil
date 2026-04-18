@@ -147,7 +147,7 @@ const QuemSomos = () => {
       </section>
 
       {/* ── CTA ── */}
-      <section className="relative py-16 md:py-24 border-t border-foreground/[0.04] mesh-gradient">
+      <section className="relative py-16 md:py-24">
         <div className="container relative z-10 text-center">
           <AnimateOnScroll>
             <div className="gradient-border rounded-xl p-10 md:p-14 max-w-xl mx-auto">
@@ -164,7 +164,8 @@ const QuemSomos = () => {
           </AnimateOnScroll>
         </div>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 

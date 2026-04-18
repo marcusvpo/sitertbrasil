@@ -250,8 +250,10 @@ const ProductDetail = () => {
             </div>
           </AnimateOnScroll>
         </div>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
   );
 };
 

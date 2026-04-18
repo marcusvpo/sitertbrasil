@@ -101,7 +101,8 @@ const SejaRevendedor = () => {
           )}
         </div>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 
