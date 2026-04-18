@@ -324,6 +324,115 @@
         transparent 70%);
   }
 
+  /* ── Ambient Canvas (PAGE variant) — generic painterly background for
+     internal pages. Distributes green/navy blooms uniformly along the page
+     height, regardless of section anchors. Ends in a strong green bloom that
+     merges seamlessly with the global .footer-painted (which is rendered via
+     <Layout/>). Same painting language as the home .ambient-canvas. */
+  .ambient-canvas-page {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    background:
+      /* TOP — soft navy halo that emerges below the banner */
+      radial-gradient(ellipse 95% 18% at 50% 8%,
+        hsl(var(--rt-navy) / 0.75) 0%,
+        hsl(var(--rt-navy) / 0.35) 45%,
+        transparent 80%),
+      radial-gradient(ellipse 35% 12% at 18% 12%,
+        hsl(var(--motorex) / 0.30) 0%,
+        transparent 70%),
+      radial-gradient(ellipse 35% 12% at 82% 14%,
+        hsl(var(--motorex) / 0.30) 0%,
+        transparent 70%),
+
+      /* MIDDLE — gentle green bloom drifting through the body content */
+      radial-gradient(ellipse 75% 22% at 50% 45%,
+        hsl(var(--motorex) / 0.55) 0%,
+        hsl(var(--motorex) / 0.25) 35%,
+        hsl(var(--rt-navy) / 0.40) 60%,
+        transparent 82%),
+      radial-gradient(ellipse 30% 10% at 12% 52%,
+        hsl(var(--motorex) / 0.45) 0%,
+        transparent 75%),
+      radial-gradient(ellipse 30% 10% at 88% 48%,
+        hsl(var(--motorex) / 0.40) 0%,
+        transparent 75%),
+
+      /* MIDDLE-LOWER — navy transition keeps the painting smooth */
+      radial-gradient(ellipse 90% 16% at 50% 68%,
+        hsl(var(--rt-navy) / 0.55) 0%,
+        transparent 80%),
+
+      /* BOTTOM — strong green bloom that hands off to the footer */
+      radial-gradient(ellipse 95% 35% at 50% 102%,
+        hsl(var(--motorex) / 1) 0%,
+        hsl(var(--motorex) / 0.85) 25%,
+        hsl(var(--motorex) / 0.50) 50%,
+        hsl(var(--motorex) / 0.20) 70%,
+        transparent 92%),
+      radial-gradient(ellipse 40% 14% at 18% 92%,
+        hsl(var(--motorex) / 0.55) 0%,
+        transparent 78%),
+      radial-gradient(ellipse 40% 14% at 82% 95%,
+        hsl(var(--motorex) / 0.55) 0%,
+        transparent 78%),
+
+      /* Cyan accent hints — RT brand */
+      radial-gradient(ellipse 22% 7% at 10% 32%,
+        hsl(197 90% 35% / 0.16) 0%, transparent 75%),
+      radial-gradient(ellipse 22% 7% at 90% 78%,
+        hsl(197 90% 35% / 0.14) 0%, transparent 75%);
+  }
+
+  /* ── Ambient Canvas (PRODUCT variant) — for /motorex catalog and product
+     detail. Green concentrated near hero (top) and CTA (bottom); navy in the
+     long catalog middle so product cards read crisply. */
+  .ambient-canvas-product {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+    background:
+      /* TOP — green hero halo right under the banner */
+      radial-gradient(ellipse 90% 20% at 50% 10%,
+        hsl(var(--motorex) / 0.65) 0%,
+        hsl(var(--motorex) / 0.30) 35%,
+        hsl(var(--rt-navy) / 0.45) 60%,
+        transparent 82%),
+
+      /* CATALOG MIDDLE — long navy wash, no green to keep cards readable */
+      radial-gradient(ellipse 100% 40% at 50% 50%,
+        hsl(var(--rt-navy) / 0.70) 0%,
+        hsl(var(--rt-navy) / 0.40) 40%,
+        transparent 80%),
+      radial-gradient(ellipse 30% 14% at 12% 45%,
+        hsl(215 50% 14% / 0.50) 0%, transparent 75%),
+      radial-gradient(ellipse 30% 14% at 88% 60%,
+        hsl(215 50% 14% / 0.50) 0%, transparent 75%),
+
+      /* BOTTOM — strong green bloom merging into the footer */
+      radial-gradient(ellipse 95% 32% at 50% 102%,
+        hsl(var(--motorex) / 1) 0%,
+        hsl(var(--motorex) / 0.85) 25%,
+        hsl(var(--motorex) / 0.50) 50%,
+        hsl(var(--motorex) / 0.20) 70%,
+        transparent 92%),
+      radial-gradient(ellipse 40% 14% at 18% 93%,
+        hsl(var(--motorex) / 0.55) 0%, transparent 78%),
+      radial-gradient(ellipse 40% 14% at 82% 95%,
+        hsl(var(--motorex) / 0.55) 0%, transparent 78%),
+
+      /* Cyan accent */
+      radial-gradient(ellipse 22% 7% at 10% 30%,
+        hsl(197 90% 35% / 0.15) 0%, transparent 75%),
+      radial-gradient(ellipse 22% 7% at 90% 80%,
+        hsl(197 90% 35% / 0.14) 0%, transparent 75%);
+  }
+
   /* ── Footer Painted — extends the Ambient Canvas painting all the way to
      the bottom edge. Solid #26ad97 body, but the TOP edge dissolves via an
      organic mask so it merges seamlessly with the green bloom above. */
