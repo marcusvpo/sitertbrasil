@@ -213,64 +213,60 @@
     border-radius: 0 !important;
   }
 
-  /* ── MOTOREX section — pure brand color with cinematic CROSS-BOUNDARY bleed ──
-     Strategy: ::before bleeds UPWARD (into previous dark section),
-               ::after bleeds DOWNWARD (into next dark section).
-     Both extend 200px outside section bounds — eliminates the hard cut. */
+  /* ── MOTOREX section — pure brand color with cinematic edge dissolve ──
+     Strategy: the section's OWN green background fades to transparent at top
+     and bottom edges via mask-image, revealing the dark page bg underneath
+     through a soft organic curve. Works inside overflow-hidden containers. */
   .section-motorex-pure {
     color: hsl(0 0% 100%);
     position: relative;
-    /* Grid texture baked into background — frees pseudo-elements for bleeds */
+    isolation: isolate;
     background-color: hsl(var(--motorex));
     background-image:
       linear-gradient(hsl(0 0% 100% / 0.05) 1px, transparent 1px),
       linear-gradient(90deg, hsl(0 0% 100% / 0.05) 1px, transparent 1px);
     background-size: 56px 56px;
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      hsl(0 0% 0% / 0.15) 3%,
+      hsl(0 0% 0% / 0.5) 7%,
+      hsl(0 0% 0% / 0.85) 12%,
+      black 18%,
+      black 82%,
+      hsl(0 0% 0% / 0.85) 88%,
+      hsl(0 0% 0% / 0.5) 93%,
+      hsl(0 0% 0% / 0.15) 97%,
+      transparent 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      hsl(0 0% 0% / 0.15) 3%,
+      hsl(0 0% 0% / 0.5) 7%,
+      hsl(0 0% 0% / 0.85) 12%,
+      black 18%,
+      black 82%,
+      hsl(0 0% 0% / 0.85) 88%,
+      hsl(0 0% 0% / 0.5) 93%,
+      hsl(0 0% 0% / 0.15) 97%,
+      transparent 100%
+    );
   }
 
-  /* TOP bleed — extends 200px ABOVE section, blending into prev dark section */
+  /* RT cyan accent glows — organic painterly hints */
   .section-motorex-pure::before {
     content: '';
     position: absolute;
-    left: 0;
-    right: 0;
-    top: -200px;
-    height: 200px;
-    z-index: 2;
+    inset: 0;
+    z-index: 0;
     pointer-events: none;
     background:
-      radial-gradient(ellipse 140% 180% at 50% 100%,
-        hsl(var(--motorex)) 0%,
-        hsl(var(--motorex) / 0.85) 25%,
-        hsl(165 55% 26% / 0.65) 45%,
-        hsl(165 60% 14% / 0.35) 65%,
-        transparent 88%),
-      radial-gradient(ellipse 55% 120% at 18% 100%,
-        hsl(197 90% 28% / 0.32) 0%,
-        hsl(197 80% 18% / 0.12) 40%,
-        transparent 70%);
-  }
-
-  /* BOTTOM bleed — extends 200px BELOW section, blending into next dark section */
-  .section-motorex-pure::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -200px;
-    height: 200px;
-    z-index: 2;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 140% 180% at 50% 0%,
-        hsl(var(--motorex)) 0%,
-        hsl(var(--motorex) / 0.85) 25%,
-        hsl(165 55% 26% / 0.65) 45%,
-        hsl(165 60% 14% / 0.35) 65%,
-        transparent 88%),
-      radial-gradient(ellipse 55% 120% at 82% 0%,
-        hsl(197 90% 25% / 0.28) 0%,
-        hsl(197 70% 18% / 0.1) 40%,
+      radial-gradient(ellipse 45% 35% at 12% 8%,
+        hsl(197 90% 35% / 0.22) 0%,
+        transparent 70%),
+      radial-gradient(ellipse 40% 30% at 88% 92%,
+        hsl(197 80% 30% / 0.18) 0%,
         transparent 70%);
   }
 
@@ -279,15 +275,32 @@
     z-index: 1;
   }
 
-  /* Legacy aliases — same cross-boundary bleed treatment */
+  /* Legacy aliases */
   .section-motorex-glow,
   .section-motorex-glow-intense {
     @apply section-motorex-pure;
   }
 
-  /* Modifier — remove bottom bleed (use when section ends with pure color, e.g. before footer) */
-  .section-motorex-no-bottom-fade::after {
-    display: none !important;
+  /* Modifier — keep top fade, remove bottom fade (pure color at bottom edge) */
+  .section-motorex-no-bottom-fade {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      hsl(0 0% 0% / 0.15) 3%,
+      hsl(0 0% 0% / 0.5) 7%,
+      hsl(0 0% 0% / 0.85) 12%,
+      black 18%,
+      black 100%
+    ) !important;
+    mask-image: linear-gradient(
+      to bottom,
+      transparent 0%,
+      hsl(0 0% 0% / 0.15) 3%,
+      hsl(0 0% 0% / 0.5) 7%,
+      hsl(0 0% 0% / 0.85) 12%,
+      black 18%,
+      black 100%
+    ) !important;
   }
 }
 
