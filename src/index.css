@@ -271,19 +271,24 @@
         hsl(var(--motorex) / 0.18) 45%,
         transparent 70%),
 
-      /* GREEN BLOOM 2 — "Contato Rápido" (~88% down) */
-      radial-gradient(ellipse 75% 18% at 50% 88%,
-        hsl(var(--motorex) / 0.95) 0%,
-        hsl(var(--motorex) / 0.78) 22%,
-        hsl(var(--motorex) / 0.40) 42%,
-        hsl(var(--rt-navy) / 0.50) 60%,
-        transparent 78%),
-      radial-gradient(ellipse 30% 9% at 22% 84%,
-        hsl(var(--motorex) / 0.50) 0%,
-        transparent 70%),
-      radial-gradient(ellipse 30% 9% at 80% 91%,
-        hsl(var(--motorex) / 0.50) 0%,
-        transparent 70%),
+      /* GREEN BLOOM 2 — "Contato Rápido" → Footer (anchored bottom, huge & solid).
+         Pushed below 100% so the green color reaches FULL strength at the page edge,
+         meeting the footer's own green seamlessly with no visible seam. */
+      radial-gradient(ellipse 95% 38% at 50% 102%,
+        hsl(var(--motorex) / 1) 0%,
+        hsl(var(--motorex) / 0.92) 25%,
+        hsl(var(--motorex) / 0.65) 45%,
+        hsl(var(--motorex) / 0.30) 65%,
+        hsl(var(--rt-navy) / 0.45) 80%,
+        transparent 95%),
+      radial-gradient(ellipse 45% 16% at 18% 92%,
+        hsl(var(--motorex) / 0.70) 0%,
+        hsl(var(--motorex) / 0.25) 50%,
+        transparent 75%),
+      radial-gradient(ellipse 45% 16% at 82% 95%,
+        hsl(var(--motorex) / 0.70) 0%,
+        hsl(var(--motorex) / 0.25) 50%,
+        transparent 75%),
 
       /* RT navy halos — smooth black→green transition zones */
       radial-gradient(ellipse 90% 14% at 50% 26%,
@@ -317,6 +322,41 @@
       radial-gradient(ellipse 25% 8% at 88% 86%,
         hsl(197 90% 35% / 0.16) 0%,
         transparent 70%);
+  }
+
+  /* ── Footer Painted — extends the Ambient Canvas painting all the way to
+     the bottom edge. Solid #26ad97 body, but the TOP edge dissolves via an
+     organic mask so it merges seamlessly with the green bloom above. */
+  .footer-painted {
+    position: relative;
+    color: hsl(0 0% 100%);
+    background-color: hsl(var(--motorex));
+    /* Organic top-edge dissolve — irregular, not a straight line */
+    -webkit-mask-image:
+      radial-gradient(ellipse 90% 180% at 30% 100%, black 55%, transparent 92%),
+      radial-gradient(ellipse 90% 180% at 70% 100%, black 55%, transparent 92%);
+    -webkit-mask-composite: source-over;
+    mask-image:
+      radial-gradient(ellipse 90% 180% at 30% 100%, black 55%, transparent 92%),
+      radial-gradient(ellipse 90% 180% at 70% 100%, black 55%, transparent 92%);
+    mask-composite: add;
+    /* Generous padding-top so the dissolved area doesn't eat the content */
+    padding-top: 4rem;
+  }
+  .footer-painted::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 50% 40% at 15% 10%,
+        hsl(197 90% 35% / 0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 45% 35% at 88% 90%,
+        hsl(197 80% 30% / 0.15) 0%, transparent 70%);
+  }
+  .footer-painted > * {
+    position: relative;
+    z-index: 1;
   }
 }
 
