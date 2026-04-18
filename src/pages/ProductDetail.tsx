@@ -58,7 +58,10 @@ const ProductDetail = () => {
   const images = product.images?.sort((a, b) => a.sort_order - b.sort_order) || [];
 
   return (
-    <section className="relative py-8 md:py-14 min-h-[60vh] mesh-gradient overflow-x-hidden">
+    <div className="relative">
+      <div aria-hidden className="ambient-canvas-product" />
+      <div className="relative z-10">
+        <section className="relative py-8 md:py-14 min-h-[60vh] overflow-x-hidden">
       <div className="container relative z-10 px-4 sm:px-6 lg:px-8">
         <Button asChild variant="ghost" className="text-muted-foreground hover:text-foreground mb-6">
           <Link to="/motorex">

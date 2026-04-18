@@ -45,7 +45,9 @@ const SejaRevendedor = () => {
   };
 
   return (
-    <>
+    <div className="relative">
+      <div aria-hidden className="ambient-canvas-page" />
+      <div className="relative z-10">
       {/* Banner */}
       <section className="relative w-full overflow-hidden">
         <img src="/images/banner-revendedor.jpg" alt="Seja um Revendedor MOTOREX" className="w-full h-auto block" />
