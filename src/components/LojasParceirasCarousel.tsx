@@ -41,7 +41,7 @@ const LojasParceirasCarousel = () => {
   const loop = [...lojas, ...lojas];
 
   return (
-    <section className="relative py-16 md:py-24 overflow-hidden bg-background">
+    <section className="relative py-16 md:py-24 overflow-hidden">
       <div className="container mb-10">
         <AnimateOnScroll className="text-center">
           <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">
