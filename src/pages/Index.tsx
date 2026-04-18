@@ -319,7 +319,7 @@ const Index = () => {
       </section>
 
       {/* ── Quick Contact ── */}
-      <section className="relative py-20 md:py-28 section-motorex-glow-intense">
+      <section className="relative py-20 md:py-28 section-motorex-glow-intense section-motorex-no-bottom-fade">
         <div className="container relative z-10">
           <AnimateOnScroll className="text-center">
             <span className="font-heading uppercase text-white/80 text-xs tracking-[0.3em]">Fale Conosco</span>
