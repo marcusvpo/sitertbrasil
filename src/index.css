@@ -213,10 +213,9 @@
     border-radius: 0 !important;
   }
 
-  /* ── MOTOREX section — pure brand color with cinematic edge dissolve ──
-     Strategy: the section's OWN green background fades to transparent at top
-     and bottom edges via mask-image, revealing the dark page bg underneath
-     through a soft organic curve. Works inside overflow-hidden containers. */
+  /* ── MOTOREX section — pure brand color, sharp edges.
+     Transition to dark sections is handled by .bleed-from-below / .bleed-from-above
+     applied to the ADJACENT dark sections (Aurora Bridge approach). */
   .section-motorex-pure {
     color: hsl(0 0% 100%);
     position: relative;
@@ -226,35 +225,9 @@
       linear-gradient(hsl(0 0% 100% / 0.05) 1px, transparent 1px),
       linear-gradient(90deg, hsl(0 0% 100% / 0.05) 1px, transparent 1px);
     background-size: 56px 56px;
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      hsl(0 0% 0% / 0.15) 3%,
-      hsl(0 0% 0% / 0.5) 7%,
-      hsl(0 0% 0% / 0.85) 12%,
-      black 18%,
-      black 82%,
-      hsl(0 0% 0% / 0.85) 88%,
-      hsl(0 0% 0% / 0.5) 93%,
-      hsl(0 0% 0% / 0.15) 97%,
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      hsl(0 0% 0% / 0.15) 3%,
-      hsl(0 0% 0% / 0.5) 7%,
-      hsl(0 0% 0% / 0.85) 12%,
-      black 18%,
-      black 82%,
-      hsl(0 0% 0% / 0.85) 88%,
-      hsl(0 0% 0% / 0.5) 93%,
-      hsl(0 0% 0% / 0.15) 97%,
-      transparent 100%
-    );
   }
 
-  /* RT cyan accent glows — organic painterly hints */
+  /* RT cyan accent glows — organic painterly hints inside the green section */
   .section-motorex-pure::before {
     content: '';
     position: absolute;
@@ -281,26 +254,80 @@
     @apply section-motorex-pure;
   }
 
-  /* Modifier — keep top fade, remove bottom fade (pure color at bottom edge) */
+  /* Kept for backwards compat — now a no-op since base section has no fade */
   .section-motorex-no-bottom-fade {
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      hsl(0 0% 0% / 0.15) 3%,
-      hsl(0 0% 0% / 0.5) 7%,
-      hsl(0 0% 0% / 0.85) 12%,
-      black 18%,
-      black 100%
-    ) !important;
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      hsl(0 0% 0% / 0.15) 3%,
-      hsl(0 0% 0% / 0.5) 7%,
-      hsl(0 0% 0% / 0.85) 12%,
-      black 18%,
-      black 100%
-    ) !important;
+    /* nothing — base section already has solid edges */
+  }
+
+  /* ── Aurora Bridge — organic green/cyan blobs that bleed from a dark
+     section toward an adjacent green MOTOREX section, dissolving the seam.
+     Apply to the DARK section that touches a green section. */
+  .bleed-from-below {
+    position: relative;
+    z-index: 0;
+  }
+  .bleed-from-below::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 340px;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 65% 95% at 22% 105%,
+        hsl(var(--motorex) / 0.55) 0%,
+        hsl(var(--motorex) / 0.28) 35%,
+        transparent 65%),
+      radial-gradient(ellipse 55% 80% at 78% 110%,
+        hsl(var(--motorex) / 0.45) 0%,
+        hsl(var(--motorex) / 0.20) 40%,
+        transparent 70%),
+      radial-gradient(ellipse 40% 55% at 50% 120%,
+        hsl(197 100% 38% / 0.28) 0%,
+        transparent 65%),
+      radial-gradient(ellipse 30% 45% at 8% 95%,
+        hsl(var(--motorex) / 0.30) 0%,
+        transparent 60%);
+  }
+  .bleed-from-below > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .bleed-from-above {
+    position: relative;
+    z-index: 0;
+  }
+  .bleed-from-above::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 340px;
+    pointer-events: none;
+    z-index: 0;
+    background:
+      radial-gradient(ellipse 65% 95% at 28% -5%,
+        hsl(var(--motorex) / 0.55) 0%,
+        hsl(var(--motorex) / 0.28) 35%,
+        transparent 65%),
+      radial-gradient(ellipse 55% 80% at 75% -10%,
+        hsl(var(--motorex) / 0.45) 0%,
+        hsl(var(--motorex) / 0.20) 40%,
+        transparent 70%),
+      radial-gradient(ellipse 40% 55% at 50% -20%,
+        hsl(197 100% 38% / 0.28) 0%,
+        transparent 65%),
+      radial-gradient(ellipse 30% 45% at 92% 5%,
+        hsl(var(--motorex) / 0.30) 0%,
+        transparent 60%);
+  }
+  .bleed-from-above > * {
+    position: relative;
+    z-index: 1;
   }
 }
 

@@ -137,7 +137,7 @@ const Index = () => {
       <LojasParceirasCarousel />
 
       {/* ── Featured Products — Asymmetric Grid ── */}
-      <section className="relative py-16 md:py-24 mesh-gradient">
+      <section className="relative py-16 md:py-24 mesh-gradient bleed-from-below">
         <div className="container relative z-10">
           <AnimateOnScroll className="text-center mb-12">
             <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Vitrine</span>
@@ -268,7 +268,7 @@ const Index = () => {
       </section>
 
       {/* ── Banners (Revendedor + Indique) ── */}
-      <section className="relative w-full overflow-hidden">
+      <section className="relative w-full overflow-hidden bleed-from-above">
         <picture>
           <source srcSet="/images/banner-revendedor.webp" type="image/webp" />
           <img src="/images/banner-revendedor.jpg" alt="Seja um Revendedor MOTOREX" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
@@ -283,7 +283,7 @@ const Index = () => {
 
 
       {/* ── Testimonials — Tilted Marquee ── */}
-      <section className="py-16 md:py-24 overflow-hidden">
+      <section className="py-16 md:py-24 overflow-hidden bleed-from-below">
         <div className="container mb-10">
           <AnimateOnScroll className="text-center">
             <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Depoimentos</span>
