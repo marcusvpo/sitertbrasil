@@ -243,7 +243,19 @@
     z-index: 0;
     pointer-events: none;
     background:
-      linear-gradient(to bottom, hsl(var(--background)) 0%, transparent 8%, transparent 92%, hsl(var(--background)) 100%);
+      linear-gradient(
+        to bottom,
+        hsl(var(--background)) 0%,
+        hsl(var(--background) / 0.85) 4%,
+        hsl(var(--background) / 0.5) 9%,
+        hsl(var(--background) / 0.2) 14%,
+        transparent 20%,
+        transparent 80%,
+        hsl(var(--background) / 0.2) 86%,
+        hsl(var(--background) / 0.5) 91%,
+        hsl(var(--background) / 0.85) 96%,
+        hsl(var(--background)) 100%
+      );
   }
   .section-motorex-pure > * {
     position: relative;
