@@ -56,9 +56,13 @@ const Index = () => {
   });
 
   return (
-    <>
-      {/* ── HERO — Full-screen immersive ── */}
-      <section className="relative min-h-screen flex items-end overflow-hidden">
+    <div className="relative">
+      {/* Painterly ambient background — paints the green MOTOREX blooms organically */}
+      <div aria-hidden className="ambient-canvas" />
+
+      <div className="relative z-10">
+        {/* ── HERO — Full-screen immersive ── */}
+        <section className="relative min-h-screen flex items-end overflow-hidden">
         {/* Background image with parallax feel */}
         <div className="absolute inset-0">
           <picture>
@@ -385,7 +389,8 @@ const Index = () => {
           </AnimateOnScroll>
         </div>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 
