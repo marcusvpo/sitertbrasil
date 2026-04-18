@@ -235,7 +235,9 @@
     mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black, transparent 85%);
     -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black, transparent 85%);
   }
-  /* Smooth fade-to-dark on top & bottom edges (transition into dark sections) */
+  /* Smooth fade via DEEPER shade of the same green (no gray mud zone)
+     Uses a darker version of motorex green as the bridge color, then to background.
+     This preserves the brand color identity through the entire transition. */
   .section-motorex-pure::after {
     content: '';
     position: absolute;
@@ -243,23 +245,20 @@
     z-index: 0;
     pointer-events: none;
     background:
+      /* Top edge — short, soft fade through deep green into dark */
       linear-gradient(
         to bottom,
         hsl(var(--background)) 0%,
-        hsl(var(--background) / 0.95) 3%,
-        hsl(var(--background) / 0.82) 7%,
-        hsl(var(--background) / 0.65) 12%,
-        hsl(var(--background) / 0.45) 18%,
-        hsl(var(--background) / 0.25) 25%,
-        hsl(var(--background) / 0.1) 32%,
-        transparent 40%,
-        transparent 60%,
-        hsl(var(--background) / 0.1) 68%,
-        hsl(var(--background) / 0.25) 75%,
-        hsl(var(--background) / 0.45) 82%,
-        hsl(var(--background) / 0.65) 88%,
-        hsl(var(--background) / 0.82) 93%,
-        hsl(var(--background) / 0.95) 97%,
+        hsl(var(--background) / 0.6) 2%,
+        hsl(164 64% 18% / 0.55) 5%,
+        hsl(164 64% 28% / 0.35) 9%,
+        hsl(164 64% 35% / 0.15) 13%,
+        transparent 18%,
+        transparent 82%,
+        hsl(164 64% 35% / 0.15) 87%,
+        hsl(164 64% 28% / 0.35) 91%,
+        hsl(164 64% 18% / 0.55) 95%,
+        hsl(var(--background) / 0.6) 98%,
         hsl(var(--background)) 100%
       );
   }
@@ -280,13 +279,11 @@
       linear-gradient(
         to bottom,
         hsl(var(--background)) 0%,
-        hsl(var(--background) / 0.95) 3%,
-        hsl(var(--background) / 0.82) 7%,
-        hsl(var(--background) / 0.65) 12%,
-        hsl(var(--background) / 0.45) 18%,
-        hsl(var(--background) / 0.25) 25%,
-        hsl(var(--background) / 0.1) 32%,
-        transparent 40%,
+        hsl(var(--background) / 0.6) 2%,
+        hsl(164 64% 18% / 0.55) 5%,
+        hsl(164 64% 28% / 0.35) 9%,
+        hsl(164 64% 35% / 0.15) 13%,
+        transparent 18%,
         transparent 100%
       ) !important;
   }
