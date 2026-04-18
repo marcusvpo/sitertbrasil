@@ -75,7 +75,9 @@ const Motorex = () => {
   });
 
   return (
-    <>
+    <div className="relative">
+      <div aria-hidden className="ambient-canvas-product" />
+      <div className="relative z-10">
       {/* Banner */}
       <section className="relative w-full overflow-hidden">
         <img
@@ -83,11 +85,11 @@ const Motorex = () => {
           alt="MOTOREX - Distribuidor Oficial"
           className="w-full h-auto block"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
       </section>
 
       {/* ── Filter Bar — Neon pills ── */}
-      <section className="md:sticky md:top-12 z-30 border-b border-foreground/[0.06] bg-background/90 backdrop-blur-xl">
+      <section className="md:sticky md:top-12 z-30 border-b border-foreground/[0.06] bg-background/40 backdrop-blur-xl">
         <div className="container py-3">
           <div className="flex flex-col md:flex-row gap-3 md:items-center">
             {/* Search */}
@@ -151,7 +153,7 @@ const Motorex = () => {
       </section>
 
       {/* ── Products Grid ── */}
-      <section className="relative py-10 md:py-16 min-h-[50vh] mesh-gradient">
+      <section className="relative py-10 md:py-16 min-h-[50vh]">
         <div className="container relative z-10">
           {isLoading ? (
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5 md:gap-6">
@@ -378,7 +380,8 @@ const Motorex = () => {
           )}
         </div>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 

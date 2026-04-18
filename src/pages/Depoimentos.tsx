@@ -84,7 +84,7 @@ const Depoimentos = () => (
     </section>
 
     {/* ── CTA ── */}
-    <section className="relative py-20 md:py-28 section-motorex-glow-intense">
+    <section className="relative py-20 md:py-28">
       <div className="container relative z-10 text-center">
         <AnimateOnScroll>
           <div className="bg-white/10 border border-white/20 rounded-xl p-10 md:p-14 max-w-xl mx-auto">
@@ -108,7 +108,8 @@ const Depoimentos = () => (
         </AnimateOnScroll>
       </div>
     </section>
-  </>
+    </div>
+  </div>
 );
 
 export default Depoimentos;

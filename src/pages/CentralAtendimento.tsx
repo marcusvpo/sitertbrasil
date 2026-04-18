@@ -64,7 +64,7 @@ const CentralAtendimento = () => {
       </section>
 
       {/* ── Contact Cards — gradient borders ── */}
-      <section className="py-12 md:py-20 section-motorex-glow-intense">
+      <section className="py-12 md:py-20">
         <div className="container">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
             {contactCards.map((c, i) => (
@@ -89,7 +89,7 @@ const CentralAtendimento = () => {
       </section>
 
       {/* ── Form ── */}
-      <section className="relative py-12 md:py-20 border-t border-foreground/[0.04] mesh-gradient">
+      <section className="relative py-12 md:py-20">
         <div className="container relative z-10 max-w-xl">
           <AnimateOnScroll className="text-center mb-10">
             <Send size={32} className="mx-auto text-primary mb-4" />
@@ -149,7 +149,8 @@ const CentralAtendimento = () => {
           </div>
         </div>
       </section>
-    </>
+      </div>
+    </div>
   );
 };
 
