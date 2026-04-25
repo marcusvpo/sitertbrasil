@@ -15,7 +15,7 @@ interface YampiProduct {
   url: string;
   is_active: boolean;
   texts?: any;
-  skus?: { data: Array<{ id: number; price_sale: number; price_discount: number; sku: string }> };
+  skus?: { data: Array<{ id: number; price_sale: number; price_discount: number; sku: string; token?: string }> };
   images?: any;
   categories?: { data: Array<{ id: number; name: string; slug: string }> };
   image_url?: string;
@@ -137,6 +137,7 @@ Deno.serve(async (req) => {
         yampi_slug: yp.slug,
         yampi_sku: sku?.sku || null,
         yampi_url: yp.url || null,
+        yampi_purchase_token: sku?.token || null,
         name: yp.name,
         slug: yp.slug,
         description,
