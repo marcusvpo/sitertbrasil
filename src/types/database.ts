@@ -53,3 +53,15 @@ export interface UserRole {
   user_id: string;
   role: AppRole;
 }
+
+export interface BlogPost {
+  id: string;
+  title: string;
+  category: string;
+  cover_image_path: string | null;
+  external_url: string;
+  is_active: boolean;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+}
