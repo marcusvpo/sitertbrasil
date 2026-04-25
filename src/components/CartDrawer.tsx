@@ -25,13 +25,16 @@ const CartDrawer = () => {
   const count = getItemCount();
 
   const handleCheckout = () => {
-    const valid = items.filter((i) => i.product.yampi_id);
-    const missing = items.filter((i) => !i.product.yampi_id);
+    const getToken = (p: typeof items[number]["product"]) =>
+      p.yampi_sku || (p.yampi_id ? String(p.yampi_id) : null);
+
+    const valid = items.filter((i) => getToken(i.product));
+    const missing = items.filter((i) => !getToken(i.product));
 
     if (valid.length === 0) {
       toast({
         title: "Produtos indisponíveis para checkout",
-        description: "Nenhum item possui ID Yampi cadastrado. Sincronize na área admin.",
+        description: "Nenhum item possui SKU Yampi cadastrado. Sincronize na área admin.",
         variant: "destructive",
       });
       return;
@@ -40,12 +43,12 @@ const CartDrawer = () => {
     if (missing.length > 0) {
       toast({
         title: "Alguns itens foram ignorados",
-        description: `${missing.length} produto(s) sem ID Yampi não entraram no checkout.`,
+        description: `${missing.length} produto(s) sem SKU Yampi não entraram no checkout.`,
       });
     }
 
     const url = buildYampiCheckoutUrl(
-      valid.map((i) => ({ yampiId: i.product.yampi_id!, qty: i.quantity }))
+      valid.map((i) => ({ yampiId: getToken(i.product)!, qty: i.quantity }))
     );
     window.open(url, "_blank");
   };
