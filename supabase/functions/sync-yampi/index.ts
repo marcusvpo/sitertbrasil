@@ -32,6 +32,34 @@ const fetchProductSkus = async (alias: string, productId: number, headers: Yampi
   return json.data || [];
 };
 
+interface YampiCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+const fetchProductCategories = async (
+  alias: string,
+  productId: number,
+  headers: YampiHeaders
+): Promise<YampiCategory[]> => {
+  // Re-fetch the product with categories include to get full category data
+  const resp = await fetch(
+    `${YAMPI_BASE}/${alias}/catalog/products/${productId}?include=categories`,
+    { headers }
+  );
+
+  if (!resp.ok) {
+    const body = await resp.text();
+    console.warn(`Failed to fetch categories for product ${productId}: ${resp.status} ${body}`);
+    return [];
+  }
+
+  const json = await resp.json();
+  const cats = json.data?.categories?.data || [];
+  return cats;
+};
+
 interface YampiProduct {
   id: number;
   name: string;
