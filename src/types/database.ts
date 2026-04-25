@@ -30,6 +30,7 @@ export interface Product {
   yampi_slug?: string | null;
   yampi_sku?: string | null;
   yampi_url?: string | null;
+  yampi_purchase_token?: string | null;
   synced_at?: string | null;
   // joined
   category?: ProductCategory;
