@@ -26,7 +26,7 @@ const CartDrawer = () => {
 
   const handleCheckout = () => {
     const getToken = (p: typeof items[number]["product"]) =>
-      p.yampi_sku || (p.yampi_id ? String(p.yampi_id) : null);
+      p.yampi_slug || null;
 
     const valid = items.filter((i) => getToken(i.product));
     const missing = items.filter((i) => !getToken(i.product));
