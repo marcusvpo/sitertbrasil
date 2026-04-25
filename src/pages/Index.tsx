@@ -48,6 +48,7 @@ const Index = () => {
         .select("*, category:product_categories(*), images:product_images(*)")
         .eq("is_active", true)
         .eq("is_featured", true)
+        .order("sort_order", { referencedTable: "product_images", ascending: true })
         .order("sort_order")
         .limit(4);
       if (error) throw error;
