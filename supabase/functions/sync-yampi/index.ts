@@ -32,6 +32,34 @@ const fetchProductSkus = async (alias: string, productId: number, headers: Yampi
   return json.data || [];
 };
 
+interface YampiCategory {
+  id: number;
+  name: string;
+  slug: string;
+}
+
+const fetchProductCategories = async (
+  alias: string,
+  productId: number,
+  headers: YampiHeaders
+): Promise<YampiCategory[]> => {
+  // Re-fetch the product with categories include to get full category data
+  const resp = await fetch(
+    `${YAMPI_BASE}/${alias}/catalog/products/${productId}?include=categories`,
+    { headers }
+  );
+
+  if (!resp.ok) {
+    const body = await resp.text();
+    console.warn(`Failed to fetch categories for product ${productId}: ${resp.status} ${body}`);
+    return [];
+  }
+
+  const json = await resp.json();
+  const cats = json.data?.categories?.data || [];
+  return cats;
+};
+
 interface YampiProduct {
   id: number;
   name: string;
@@ -137,9 +165,26 @@ Deno.serve(async (req) => {
     for (const yp of allProducts) {
       // ── Upsert category ──
       let categoryId: string | null = null;
-      const cat = yp.categories?.data?.[0];
+      let cat = yp.categories?.data?.[0];
+
+      // Fallback: if product include returned no categories, fetch them via dedicated endpoint
+      if (!cat) {
+        console.warn(`Product "${yp.name}" (yampi_id=${yp.id}): no category in include, fetching directly...`);
+        try {
+          const fetchedCats = await fetchProductCategories(alias, yp.id, yampiHeaders);
+          if (fetchedCats.length > 0) {
+            cat = fetchedCats[0];
+            console.log(`Product "${yp.name}": recovered category "${cat.name}" via fallback fetch`);
+          } else {
+            console.warn(`Product "${yp.name}": still no categories after fallback fetch`);
+          }
+        } catch (catErr) {
+          console.warn(`Error fetching categories for product ${yp.id}:`, catErr);
+        }
+      }
+
       if (cat) {
-        const { data: catData } = await adminClient
+        const { data: catData, error: catError } = await adminClient
           .from("product_categories")
           .upsert(
             { yampi_id: cat.id, name: cat.name, slug: cat.slug, sort_order: 0 },
@@ -147,7 +192,13 @@ Deno.serve(async (req) => {
           )
           .select("id")
           .single();
+
+        if (catError) {
+          console.error(`Error upserting category for "${yp.name}":`, catError);
+        }
         categoryId = catData?.id || null;
+      } else {
+        console.warn(`Product "${yp.name}" (yampi_id=${yp.id}): saving with category_id=null`);
       }
 
       // ── Map product data ──
