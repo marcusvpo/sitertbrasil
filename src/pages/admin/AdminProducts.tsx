@@ -162,6 +162,11 @@ const AdminProducts = () => {
                         {product.badge}
                       </Badge>
                     )}
+                    {!product.yampi_id && (
+                      <Badge variant="secondary" className="ml-2 text-[10px] bg-amber-500/10 text-amber-400 border-0">
+                        Sem Yampi ID
+                      </Badge>
+                    )}
                   </TableCell>
                   <TableCell className="text-secondary-foreground/60">{product.category?.name || "—"}</TableCell>
                   <TableCell className="text-secondary-foreground/60">
