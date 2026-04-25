@@ -11,15 +11,11 @@ import { toast } from "@/hooks/use-toast";
 const formatBRL = (value: number) =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-const YAMPI_SUBDOMAIN = "rtbrasil";
+const YAMPI_STORE = "rt-brasil";
 
-const buildYampiCheckoutUrl = (items: { yampiId: number; qty: number }[]) => {
-  const params = new URLSearchParams();
-  for (const item of items) {
-    params.append("product_id", String(item.yampiId));
-    params.append("quantity", String(item.qty));
-  }
-  return `https://${YAMPI_SUBDOMAIN}.yampi.com.br/checkout/add?${params.toString()}`;
+const buildYampiCheckoutUrl = (items: { yampiId: number | string; qty: number }[]) => {
+  const path = items.map((i) => `${i.yampiId}:${i.qty}`).join(",");
+  return `https://${YAMPI_STORE}.pay.yampi.com.br/r/${path}`;
 };
 
 const CartDrawer = () => {
@@ -29,13 +25,16 @@ const CartDrawer = () => {
   const count = getItemCount();
 
   const handleCheckout = () => {
-    const valid = items.filter((i) => i.product.yampi_id);
-    const missing = items.filter((i) => !i.product.yampi_id);
+    const getToken = (p: typeof items[number]["product"]) =>
+      p.yampi_sku || (p.yampi_id ? String(p.yampi_id) : null);
+
+    const valid = items.filter((i) => getToken(i.product));
+    const missing = items.filter((i) => !getToken(i.product));
 
     if (valid.length === 0) {
       toast({
         title: "Produtos indisponíveis para checkout",
-        description: "Nenhum item possui ID Yampi cadastrado. Sincronize na área admin.",
+        description: "Nenhum item possui SKU Yampi cadastrado. Sincronize na área admin.",
         variant: "destructive",
       });
       return;
@@ -44,12 +43,12 @@ const CartDrawer = () => {
     if (missing.length > 0) {
       toast({
         title: "Alguns itens foram ignorados",
-        description: `${missing.length} produto(s) sem ID Yampi não entraram no checkout.`,
+        description: `${missing.length} produto(s) sem SKU Yampi não entraram no checkout.`,
       });
     }
 
     const url = buildYampiCheckoutUrl(
-      valid.map((i) => ({ yampiId: i.product.yampi_id!, qty: i.quantity }))
+      valid.map((i) => ({ yampiId: getToken(i.product)!, qty: i.quantity }))
     );
     window.open(url, "_blank");
   };
