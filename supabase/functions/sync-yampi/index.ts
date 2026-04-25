@@ -8,6 +8,30 @@ const corsHeaders = {
 
 const YAMPI_BASE = "https://api.dooki.com.br/v2";
 
+type YampiHeaders = Record<string, string>;
+
+interface YampiSku {
+  id: number;
+  price_sale: number;
+  price_discount: number;
+  sku: string;
+  token?: string | null;
+  purchase_url?: string | null;
+}
+
+const fetchProductSkus = async (alias: string, productId: number, headers: YampiHeaders): Promise<YampiSku[]> => {
+  const resp = await fetch(`${YAMPI_BASE}/${alias}/catalog/products/${productId}/skus?limit=100`, { headers });
+
+  if (!resp.ok) {
+    const body = await resp.text();
+    console.warn(`Failed to fetch SKUs for product ${productId}: ${resp.status} ${body}`);
+    return [];
+  }
+
+  const json = await resp.json();
+  return json.data || [];
+};
+
 interface YampiProduct {
   id: number;
   name: string;
@@ -15,7 +39,7 @@ interface YampiProduct {
   url: string;
   is_active: boolean;
   texts?: any;
-  skus?: { data: Array<{ id: number; price_sale: number; price_discount: number; sku: string; token?: string }> };
+  skus?: { data: YampiSku[] };
   images?: any;
   categories?: { data: Array<{ id: number; name: string; slug: string }> };
   image_url?: string;
@@ -128,6 +152,22 @@ Deno.serve(async (req) => {
 
       // ── Map product data ──
       const sku = yp.skus?.data?.[0];
+      let fullSku = sku;
+
+      try {
+        const productSkus = await fetchProductSkus(alias, yp.id, yampiHeaders);
+        const matchedSku = sku?.id ? productSkus.find((item) => item.id === sku.id) : null;
+        fullSku = matchedSku || productSkus[0] || sku;
+
+        if (fullSku?.token) {
+          console.log(`Product "${yp.name}": purchase token found (${fullSku.token})`);
+        } else {
+          console.warn(`Product "${yp.name}" (yampi_id=${yp.id}): no purchase token returned by Yampi SKU endpoint`);
+        }
+      } catch (skuErr) {
+        console.warn(`Error fetching full SKU data for product ${yp.id}:`, skuErr);
+      }
+
       const textsObj = yp.texts as any;
       const description = textsObj?.description || textsObj?.data?.description || null;
       const shortDescription = textsObj?.short_description || textsObj?.data?.short_description || null;
@@ -135,15 +175,15 @@ Deno.serve(async (req) => {
       const productData = {
         yampi_id: yp.id,
         yampi_slug: yp.slug,
-        yampi_sku: sku?.sku || null,
+        yampi_sku: fullSku?.sku || null,
         yampi_url: yp.url || null,
-        yampi_purchase_token: sku?.token || null,
+        yampi_purchase_token: fullSku?.token || null,
         name: yp.name,
         slug: yp.slug,
         description,
         short_description: shortDescription,
-        price: sku?.price_sale || null,
-        compare_price: sku?.price_discount || null,
+        price: fullSku?.price_sale || null,
+        compare_price: fullSku?.price_discount || null,
         category_id: categoryId,
         is_active: yp.is_active,
         synced_at: new Date().toISOString(),
@@ -178,7 +218,7 @@ Deno.serve(async (req) => {
       }
 
       // ── Step 2: Fetch images via SKU endpoint (Yampi organizes images by SKU) ──
-      const skuData = yp.skus?.data?.[0];
+      const skuData = fullSku;
       let yampiImages: any[] = [];
 
       if (skuData?.id) {
