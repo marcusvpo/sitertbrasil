@@ -24,12 +24,15 @@ const MarceloGaliotto = lazy(() => import("./pages/parceiros/MarceloGaliotto"));
 const OtavioOliveira = lazy(() => import("./pages/parceiros/OtavioOliveira"));
 
 const Depoimentos = lazy(() => import("./pages/Depoimentos"));
+const Blog = lazy(() => import("./pages/Blog"));
 const CentralAtendimento = lazy(() => import("./pages/CentralAtendimento"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 const AdminProductForm = lazy(() => import("./pages/admin/AdminProductForm"));
 const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
 const AdminVitrine = lazy(() => import("./pages/admin/AdminVitrine"));
+const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
+const AdminBlogForm = lazy(() => import("./pages/admin/AdminBlogForm"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -66,6 +69,7 @@ const App = () => (
               <Route path="/parceiros/otavio-oliveira" element={<OtavioOliveira />} />
               
               <Route path="/depoimentos" element={<Depoimentos />} />
+              <Route path="/blog" element={<Blog />} />
               <Route path="/central-atendimento" element={<CentralAtendimento />} />
             </Route>
 
@@ -77,6 +81,9 @@ const App = () => (
               <Route path="/admin/products/:id" element={<AdminProductForm />} />
               <Route path="/admin/vitrine" element={<AdminVitrine />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
+              <Route path="/admin/blog" element={<AdminBlog />} />
+              <Route path="/admin/blog/new" element={<AdminBlogForm />} />
+              <Route path="/admin/blog/:id" element={<AdminBlogForm />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

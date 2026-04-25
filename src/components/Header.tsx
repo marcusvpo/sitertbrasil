@@ -10,7 +10,7 @@ const navItems = [
   { label: "Seja um Revendedor", to: "/seja-revendedor" },
   { label: "Quem Somos", to: "/quem-somos" },
   { label: "Parceiros", to: "/parceiros" },
-  
+  { label: "Blog", to: "/blog" },
   { label: "Depoimentos", to: "/depoimentos" },
 ];
 
