@@ -107,7 +107,7 @@ const Index = () => {
               </span>
             </AnimateOnScroll>
             <AnimateOnScroll animation="fade-up" delay={200}>
-              <h1 className="font-heading text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] mb-6">
+              <h1 className="font-heading text-[clamp(2.25rem,4.5vw,5.5rem)] font-bold leading-[1.05] md:leading-[0.95] mb-6 [text-wrap:balance] hyphens-auto break-words">
                 Performance Máxima Para Quem Vive o{" "}
                 <span className="text-gradient">Motocross</span>
               </h1>
