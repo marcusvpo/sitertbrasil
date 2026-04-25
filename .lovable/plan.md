@@ -1,78 +1,107 @@
 
-
 ## Objetivo
 
-Aplicar a abordagem **"Ambient Canvas"** (que resolveu a home) em todas as outras páginas do site, eliminando recortes bruscos entre seções e criando uma pintura contínua verde-água `#26ad97` + navy + preto.
+Substituir o link genérico de checkout atual (`https://rtbrasil.yampi.com.br/checkout?items=slug:qty,...` — formato inválido) por **URLs reais de checkout transparente da Yampi**, parametrizadas por `product_id` e `quantity` para cada item do carrinho.
 
-## Páginas a tratar
+## Estado atual
 
-Inspecionei a lista de páginas. Vou aplicar o canvas em todas as páginas públicas:
+`src/components/CartDrawer.tsx` hoje monta:
 
-1. `/motorex` (Motorex.tsx)
-2. `/motorex/:slug` (ProductDetail.tsx)
-3. `/quem-somos` (QuemSomos.tsx)
-4. `/seja-revendedor` (SejaRevendedor.tsx)
-5. `/depoimentos` (Depoimentos.tsx)
-6. `/central-atendimento` (CentralAtendimento.tsx)
-7. `/parceiros` (Parceiros.tsx) — **mantém o "game HUD aesthetic"** por restrição de memória, NÃO recebe o canvas
-
-**Excluído:** páginas `/parceiros/*` individuais (HeitorMatos, LorenzoRicken, etc.) e admin — preservam estética própria.
-
-## Estratégia
-
-### 1. Refatorar `.ambient-canvas` para ser reutilizável
-
-Hoje a classe tem posições calibradas para a home (`at 50% 38%`, `at 50% 102%`, etc.). Vou criar **variantes**:
-
-- `.ambient-canvas` — variante home (atual, mantida)
-- `.ambient-canvas-page` — variante genérica para páginas internas: blooms verdes distribuídos uniformemente ao longo da altura (topo, meio, base) + halos navy, sem depender de posições específicas de seções
-- `.ambient-canvas-product` — variante para `/motorex` e `/motorex/:slug`: bloom verde mais concentrado no topo (hero) e base (CTAs), navy no miolo (catálogo)
-
-Cada variante usa o mesmo princípio: radial-gradients gigantes (1200–1400px, `transparent 65–75%`) que florescem organicamente, sem retângulos.
-
-### 2. Estrutura padrão por página
-
-Cada página passa a ter:
-
-```tsx
-<div className="relative">
-  <div aria-hidden className="ambient-canvas-page" />
-  <div className="relative z-10">
-    {/* conteúdo existente */}
-  </div>
-</div>
+```ts
+const buildYampiUrl = (items) =>
+  `https://rtbrasil.yampi.com.br/checkout?items=${slug:qty,...}`;
 ```
 
-### 3. Remover backgrounds sólidos das seções internas
+→ Esse formato **não é suportado** pela Yampi e provavelmente cai em erro/página vazia.
 
-Preciso varrer cada página e remover/transparentar:
-- `bg-background`, `bg-card`, `bg-black` aplicados em `<section>` que causam o recorte
-- Manter apenas backgrounds em **cards/componentes pequenos** (glass-card, etc.) — esses não causam seam
-- Substituir `bg-motorex` em CTAs grandes por `.section-motorex-pure` (que já é transparente e deixa o canvas pintar)
+O schema já está pronto: a tabela `products` tem a coluna `yampi_id` (number) sincronizada pela edge function `sync-yampi`, e o tipo `Product` em `src/types/database.ts` já expõe esse campo.
 
-### 4. Footer
+## Estrutura correta (confirmada pelo usuário)
 
-O footer já tem `.footer-painted` com mask orgânico. Como ele aparece em todas as páginas via `Layout`, ele já vai se integrar automaticamente ao novo canvas de cada página (o bloom verde no fim de cada `.ambient-canvas-page` casa com o verde sólido do footer).
+```
+https://rtbrasil.yampi.com.br/checkout/add?product_id=ID1&quantity=Q1&product_id=ID2&quantity=Q2
+```
+
+Pares `product_id` + `quantity` se repetem em ordem para múltiplos produtos.
+
+## Mudanças
+
+### 1. `src/components/CartDrawer.tsx`
+
+Reescrever `buildYampiUrl` para usar `URLSearchParams` com chaves repetidas:
+
+```ts
+const YAMPI_SUBDOMAIN = "rtbrasil";
+
+const buildYampiCheckoutUrl = (items: { yampiId: number; qty: number }[]) => {
+  const params = new URLSearchParams();
+  for (const item of items) {
+    params.append("product_id", String(item.yampiId));
+    params.append("quantity", String(item.qty));
+  }
+  return `https://${YAMPI_SUBDOMAIN}.yampi.com.br/checkout/add?${params.toString()}`;
+};
+```
+
+Atualizar `handleCheckout`:
+
+```ts
+const handleCheckout = () => {
+  const valid = items.filter((i) => i.product.yampi_id);
+  const missing = items.filter((i) => !i.product.yampi_id);
+
+  if (valid.length === 0) {
+    toast({
+      title: "Produto indisponível para checkout",
+      description: "Nenhum item possui ID Yampi cadastrado. Sincronize na área admin.",
+      variant: "destructive",
+    });
+    return;
+  }
+
+  if (missing.length > 0) {
+    toast({
+      title: "Alguns itens foram ignorados",
+      description: `${missing.length} produto(s) sem ID Yampi não entraram no checkout.`,
+    });
+  }
+
+  const url = buildYampiCheckoutUrl(
+    valid.map((i) => ({ yampiId: i.product.yampi_id!, qty: i.quantity }))
+  );
+  window.open(url, "_blank");
+};
+```
+
+### 2. `src/contexts/CartContext.tsx`
+
+Nenhuma mudança estrutural — `CartItem.product` já é `Product & { images? }`, então `yampi_id` já está disponível em runtime (a query `select("*")` em `Motorex.tsx` e `ProductDetail.tsx` traz esse campo).
+
+Ainda assim, vou conferir as queries que populam o carrinho (`Motorex.tsx`, `ProductDetail.tsx`, `AdminVitrine.tsx`/HomeCarousel) para garantir que `select("*")` está em uso e `yampi_id` chega no objeto. Se alguma usar `select` específico, adiciono `yampi_id` à projeção.
+
+### 3. Mensagem ao admin (opcional, mas recomendada)
+
+No `AdminProducts.tsx`, exibir um indicador visual (badge "Sem Yampi ID") nas linhas onde `yampi_id` é null, para que o admin saiba quais produtos precisam de sincronização antes de aparecerem corretamente no checkout. — implementação simples: badge ao lado do nome.
+
+### 4. Verificação do subdomínio
+
+A URL de exemplo do usuário (`https://rt-brasil.pay.yampi.com.br/r/MXCDHR99Z3`) é uma página de **link rápido** (formato `/r/CODE`), diferente do checkout multi-item. O subdomínio do checkout multi-item é o da loja: hoje o código usa `rtbrasil.yampi.com.br`. Vou manter esse subdomínio (já estava em uso) — se estiver errado o usuário corrige em 1 iteração trocando a constante `YAMPI_SUBDOMAIN`.
 
 ## Arquivos a editar
 
-- `src/index.css` — adicionar `.ambient-canvas-page` e `.ambient-canvas-product` com radial-gradients calibrados; manter `.ambient-canvas` da home intacta
-- `src/pages/Motorex.tsx` — wrapper + canvas + remover `bg-*` de seções
-- `src/pages/ProductDetail.tsx` — wrapper + canvas + remover `bg-*` de seções
-- `src/pages/QuemSomos.tsx` — wrapper + canvas + remover `bg-*` de seções
-- `src/pages/SejaRevendedor.tsx` — wrapper + canvas + remover `bg-*` de seções
-- `src/pages/Depoimentos.tsx` — wrapper + canvas + remover `bg-*` de seções
-- `src/pages/CentralAtendimento.tsx` — wrapper + canvas + remover `bg-*` de seções
+- `src/components/CartDrawer.tsx` — nova função `buildYampiCheckoutUrl` + `handleCheckout` validando `yampi_id`
+- `src/pages/admin/AdminProducts.tsx` — badge "Sem Yampi ID" para alertar admin (cosmético)
+- (verificação) `src/pages/Motorex.tsx`, `src/pages/ProductDetail.tsx`, `src/components/HomeCarousel.tsx` — confirmar que as queries Supabase trazem `yampi_id`
 
-**NÃO editar:** `Parceiros.tsx`, `parceiros/*`, páginas admin, `Layout.tsx`, `Footer.tsx` (já tratado), `Header.tsx`.
+## Fora de escopo
 
-## Calibração
+- Não vou alterar a edge function `sync-yampi` (ela já popula `yampi_id`)
+- Não vou implementar checkout transparente embedado (iframe/popup Yampi) — apenas o redirect com URL parametrizada, que é o que o usuário pediu
+- Não vou criar novo schema/migration — `yampi_id` já existe
 
-Vou ler cada página antes de aplicar para identificar quais seções têm fundos sólidos problemáticos. Se após aplicar algum bloom ficar mal posicionado em uma página específica, ajusto com 1 iteração de tuning das posições `at X% Y%`.
+## Pós-implementação
 
-## Restrições respeitadas
-
-- `/parceiros/*` permanece com estética game HUD (memória `constraints/preservacao-parceiros`)
-- Cards internos (glass-card, gradient-border) mantêm seus backgrounds — só seções grandes ficam transparentes
-- Cor primordial continua `#26ad97`, navy `hsl(215 60% 10%)` como transição
-
+Pedirei ao usuário para:
+1. Confirmar que os produtos têm `yampi_id` populado (ou rodar "Sincronizar Yampi" no admin)
+2. Adicionar 2 produtos diferentes ao carrinho e clicar em "Finalizar Compra"
+3. Validar que abre `https://rtbrasil.yampi.com.br/checkout/add?product_id=...&quantity=...&product_id=...&quantity=...` com os itens corretos pré-carregados

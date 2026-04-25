@@ -6,13 +6,20 @@ import { Separator } from "@/components/ui/separator";
 import { ShoppingCart, Trash2, Plus, Minus, ExternalLink } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
 import { getProductImageUrl } from "@/lib/image-utils";
+import { toast } from "@/hooks/use-toast";
 
 const formatBRL = (value: number) =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-const buildYampiUrl = (items: { slug: string; qty: number }[]) => {
-  const param = items.map((i) => `${i.slug}:${i.qty}`).join(",");
-  return `https://rtbrasil.yampi.com.br/checkout?items=${param}`;
+const YAMPI_SUBDOMAIN = "rtbrasil";
+
+const buildYampiCheckoutUrl = (items: { yampiId: number; qty: number }[]) => {
+  const params = new URLSearchParams();
+  for (const item of items) {
+    params.append("product_id", String(item.yampiId));
+    params.append("quantity", String(item.qty));
+  }
+  return `https://${YAMPI_SUBDOMAIN}.yampi.com.br/checkout/add?${params.toString()}`;
 };
 
 const CartDrawer = () => {
@@ -22,8 +29,28 @@ const CartDrawer = () => {
   const count = getItemCount();
 
   const handleCheckout = () => {
-    const yampiItems = items.map((i) => ({ slug: i.product.yampi_slug || i.product.slug, qty: i.quantity }));
-    const url = buildYampiUrl(yampiItems);
+    const valid = items.filter((i) => i.product.yampi_id);
+    const missing = items.filter((i) => !i.product.yampi_id);
+
+    if (valid.length === 0) {
+      toast({
+        title: "Produtos indisponíveis para checkout",
+        description: "Nenhum item possui ID Yampi cadastrado. Sincronize na área admin.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (missing.length > 0) {
+      toast({
+        title: "Alguns itens foram ignorados",
+        description: `${missing.length} produto(s) sem ID Yampi não entraram no checkout.`,
+      });
+    }
+
+    const url = buildYampiCheckoutUrl(
+      valid.map((i) => ({ yampiId: i.product.yampi_id!, qty: i.quantity }))
+    );
     window.open(url, "_blank");
   };
 
