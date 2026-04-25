@@ -56,6 +56,7 @@ const Motorex = () => {
         .from("products")
         .select("*, category:product_categories(*), images:product_images(*)")
         .eq("is_active", true)
+        .order("sort_order", { referencedTable: "product_images", ascending: true })
         .order("sort_order");
       if (error) throw error;
       return data as (Product & { category: ProductCategory | null; images: ProductImage[] })[];
