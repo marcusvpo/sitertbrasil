@@ -1,107 +1,38 @@
+## Confirmações importantes
 
-## Objetivo
+1. **Lovable Cloud NÃO será usado.** Não vou rodar nenhuma migration via Lovable Cloud. Apenas vou **criar o arquivo `sql/migration_blog_posts.sql`** exatamente como está no patch. Você executa manualmente no painel do Supabase.
+2. **Clonagem literal.** Vou aplicar cada hunk do `.patch` byte-a-byte. Nenhuma linha será reinterpretada, reformatada ou "melhorada". O resultado final dos arquivos tocados será idêntico ao commit `0aadaece`.
 
-Substituir o link genérico de checkout atual (`https://rtbrasil.yampi.com.br/checkout?items=slug:qty,...` — formato inválido) por **URLs reais de checkout transparente da Yampi**, parametrizadas por `product_id` e `quantity` para cada item do carrinho.
+## Como vou garantir fidelidade ao patch
 
-## Estado atual
+- Vou ler o patch já copiado em `/tmp/modificacoes.patch` e processar arquivo por arquivo.
+- Para arquivos **novos** (criados pelo patch): escrevo o conteúdo exato extraído do patch.
+- Para arquivos **modificados**: aplico cada hunk exatamente nos mesmos números de linha e com o mesmo conteúdo final.
+- Após aplicar tudo, rodo `git apply --check` mental (diff manual) lendo cada arquivo modificado e comparando com o patch para garantir que nada divergiu.
 
-`src/components/CartDrawer.tsx` hoje monta:
+## Escopo (idêntico ao patch)
 
-```ts
-const buildYampiUrl = (items) =>
-  `https://rtbrasil.yampi.com.br/checkout?items=${slug:qty,...}`;
-```
+### Arquivos novos
+- `sql/migration_blog_posts.sql` — schema do blog (tabela `blog_posts` + bucket `blog` + RLS). **Você executa manualmente.**
+- `src/pages/Blog.tsx` — listagem pública
+- `src/pages/admin/AdminBlog.tsx` — lista no admin
+- `src/pages/admin/AdminBlogForm.tsx` — formulário criar/editar com upload de capa
 
-→ Esse formato **não é suportado** pela Yampi e provavelmente cai em erro/página vazia.
+### Arquivos modificados
+- `src/index.css` — base colors `0 0% 4%` → `0 0% 7%` (background, secondary, sidebar) + sigmoid ramps em `.section-motorex-pure::after` e `.section-motorex-glow-intense::after`
+- `src/types/database.ts` — tipo `BlogPost`
+- `src/lib/image-utils.ts` — helper `getBlogCoverUrl`
+- `src/components/Header.tsx` — item "Blog" no menu
+- `src/components/AdminLayout.tsx` — item "Blog" no sidebar admin
+- `src/components/Footer.tsx` — reverter de `.footer-painted` para `bg-background`
+- `src/pages/Index.tsx` — remover `section-motorex-no-bottom-fade` da seção "Contato Rápido"
+- `src/App.tsx` — rotas `/blog`, `/admin/blog`, `/admin/blog/new`, `/admin/blog/:id`
 
-O schema já está pronto: a tabela `products` tem a coluna `yampi_id` (number) sincronizada pela edge function `sync-yampi`, e o tipo `Product` em `src/types/database.ts` já expõe esse campo.
+## Entrega
 
-## Estrutura correta (confirmada pelo usuário)
+Ao final, te entrego:
+- Todos os arquivos clonados do patch.
+- O arquivo `sql/migration_blog_posts.sql` pronto para você colar no SQL Editor do Supabase.
+- Confirmação de que o build passa (`vite build`).
 
-```
-https://rtbrasil.yampi.com.br/checkout/add?product_id=ID1&quantity=Q1&product_id=ID2&quantity=Q2
-```
-
-Pares `product_id` + `quantity` se repetem em ordem para múltiplos produtos.
-
-## Mudanças
-
-### 1. `src/components/CartDrawer.tsx`
-
-Reescrever `buildYampiUrl` para usar `URLSearchParams` com chaves repetidas:
-
-```ts
-const YAMPI_SUBDOMAIN = "rtbrasil";
-
-const buildYampiCheckoutUrl = (items: { yampiId: number; qty: number }[]) => {
-  const params = new URLSearchParams();
-  for (const item of items) {
-    params.append("product_id", String(item.yampiId));
-    params.append("quantity", String(item.qty));
-  }
-  return `https://${YAMPI_SUBDOMAIN}.yampi.com.br/checkout/add?${params.toString()}`;
-};
-```
-
-Atualizar `handleCheckout`:
-
-```ts
-const handleCheckout = () => {
-  const valid = items.filter((i) => i.product.yampi_id);
-  const missing = items.filter((i) => !i.product.yampi_id);
-
-  if (valid.length === 0) {
-    toast({
-      title: "Produto indisponível para checkout",
-      description: "Nenhum item possui ID Yampi cadastrado. Sincronize na área admin.",
-      variant: "destructive",
-    });
-    return;
-  }
-
-  if (missing.length > 0) {
-    toast({
-      title: "Alguns itens foram ignorados",
-      description: `${missing.length} produto(s) sem ID Yampi não entraram no checkout.`,
-    });
-  }
-
-  const url = buildYampiCheckoutUrl(
-    valid.map((i) => ({ yampiId: i.product.yampi_id!, qty: i.quantity }))
-  );
-  window.open(url, "_blank");
-};
-```
-
-### 2. `src/contexts/CartContext.tsx`
-
-Nenhuma mudança estrutural — `CartItem.product` já é `Product & { images? }`, então `yampi_id` já está disponível em runtime (a query `select("*")` em `Motorex.tsx` e `ProductDetail.tsx` traz esse campo).
-
-Ainda assim, vou conferir as queries que populam o carrinho (`Motorex.tsx`, `ProductDetail.tsx`, `AdminVitrine.tsx`/HomeCarousel) para garantir que `select("*")` está em uso e `yampi_id` chega no objeto. Se alguma usar `select` específico, adiciono `yampi_id` à projeção.
-
-### 3. Mensagem ao admin (opcional, mas recomendada)
-
-No `AdminProducts.tsx`, exibir um indicador visual (badge "Sem Yampi ID") nas linhas onde `yampi_id` é null, para que o admin saiba quais produtos precisam de sincronização antes de aparecerem corretamente no checkout. — implementação simples: badge ao lado do nome.
-
-### 4. Verificação do subdomínio
-
-A URL de exemplo do usuário (`https://rt-brasil.pay.yampi.com.br/r/MXCDHR99Z3`) é uma página de **link rápido** (formato `/r/CODE`), diferente do checkout multi-item. O subdomínio do checkout multi-item é o da loja: hoje o código usa `rtbrasil.yampi.com.br`. Vou manter esse subdomínio (já estava em uso) — se estiver errado o usuário corrige em 1 iteração trocando a constante `YAMPI_SUBDOMAIN`.
-
-## Arquivos a editar
-
-- `src/components/CartDrawer.tsx` — nova função `buildYampiCheckoutUrl` + `handleCheckout` validando `yampi_id`
-- `src/pages/admin/AdminProducts.tsx` — badge "Sem Yampi ID" para alertar admin (cosmético)
-- (verificação) `src/pages/Motorex.tsx`, `src/pages/ProductDetail.tsx`, `src/components/HomeCarousel.tsx` — confirmar que as queries Supabase trazem `yampi_id`
-
-## Fora de escopo
-
-- Não vou alterar a edge function `sync-yampi` (ela já popula `yampi_id`)
-- Não vou implementar checkout transparente embedado (iframe/popup Yampi) — apenas o redirect com URL parametrizada, que é o que o usuário pediu
-- Não vou criar novo schema/migration — `yampi_id` já existe
-
-## Pós-implementação
-
-Pedirei ao usuário para:
-1. Confirmar que os produtos têm `yampi_id` populado (ou rodar "Sincronizar Yampi" no admin)
-2. Adicionar 2 produtos diferentes ao carrinho e clicar em "Finalizar Compra"
-3. Validar que abre `https://rtbrasil.yampi.com.br/checkout/add?product_id=...&quantity=...&product_id=...&quantity=...` com os itens corretos pré-carregados
+**Nada de Lovable Cloud. Nada de execução de SQL pela minha parte.**
