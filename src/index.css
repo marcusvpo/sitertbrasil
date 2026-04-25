@@ -38,7 +38,6 @@
 
     --motorex: 164 64% 41%;
     --motorex-foreground: 0 0% 100%;
-    --rt-navy: 215 60% 10%;
 
     --sidebar-background: 0 0% 7%;
     --sidebar-foreground: 0 0% 96%;
@@ -214,258 +213,112 @@
     border-radius: 0 !important;
   }
 
-  /* ── MOTOREX section — TRANSPARENT. The brand color is painted by the
-     global .ambient-canvas behind the page. NO background, NO mask, NO border. */
+  /* ── MOTOREX section — pure brand color with smooth edge fade ── */
   .section-motorex-pure {
+    background: hsl(var(--motorex));
     color: hsl(0 0% 100%);
     position: relative;
     isolation: isolate;
-    background-color: transparent;
-    background-image:
-      linear-gradient(hsl(0 0% 100% / 0.04) 1px, transparent 1px),
-      linear-gradient(90deg, hsl(0 0% 100% / 0.04) 1px, transparent 1px);
-    background-size: 56px 56px;
   }
-
+  /* Subtle grid texture */
+  .section-motorex-pure::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.07;
+    background-image:
+      linear-gradient(hsl(0 0% 100%) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(0 0% 100%) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black, transparent 85%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 65% at 50% 50%, black, transparent 85%);
+  }
+  /* Smooth fade via DEEPER shade of the same green (no gray mud zone)
+     Uses a darker version of motorex green as the bridge color, then to background.
+     This preserves the brand color identity through the entire transition.
+     Two independent stacked gradients (top + bottom), each spanning ~50% of section
+     with a 5% solid plateau at the edge (invisible match with neighbor) and a
+     sigmoid-shaped alpha ramp afterward. Result: the whole section is a continuous
+     transition, no visible block boundary. */
+  .section-motorex-pure::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        to bottom,
+        hsl(var(--background)) 0%,
+        hsl(var(--background)) 5%,
+        hsl(var(--background) / 0.99) 8%,
+        hsl(var(--background) / 0.96) 12%,
+        hsl(var(--background) / 0.90) 16%,
+        hsl(164 64% 6% / 0.82) 20%,
+        hsl(164 64% 10% / 0.72) 24%,
+        hsl(164 64% 14% / 0.60) 28%,
+        hsl(164 64% 18% / 0.48) 32%,
+        hsl(164 64% 22% / 0.37) 36%,
+        hsl(164 64% 26% / 0.27) 40%,
+        hsl(164 64% 30% / 0.18) 44%,
+        hsl(164 64% 34% / 0.11) 47%,
+        hsl(164 64% 37% / 0.05) 50%,
+        transparent 52%
+      ),
+      linear-gradient(
+        to top,
+        hsl(var(--background)) 0%,
+        hsl(var(--background)) 5%,
+        hsl(var(--background) / 0.99) 8%,
+        hsl(var(--background) / 0.96) 12%,
+        hsl(var(--background) / 0.90) 16%,
+        hsl(164 64% 6% / 0.82) 20%,
+        hsl(164 64% 10% / 0.72) 24%,
+        hsl(164 64% 14% / 0.60) 28%,
+        hsl(164 64% 18% / 0.48) 32%,
+        hsl(164 64% 22% / 0.37) 36%,
+        hsl(164 64% 26% / 0.27) 40%,
+        hsl(164 64% 30% / 0.18) 44%,
+        hsl(164 64% 34% / 0.11) 47%,
+        hsl(164 64% 37% / 0.05) 50%,
+        transparent 52%
+      );
+  }
   .section-motorex-pure > * {
     position: relative;
     z-index: 1;
   }
 
-  /* Legacy aliases — no-ops, kept so existing markup still compiles */
+  /* Legacy aliases — same smooth-edge treatment */
   .section-motorex-glow,
   .section-motorex-glow-intense {
     @apply section-motorex-pure;
   }
-  .section-motorex-no-bottom-fade,
-  .bleed-from-below,
-  .bleed-from-above {
-    /* intentionally empty — Ambient Canvas handles all transitions globally */
-  }
 
-  /* ── Ambient Canvas — Painterly Background ─────────────────────────────
-     The ONLY place the MOTOREX green color exists on the home page.
-     Sits behind ALL content, painting massive radial blooms that emerge from
-     the dark page background. No rectangles, no edges, no seams.
-     Three colors layered: black (page) → navy (--rt-navy) → green (--motorex). */
-  .ambient-canvas {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
+  /* Modifier — keep top fade, remove bottom fade (pure color at bottom) */
+  .section-motorex-no-bottom-fade::after {
     background:
-      /* GREEN BLOOM 1 — institutional "Sobre nós" (~38% down) */
-      radial-gradient(ellipse 70% 22% at 50% 38%,
-        hsl(var(--motorex) / 0.95) 0%,
-        hsl(var(--motorex) / 0.75) 18%,
-        hsl(var(--motorex) / 0.35) 38%,
-        hsl(var(--rt-navy) / 0.55) 55%,
-        transparent 72%),
-      radial-gradient(ellipse 35% 12% at 18% 33%,
-        hsl(var(--motorex) / 0.55) 0%,
-        hsl(var(--motorex) / 0.20) 45%,
-        transparent 70%),
-      radial-gradient(ellipse 32% 10% at 85% 44%,
-        hsl(var(--motorex) / 0.50) 0%,
-        hsl(var(--motorex) / 0.18) 45%,
-        transparent 70%),
-
-      /* GREEN BLOOM 2 — "Contato Rápido" → Footer (anchored bottom, huge & solid).
-         Pushed below 100% so the green color reaches FULL strength at the page edge,
-         meeting the footer's own green seamlessly with no visible seam. */
-      radial-gradient(ellipse 95% 38% at 50% 102%,
-        hsl(var(--motorex) / 1) 0%,
-        hsl(var(--motorex) / 0.92) 25%,
-        hsl(var(--motorex) / 0.65) 45%,
-        hsl(var(--motorex) / 0.30) 65%,
-        hsl(var(--rt-navy) / 0.45) 80%,
-        transparent 95%),
-      radial-gradient(ellipse 45% 16% at 18% 92%,
-        hsl(var(--motorex) / 0.70) 0%,
-        hsl(var(--motorex) / 0.25) 50%,
-        transparent 75%),
-      radial-gradient(ellipse 45% 16% at 82% 95%,
-        hsl(var(--motorex) / 0.70) 0%,
-        hsl(var(--motorex) / 0.25) 50%,
-        transparent 75%),
-
-      /* RT navy halos — smooth black→green transition zones */
-      radial-gradient(ellipse 90% 14% at 50% 26%,
-        hsl(var(--rt-navy) / 0.70) 0%,
-        transparent 75%),
-      radial-gradient(ellipse 90% 14% at 50% 50%,
-        hsl(var(--rt-navy) / 0.55) 0%,
-        transparent 75%),
-      radial-gradient(ellipse 90% 14% at 50% 76%,
-        hsl(var(--rt-navy) / 0.65) 0%,
-        transparent 75%),
-
-      /* Dealer Network band (~16% down) — darker navy wash so the section
-         reads as deep/moody but still part of the same continuous painting */
-      radial-gradient(ellipse 95% 10% at 50% 16%,
-        hsl(var(--rt-navy) / 0.85) 0%,
-        hsl(var(--rt-navy) / 0.55) 35%,
-        hsl(var(--rt-navy) / 0.25) 65%,
-        transparent 85%),
-      radial-gradient(ellipse 30% 8% at 20% 14%,
-        hsl(215 50% 14% / 0.55) 0%,
-        transparent 75%),
-      radial-gradient(ellipse 30% 8% at 80% 18%,
-        hsl(215 50% 14% / 0.55) 0%,
-        transparent 75%),
-
-      /* Subtle cyan accent glows (RT brand hint) */
-      radial-gradient(ellipse 25% 8% at 12% 40%,
-        hsl(197 90% 35% / 0.18) 0%,
-        transparent 70%),
-      radial-gradient(ellipse 25% 8% at 88% 86%,
-        hsl(197 90% 35% / 0.16) 0%,
-        transparent 70%);
-  }
-
-  /* ── Ambient Canvas (PAGE variant) — generic painterly background for
-     internal pages. Distributes green/navy blooms uniformly along the page
-     height, regardless of section anchors. Ends in a strong green bloom that
-     merges seamlessly with the global .footer-painted (which is rendered via
-     <Layout/>). Same painting language as the home .ambient-canvas. */
-  .ambient-canvas-page {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-    background:
-      /* TOP — soft navy halo that emerges below the banner */
-      radial-gradient(ellipse 95% 18% at 50% 8%,
-        hsl(var(--rt-navy) / 0.75) 0%,
-        hsl(var(--rt-navy) / 0.35) 45%,
-        transparent 80%),
-      radial-gradient(ellipse 35% 12% at 18% 12%,
-        hsl(var(--motorex) / 0.30) 0%,
-        transparent 70%),
-      radial-gradient(ellipse 35% 12% at 82% 14%,
-        hsl(var(--motorex) / 0.30) 0%,
-        transparent 70%),
-
-      /* MIDDLE — gentle green bloom drifting through the body content */
-      radial-gradient(ellipse 75% 22% at 50% 45%,
-        hsl(var(--motorex) / 0.55) 0%,
-        hsl(var(--motorex) / 0.25) 35%,
-        hsl(var(--rt-navy) / 0.40) 60%,
-        transparent 82%),
-      radial-gradient(ellipse 30% 10% at 12% 52%,
-        hsl(var(--motorex) / 0.45) 0%,
-        transparent 75%),
-      radial-gradient(ellipse 30% 10% at 88% 48%,
-        hsl(var(--motorex) / 0.40) 0%,
-        transparent 75%),
-
-      /* MIDDLE-LOWER — navy transition keeps the painting smooth */
-      radial-gradient(ellipse 90% 16% at 50% 68%,
-        hsl(var(--rt-navy) / 0.55) 0%,
-        transparent 80%),
-
-      /* BOTTOM — strong green bloom that hands off to the footer */
-      radial-gradient(ellipse 95% 35% at 50% 102%,
-        hsl(var(--motorex) / 1) 0%,
-        hsl(var(--motorex) / 0.85) 25%,
-        hsl(var(--motorex) / 0.50) 50%,
-        hsl(var(--motorex) / 0.20) 70%,
-        transparent 92%),
-      radial-gradient(ellipse 40% 14% at 18% 92%,
-        hsl(var(--motorex) / 0.55) 0%,
-        transparent 78%),
-      radial-gradient(ellipse 40% 14% at 82% 95%,
-        hsl(var(--motorex) / 0.55) 0%,
-        transparent 78%),
-
-      /* Cyan accent hints — RT brand */
-      radial-gradient(ellipse 22% 7% at 10% 32%,
-        hsl(197 90% 35% / 0.16) 0%, transparent 75%),
-      radial-gradient(ellipse 22% 7% at 90% 78%,
-        hsl(197 90% 35% / 0.14) 0%, transparent 75%);
-  }
-
-  /* ── Ambient Canvas (PRODUCT variant) — for /motorex catalog and product
-     detail. Green concentrated near hero (top) and CTA (bottom); navy in the
-     long catalog middle so product cards read crisply. */
-  .ambient-canvas-product {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-    background:
-      /* TOP — green hero halo right under the banner */
-      radial-gradient(ellipse 90% 20% at 50% 10%,
-        hsl(var(--motorex) / 0.65) 0%,
-        hsl(var(--motorex) / 0.30) 35%,
-        hsl(var(--rt-navy) / 0.45) 60%,
-        transparent 82%),
-
-      /* CATALOG MIDDLE — long navy wash, no green to keep cards readable */
-      radial-gradient(ellipse 100% 40% at 50% 50%,
-        hsl(var(--rt-navy) / 0.70) 0%,
-        hsl(var(--rt-navy) / 0.40) 40%,
-        transparent 80%),
-      radial-gradient(ellipse 30% 14% at 12% 45%,
-        hsl(215 50% 14% / 0.50) 0%, transparent 75%),
-      radial-gradient(ellipse 30% 14% at 88% 60%,
-        hsl(215 50% 14% / 0.50) 0%, transparent 75%),
-
-      /* BOTTOM — strong green bloom merging into the footer */
-      radial-gradient(ellipse 95% 32% at 50% 102%,
-        hsl(var(--motorex) / 1) 0%,
-        hsl(var(--motorex) / 0.85) 25%,
-        hsl(var(--motorex) / 0.50) 50%,
-        hsl(var(--motorex) / 0.20) 70%,
-        transparent 92%),
-      radial-gradient(ellipse 40% 14% at 18% 93%,
-        hsl(var(--motorex) / 0.55) 0%, transparent 78%),
-      radial-gradient(ellipse 40% 14% at 82% 95%,
-        hsl(var(--motorex) / 0.55) 0%, transparent 78%),
-
-      /* Cyan accent */
-      radial-gradient(ellipse 22% 7% at 10% 30%,
-        hsl(197 90% 35% / 0.15) 0%, transparent 75%),
-      radial-gradient(ellipse 22% 7% at 90% 80%,
-        hsl(197 90% 35% / 0.14) 0%, transparent 75%);
-  }
-
-  /* ── Footer Painted — extends the Ambient Canvas painting all the way to
-     the bottom edge. Solid #26ad97 body, but the TOP edge dissolves via an
-     organic mask so it merges seamlessly with the green bloom above. */
-  .footer-painted {
-    position: relative;
-    color: hsl(0 0% 100%);
-    background-color: hsl(var(--motorex));
-    /* Organic top-edge dissolve — irregular, not a straight line */
-    -webkit-mask-image:
-      radial-gradient(ellipse 90% 180% at 30% 100%, black 55%, transparent 92%),
-      radial-gradient(ellipse 90% 180% at 70% 100%, black 55%, transparent 92%);
-    -webkit-mask-composite: source-over;
-    mask-image:
-      radial-gradient(ellipse 90% 180% at 30% 100%, black 55%, transparent 92%),
-      radial-gradient(ellipse 90% 180% at 70% 100%, black 55%, transparent 92%);
-    mask-composite: add;
-    /* Generous padding-top so the dissolved area doesn't eat the content */
-    padding-top: 4rem;
-  }
-  .footer-painted::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 50% 40% at 15% 10%,
-        hsl(197 90% 35% / 0.18) 0%, transparent 70%),
-      radial-gradient(ellipse 45% 35% at 88% 90%,
-        hsl(197 80% 30% / 0.15) 0%, transparent 70%);
-  }
-  .footer-painted > * {
-    position: relative;
-    z-index: 1;
+      linear-gradient(
+        to bottom,
+        hsl(var(--background)) 0%,
+        hsl(var(--background)) 5%,
+        hsl(var(--background) / 0.99) 8%,
+        hsl(var(--background) / 0.96) 12%,
+        hsl(var(--background) / 0.90) 16%,
+        hsl(164 64% 6% / 0.82) 20%,
+        hsl(164 64% 10% / 0.72) 24%,
+        hsl(164 64% 14% / 0.60) 28%,
+        hsl(164 64% 18% / 0.48) 32%,
+        hsl(164 64% 22% / 0.37) 36%,
+        hsl(164 64% 26% / 0.27) 40%,
+        hsl(164 64% 30% / 0.18) 44%,
+        hsl(164 64% 34% / 0.11) 47%,
+        hsl(164 64% 37% / 0.05) 50%,
+        transparent 52%,
+        transparent 100%
+      ) !important;
   }
 }
 
