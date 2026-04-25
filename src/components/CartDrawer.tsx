@@ -11,15 +11,11 @@ import { toast } from "@/hooks/use-toast";
 const formatBRL = (value: number) =>
   value.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-const YAMPI_SUBDOMAIN = "rtbrasil";
+const YAMPI_STORE = "rt-brasil";
 
-const buildYampiCheckoutUrl = (items: { yampiId: number; qty: number }[]) => {
-  const params = new URLSearchParams();
-  for (const item of items) {
-    params.append("product_id", String(item.yampiId));
-    params.append("quantity", String(item.qty));
-  }
-  return `https://${YAMPI_SUBDOMAIN}.yampi.com.br/checkout/add?${params.toString()}`;
+const buildYampiCheckoutUrl = (items: { yampiId: number | string; qty: number }[]) => {
+  const path = items.map((i) => `${i.yampiId}:${i.qty}`).join(",");
+  return `https://${YAMPI_STORE}.pay.yampi.com.br/r/${path}`;
 };
 
 const CartDrawer = () => {
