@@ -359,8 +359,10 @@ const Index = () => {
                 <span className="text-sm">Av. Alfeu Martini, 790 - Distrito Industrial II, Jaboticabal - SP</span>
               </div>
             </div>
-            <p className="text-center text-white/60 text-xs mt-4">
-              Rt Brasil Importação e Comércio — CNPJ: 00.913.926/0001-78
+            <p className="text-center text-xs mt-4">
+              <span className="inline-block font-heading uppercase tracking-wider bg-white px-4 py-1.5 rounded text-[#26ad97]">
+                Rt Brasil Importação e Comércio — CNPJ: 00.913.926/0001-78
+              </span>
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4 mb-10">
