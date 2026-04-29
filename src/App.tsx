@@ -17,7 +17,7 @@ const ProductDetail = lazy(() => import("./pages/ProductDetail"));
 const SejaRevendedor = lazy(() => import("./pages/SejaRevendedor"));
 const QuemSomos = lazy(() => import("./pages/QuemSomos"));
 const Parceiros = lazy(() => import("./pages/Parceiros"));
-const HeitorMatos = lazy(() => import("./pages/parceiros/HeitorMatos"));
+
 const LorenzoRicken = lazy(() => import("./pages/parceiros/LorenzoRicken"));
 const RodrigoGaliotto = lazy(() => import("./pages/parceiros/RodrigoGaliotto"));
 const MarceloGaliotto = lazy(() => import("./pages/parceiros/MarceloGaliotto"));
