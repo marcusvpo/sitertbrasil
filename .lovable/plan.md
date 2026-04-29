@@ -1,48 +1,57 @@
-Vou corrigir a integração do carrinho para usar o campo correto da Yampi: o `token` do SKU/produto, não `slug`, não SKU interno como `MT-1`, e não o ID numérico.
+## Objetivo
 
-Plano de execução:
+1. Corrigir todas as menções de "Honda" para "KTM" na página `/parceiros/marcelo-galiotto` (KTM é parceira da MOTOREX).
+2. Melhorar drasticamente a legibilidade dos textos que ficam sobre imagens de fundo (seções `ParallaxSection`) em todas as 5 páginas de parceiros, adicionando um fundo escuro com blur por trás do conteúdo de texto.
 
-1. Criar suporte ao Token de Compra da Yampi
-   - Adicionar o campo `yampi_purchase_token` no tipo `Product`.
-   - Criar um arquivo SQL manual, por exemplo `sql/migration_yampi_purchase_token.sql`, com:
-     - `ALTER TABLE public.products ADD COLUMN IF NOT EXISTS yampi_purchase_token text;`
-   - Não vou executar migration nem usar Lovable Cloud. O SQL ficará pronto para você executar manualmente no Supabase.
+## Mudanças
 
-2. Corrigir a sincronização da Yampi
-   - Atualizar `supabase/functions/sync-yampi/index.ts` para ler o campo `token` retornado pela API de SKUs da Yampi.
-   - A documentação da Yampi confirma que `GET /catalog/skus`/SKUs contém:
-     - `sku`: código interno/legível, exemplo `MT-1`
-     - `token`: token de compra, exemplo esperado como `M2NH6IHYID`
-     - `purchase_url`
-   - O sync passará a salvar `sku.token` em `products.yampi_purchase_token`.
+### 1. MarceloGaliotto.tsx — Correção textual
 
-3. Corrigir a URL final do carrinho
-   - Atualizar `src/components/CartDrawer.tsx` para usar exclusivamente `product.yampi_purchase_token` no checkout.
-   - A URL gerada ficará exatamente no padrão:
+Trocar "Honda" por "KTM" em duas ocorrências:
+- Linha 583: `"Pilotando Honda com apoio da..."` → `"Pilotando KTM com apoio da..."`
+- Linha 687: `"...para manter sua Honda sempre no limite..."` → `"...para manter sua KTM sempre no limite..."`
 
-```text
-https://rt-brasil.pay.yampi.com.br/r/M2NH6IHYID:1,MXCDHR99Z3:2
+### 2. Legibilidade nas seções com imagem de fundo (5 arquivos)
+
+O componente `ParallaxSection` é redefinido localmente em cada página de parceiro:
+- `src/pages/parceiros/HeitorMatos.tsx`
+- `src/pages/parceiros/LorenzoRicken.tsx`
+- `src/pages/parceiros/MarceloGaliotto.tsx`
+- `src/pages/parceiros/OtavioOliveira.tsx`
+- `src/pages/parceiros/RodrigoGaliotto.tsx`
+
+Em cada um deles, vou adicionar uma camada extra de overlay dentro do `ParallaxSection`, posicionada entre o gradient overlay existente e o conteúdo. Essa camada terá:
+- Um gradiente radial escuro centralizado (`rgba(0,0,0,0.65)` no centro, suavizando para transparente nas bordas)
+- Um leve `backdrop-filter: blur(4px)` aplicado apenas na área central via mask radial
+- Resultado: o texto fica nítido e legível, mas a imagem continua visível ao redor preservando a estética "game HUD"
+
+```tsx
+<div
+  className="absolute inset-0 pointer-events-none"
+  style={{
+    background:
+      "radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 40%, transparent 75%)",
+    backdropFilter: "blur(4px)",
+    WebkitBackdropFilter: "blur(4px)",
+    maskImage:
+      "radial-gradient(ellipse at center, black 0%, black 35%, transparent 70%)",
+    WebkitMaskImage:
+      "radial-gradient(ellipse at center, black 0%, black 35%, transparent 70%)",
+  }}
+/>
 ```
 
-   - O formato será:
+## Detalhes técnicos
 
-```text
-https://rt-brasil.pay.yampi.com.br/r/{TOKEN_DE_COMPRA}:{QUANTIDADE},{TOKEN_DE_COMPRA}:{QUANTIDADE}
-```
+- A estética "motocross game HUD" das páginas `/parceiros/*` é preservada (memória `mem://constraints/preservacao-parceiros`). Nenhum redesign Dark Premium é aplicado.
+- A camada nova é puramente visual (`pointer-events-none`), não afeta cliques nem layout.
+- O blur radial concentra-se apenas onde os textos aparecem (centro da seção), mantendo as bordas da imagem totalmente visíveis.
+- Nenhuma alteração nos textos brancos/cinza existentes — apenas o fundo atrás deles é escurecido.
 
-   - Não haverá fallback para `yampi_slug`, porque isso foi justamente o erro que gerou URLs como `motorex-power-brake-clean:1`.
-   - Também não haverá fallback para `yampi_sku`, porque isso geraria códigos como `MT-1`, que você confirmou estar incorreto.
+## Arquivos editados
 
-4. Ajustar mensagens de erro
-   - Se algum produto ainda não tiver `yampi_purchase_token`, o carrinho vai avisar claramente que falta o Token de Compra da Yampi e que é necessário sincronizar novamente após executar o SQL.
-
-5. Validação
-   - Rodar uma checagem/build para garantir que TypeScript e Vite compilam.
-   - Resultado esperado: ao finalizar compra, produtos com tokens salvos geram exatamente URLs como:
-
-```text
-https://rt-brasil.pay.yampi.com.br/r/M2NH6IHYID:1,MXCDHR99Z3:2
-```
-
-Observação importante:
-- Depois da alteração, será necessário executar manualmente o SQL no Supabase e rodar novamente a sincronização Yampi no admin para popular `yampi_purchase_token` nos produtos já existentes.
+- `src/pages/parceiros/MarceloGaliotto.tsx` (texto + overlay)
+- `src/pages/parceiros/HeitorMatos.tsx` (overlay)
+- `src/pages/parceiros/LorenzoRicken.tsx` (overlay)
+- `src/pages/parceiros/OtavioOliveira.tsx` (overlay)
+- `src/pages/parceiros/RodrigoGaliotto.tsx` (overlay)

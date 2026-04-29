@@ -172,6 +172,19 @@ const ParallaxSection = ({
         style={{ transform: `translateY(${offset}px)` }}
       />
       <div className={`absolute inset-0 bg-gradient-to-b ${overlay}`} />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 40%, transparent 75%)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
+          maskImage:
+            "radial-gradient(ellipse at center, black 0%, black 35%, transparent 70%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at center, black 0%, black 35%, transparent 70%)",
+        }}
+      />
       <div className="absolute inset-0 grain-overlay pointer-events-none opacity-40" />
       <DustParticles />
       {children && <div className="relative z-10 w-full">{children}</div>}
@@ -580,7 +593,7 @@ const MarceloGaliotto = () => {
                   <p>
                     <strong className="text-primary">2x Campeão Gaúcho</strong> e{" "}
                     <strong className="text-primary">Campeão Sul Brasileiro</strong>, Tchelo prova que talento
-                    e dedicação são marcas registradas da família Galiotto. Pilotando Honda com apoio da
+                    e dedicação são marcas registradas da família Galiotto. Pilotando KTM com apoio da
                     RT Brasil e MOTOREX, ele segue expandindo seu legado nas pistas do sul do Brasil.
                   </p>
                 </div>
@@ -684,7 +697,7 @@ const MarceloGaliotto = () => {
                 <span className="text-gradient">MOTOREX</span>
               </h2>
               <p className="text-secondary-foreground/60 text-base md:text-lg leading-relaxed mb-4">
-                Marcelo confia na tecnologia suíça MOTOREX para manter sua Honda sempre no limite. Com lubrificantes e produtos de manutenção de classe mundial, a MOTOREX é a parceira ideal para quem busca vitórias consistentes.
+                Marcelo confia na tecnologia suíça MOTOREX para manter sua KTM sempre no limite. Com lubrificantes e produtos de manutenção de classe mundial, a MOTOREX é a parceira ideal para quem busca vitórias consistentes.
               </p>
               <p className="text-secondary-foreground/50 text-sm md:text-base leading-relaxed mb-8">
                 Dos treinamentos diários às competições decisivas, cada gota de MOTOREX contribui para o rendimento e a durabilidade que um piloto de elite exige. Proteção, performance e confiabilidade — a combinação que mantém Tchelo no topo.
