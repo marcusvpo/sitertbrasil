@@ -187,6 +187,8 @@ const Blog = () => {
           )}
         </div>
       </section>
+
+      <NewsletterPopup />
     </>
   );
 };
