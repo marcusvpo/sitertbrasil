@@ -684,7 +684,7 @@ const MarceloGaliotto = () => {
                 <span className="text-gradient">MOTOREX</span>
               </h2>
               <p className="text-secondary-foreground/60 text-base md:text-lg leading-relaxed mb-4">
-                Marcelo confia na tecnologia suíça MOTOREX para manter sua Honda sempre no limite. Com lubrificantes e produtos de manutenção de classe mundial, a MOTOREX é a parceira ideal para quem busca vitórias consistentes.
+                Marcelo confia na tecnologia suíça MOTOREX para manter sua KTM sempre no limite. Com lubrificantes e produtos de manutenção de classe mundial, a MOTOREX é a parceira ideal para quem busca vitórias consistentes.
               </p>
               <p className="text-secondary-foreground/50 text-sm md:text-base leading-relaxed mb-8">
                 Dos treinamentos diários às competições decisivas, cada gota de MOTOREX contribui para o rendimento e a durabilidade que um piloto de elite exige. Proteção, performance e confiabilidade — a combinação que mantém Tchelo no topo.
