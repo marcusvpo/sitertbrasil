@@ -179,10 +179,9 @@ const NewsletterPopup = () => {
               </h2>
               <p className="text-sm text-foreground/70 leading-relaxed text-center mb-5">
                 Receba conteúdo exclusivo de motocross e novidades dos produtos oficiais{" "}
-                <span className="text-[#26ad97] font-bold">MOTOREX</span>. Como boas-vindas,
+                <span className="text-[#26ad97] font-bold">MOTOREX</span>. Inscreva-se e
                 ganhe <span className="text-[#26ad97] font-bold">10% OFF</span> na sua
-                primeira compra com o cupom{" "}
-                <span className="text-[#26ad97] font-bold">NEWS10</span>.
+                primeira compra — enviaremos seu cupom exclusivo por email.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-3">
