@@ -119,7 +119,7 @@ const NewsletterPopup = () => {
       onClick={close}
     >
       <div
-        className="relative w-full max-w-md bg-[#0a0a0a] border border-foreground/10 rounded-lg overflow-hidden shadow-[0_20px_60px_rgba(0,157,223,0.15)] animate-in zoom-in-95 duration-300"
+        className="relative w-full max-w-md bg-[#0a0a0a] border border-foreground/10 rounded-lg overflow-hidden shadow-[0_20px_60px_rgba(38,173,151,0.15)] animate-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Close */}
@@ -132,7 +132,7 @@ const NewsletterPopup = () => {
         </button>
 
         {/* Header gradient */}
-        <div className="relative h-32 bg-gradient-to-br from-[#009DDF] via-[#005f8a] to-[#0a0a0a] flex items-center justify-center overflow-hidden">
+        <div className="relative h-32 bg-gradient-to-br from-[#26ad97] via-[#0f6b5f] to-[#0a0a0a] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15),transparent_60%)]" />
           {success === "new" || success === "already" ? (
             <CheckCircle2 size={56} className="text-white relative z-[1]" strokeWidth={1.5} />
@@ -152,7 +152,7 @@ const NewsletterPopup = () => {
               </h2>
               <p className="text-sm text-foreground/70 leading-relaxed">
                 Em instantes você receberá o cupom{" "}
-                <span className="text-[#009DDF] font-bold">NEWS10</span> no seu email.
+                <span className="text-[#26ad97] font-bold">NEWS10</span> no seu email.
                 Confira também a caixa de spam.
               </p>
               <Button onClick={close} className="w-full mt-4">
@@ -175,14 +175,14 @@ const NewsletterPopup = () => {
           ) : (
             <>
               <h2 className="font-heading text-xl md:text-2xl uppercase tracking-wider text-foreground mb-2 text-center">
-                Entre na newsletter <span className="text-[#009DDF]">MOTOREX</span>
+                Entre na newsletter <span className="text-[#26ad97]">MOTOREX</span>
               </h2>
               <p className="text-sm text-foreground/70 leading-relaxed text-center mb-5">
                 Conteúdo exclusivo de motocross, lubrificação e novidades. Como
                 boas-vindas, ganhe{" "}
-                <span className="text-[#009DDF] font-bold">10% OFF</span> na sua primeira
+                <span className="text-[#26ad97] font-bold">10% OFF</span> na sua primeira
                 compra com o cupom{" "}
-                <span className="text-[#009DDF] font-bold">NEWS10</span>.
+                <span className="text-[#26ad97] font-bold">NEWS10</span>.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-3">
