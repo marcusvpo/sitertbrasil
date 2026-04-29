@@ -178,10 +178,10 @@ const NewsletterPopup = () => {
                 Entre na newsletter <span className="text-[#26ad97]">MOTOREX</span>
               </h2>
               <p className="text-sm text-foreground/70 leading-relaxed text-center mb-5">
-                Conteúdo exclusivo de motocross, lubrificação e novidades. Como
-                boas-vindas, ganhe{" "}
-                <span className="text-[#26ad97] font-bold">10% OFF</span> na sua primeira
-                compra com o cupom{" "}
+                Receba conteúdo exclusivo de motocross e novidades dos produtos oficiais{" "}
+                <span className="text-[#26ad97] font-bold">MOTOREX</span>. Como boas-vindas,
+                ganhe <span className="text-[#26ad97] font-bold">10% OFF</span> na sua
+                primeira compra com o cupom{" "}
                 <span className="text-[#26ad97] font-bold">NEWS10</span>.
               </p>
 
