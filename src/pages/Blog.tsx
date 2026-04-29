@@ -8,6 +8,7 @@ import AnimateOnScroll from "@/components/AnimateOnScroll";
 import GlareCard from "@/components/GlareCard";
 import type { BlogPost } from "@/types/database";
 import { getBlogCoverUrl } from "@/lib/image-utils";
+import NewsletterPopup from "@/components/NewsletterPopup";
 
 const formatDate = (iso: string) => {
   try {
