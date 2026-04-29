@@ -580,7 +580,7 @@ const MarceloGaliotto = () => {
                   <p>
                     <strong className="text-primary">2x Campeão Gaúcho</strong> e{" "}
                     <strong className="text-primary">Campeão Sul Brasileiro</strong>, Tchelo prova que talento
-                    e dedicação são marcas registradas da família Galiotto. Pilotando Honda com apoio da
+                    e dedicação são marcas registradas da família Galiotto. Pilotando KTM com apoio da
                     RT Brasil e MOTOREX, ele segue expandindo seu legado nas pistas do sul do Brasil.
                   </p>
                 </div>
