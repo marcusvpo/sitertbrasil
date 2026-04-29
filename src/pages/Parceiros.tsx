@@ -19,15 +19,6 @@ interface Partner {
 
 const partners: Partner[] = [
   {
-    name: "Heitor Matos",
-    slug: "heitor-matos",
-    image: getPartnerImage("heitor/heitorcard.png"),
-    role: "Piloto de Motocross & BMX",
-    instagram: "@heitormatos300",
-    titles: 5,
-    topAchievement: "Campeão Brasileiro MX 2021",
-  },
-  {
     name: "Lorenzo Ricken",
     slug: "lorenzo-ricken",
     image: getPartnerImage("lorenzo/lorenzocard.png"),
@@ -35,6 +26,15 @@ const partners: Partner[] = [
     instagram: "@lorenzorr16",
     titles: 8,
     topAchievement: "Bicampeão Brasileiro MX",
+  },
+  {
+    name: "Otavio Oliveira",
+    slug: "otavio-oliveira",
+    image: getPartnerImage("otavio/otaviocard.png"),
+    role: "Piloto de Motocross & Trilhas",
+    instagram: "@otaviooliveira05",
+    titles: 1,
+    topAchievement: "Guia Off-Road Ilicínea MG",
   },
   {
     name: "Rodrigo Galiotto",
@@ -55,13 +55,13 @@ const partners: Partner[] = [
     topAchievement: "9x Campeão Regional",
   },
   {
-    name: "Otavio Oliveira",
-    slug: "otavio-oliveira",
-    image: getPartnerImage("otavio/otaviocard.png"),
-    role: "Piloto de Motocross & Trilhas",
-    instagram: "@otaviooliveira05",
-    titles: 1,
-    topAchievement: "Guia Off-Road Ilicínea MG",
+    name: "Heitor Matos",
+    slug: "heitor-matos",
+    image: getPartnerImage("heitor/heitorcard.png"),
+    role: "Piloto de Motocross & BMX",
+    instagram: "@heitormatos300",
+    titles: 5,
+    topAchievement: "Campeão Brasileiro MX 2021",
   },
 ];
 
