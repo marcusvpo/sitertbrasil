@@ -54,15 +54,6 @@ const partners: Partner[] = [
     titles: 12,
     topAchievement: "9x Campeão Regional",
   },
-  {
-    name: "Heitor Matos",
-    slug: "heitor-matos",
-    image: getPartnerImage("heitor/heitorcard.png"),
-    role: "Piloto de Motocross & BMX",
-    instagram: "@heitormatos300",
-    titles: 5,
-    topAchievement: "Campeão Brasileiro MX 2021",
-  },
 ];
 
 const Parceiros = () => {
