@@ -6,9 +6,7 @@ import { Input } from "@/components/ui/input";
 import { X, Mail, Gift, CheckCircle2 } from "lucide-react";
 
 const STORAGE_SUBSCRIBED = "newsletter_subscribed";
-const STORAGE_DISMISSED = "newsletter_dismissed_at";
 const DELAY_MS = 8000;
-const DISMISS_COOLDOWN_DAYS = 7;
 
 const schema = z.object({
   nome: z.string().trim().min(2, "Nome muito curto").max(100, "Nome muito longo"),
@@ -36,12 +34,6 @@ const NewsletterPopup = () => {
     const subscribed = localStorage.getItem(STORAGE_SUBSCRIBED);
     if (subscribed === "true") return;
 
-    const dismissedAt = localStorage.getItem(STORAGE_DISMISSED);
-    if (dismissedAt) {
-      const elapsedDays = (Date.now() - Number(dismissedAt)) / (1000 * 60 * 60 * 24);
-      if (elapsedDays < DISMISS_COOLDOWN_DAYS) return;
-    }
-
     const t = setTimeout(() => setOpen(true), DELAY_MS);
     return () => clearTimeout(t);
   }, []);
@@ -59,9 +51,6 @@ const NewsletterPopup = () => {
 
   const close = () => {
     setOpen(false);
-    if (success !== "new" && success !== "already") {
-      localStorage.setItem(STORAGE_DISMISSED, String(Date.now()));
-    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
