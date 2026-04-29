@@ -172,6 +172,19 @@ const ParallaxSection = ({
         style={{ transform: `translateY(${offset}px)` }}
       />
       <div className={`absolute inset-0 bg-gradient-to-b ${overlay}`} />
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at center, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.45) 40%, transparent 75%)",
+          backdropFilter: "blur(4px)",
+          WebkitBackdropFilter: "blur(4px)",
+          maskImage:
+            "radial-gradient(ellipse at center, black 0%, black 35%, transparent 70%)",
+          WebkitMaskImage:
+            "radial-gradient(ellipse at center, black 0%, black 35%, transparent 70%)",
+        }}
+      />
       <div className="absolute inset-0 grain-overlay pointer-events-none opacity-40" />
       <DustParticles />
       {children && <div className="relative z-10 w-full">{children}</div>}
