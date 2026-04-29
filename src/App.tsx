@@ -33,6 +33,7 @@ const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
 const AdminVitrine = lazy(() => import("./pages/admin/AdminVitrine"));
 const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
 const AdminBlogForm = lazy(() => import("./pages/admin/AdminBlogForm"));
+const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -84,6 +85,7 @@ const App = () => (
               <Route path="/admin/blog" element={<AdminBlog />} />
               <Route path="/admin/blog/new" element={<AdminBlogForm />} />
               <Route path="/admin/blog/:id" element={<AdminBlogForm />} />
+              <Route path="/admin/leads" element={<AdminLeads />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />
