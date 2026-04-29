@@ -66,3 +66,35 @@ export interface BlogPost {
   created_at: string;
   updated_at: string;
 }
+
+export interface RevendedorSubmission {
+  id: string;
+  nome: string;
+  empresa: string | null;
+  email: string;
+  whatsapp: string | null;
+  consentimento: boolean;
+  status: string;
+  created_at: string;
+}
+
+export interface ContatoSubmission {
+  id: string;
+  nome: string;
+  email: string;
+  whatsapp: string | null;
+  mensagem: string;
+  status: string;
+  created_at: string;
+}
+
+export interface NewsletterSubmission {
+  id: string;
+  nome: string;
+  email: string;
+  telefone: string;
+  cupom_enviado: boolean;
+  email_enviado_at: string | null;
+  status: string;
+  created_at: string;
+}
