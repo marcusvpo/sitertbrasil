@@ -174,15 +174,24 @@ const NewsletterPopup = () => {
             </div>
           ) : (
             <>
-              <h2 className="font-heading text-xl md:text-2xl uppercase tracking-wider text-foreground mb-2 text-center">
-                Entre na newsletter <span className="text-[#26ad97]">MOTOREX</span>
+              <h2 className="font-heading text-lg md:text-xl uppercase tracking-wider text-foreground mb-1 text-center leading-tight">
+                Inscreva-se e garanta <span className="text-[#26ad97]">10% OFF</span> exclusivo
               </h2>
-              <p className="text-sm text-foreground/70 leading-relaxed text-center mb-5">
-                Receba conteúdo exclusivo de motocross e novidades dos produtos oficiais{" "}
-                <span className="text-[#26ad97] font-bold">MOTOREX</span>. Inscreva-se e
-                ganhe <span className="text-[#26ad97] font-bold">10% OFF</span> na sua
-                primeira compra — enviaremos seu cupom exclusivo por email.
+              <p className="text-[10px] text-foreground/50 text-center mb-4 italic">
+                válido apenas na primeira compra
               </p>
+              <div className="text-[13px] text-foreground/75 leading-relaxed mb-5 space-y-2.5 border-l-2 border-[#26ad97]/60 pl-3">
+                <p>
+                  Sabe quando você encontra aquele parceirão de treino ou de trilha no fim de semana e ele pergunta:
+                  <span className="text-foreground/90"> “como você melhorou tanto nos últimos meses?”</span>
+                </p>
+                <p>
+                  Aí você responde: <span className="text-foreground/90">“Simples, parceiro. Me inscrevi no jornalzinho semanal da <span className="text-[#26ad97] font-bold">RT Brasil MOTOREX</span> e toda quarta às 10h recebo conteúdo exclusivo de campeonatos, produtos oficiais <span className="text-[#26ad97] font-bold">MOTOREX</span> que turbinam a moto e dicas de ouro de performance direto dos pilotos parceiros: Lorenzo Ricken, Otávio 05, Rodrigo Galiotto e Marcelo Galiotto.”</span>
+                </p>
+                <p className="text-foreground/90">
+                  Viu como é fácil? E ainda garantimos um brinde de <span className="text-[#26ad97] font-bold">10% OFF</span> pra você. 🤘
+                </p>
+              </div>
 
               <form onSubmit={handleSubmit} className="space-y-3">
                 <div>
