@@ -23,6 +23,26 @@ import type {
 
 const PAGE_SIZE = 20;
 
+const downloadCSV = (
+  filename: string,
+  rows: Array<{ nome: string; email: string; telefone: string }>
+) => {
+  const header = ["nome", "email", "telefone"];
+  const csv = [
+    header,
+    ...rows.map((r) => [r.nome, r.email, r.telefone]),
+  ]
+    .map((r) => r.map((c) => `"${String(c ?? "").replace(/"/g, '""')}"`).join(","))
+    .join("\n");
+  const blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `${filename}-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+};
+
 const formatDate = (iso: string) =>
   new Date(iso).toLocaleString("pt-BR", {
     day: "2-digit",
@@ -231,41 +251,60 @@ const RevendedoresTab = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col md:flex-row gap-3 md:items-center">
-        <div className="relative flex-1 max-w-sm">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40"
-            size={16}
-          />
-          <Input
-            placeholder="Buscar por nome, email ou empresa..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
+      <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+        <div className="flex flex-col md:flex-row gap-3 md:items-center flex-1">
+          <div className="relative flex-1 max-w-sm">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40"
+              size={16}
+            />
+            <Input
+              placeholder="Buscar por nome, email ou empresa..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              className="pl-9 bg-secondary-foreground/5"
+            />
+          </div>
+          <Select
+            value={statusFilter}
+            onValueChange={(v) => {
+              setStatusFilter(v);
               setPage(1);
             }}
-            className="pl-9 bg-secondary-foreground/5"
-          />
+          >
+            <SelectTrigger className="w-[180px] bg-secondary-foreground/5">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os status</SelectItem>
+              {REV_STATUSES.map((s) => (
+                <SelectItem key={s} value={s}>
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <Select
-          value={statusFilter}
-          onValueChange={(v) => {
-            setStatusFilter(v);
-            setPage(1);
-          }}
+        <Button
+          onClick={() =>
+            downloadCSV(
+              "leads-revendedores",
+              filtered.map((r) => ({
+                nome: r.nome,
+                email: r.email,
+                telefone: r.whatsapp ?? "",
+              }))
+            )
+          }
+          variant="outline"
+          disabled={filtered.length === 0}
         >
-          <SelectTrigger className="w-[180px] bg-secondary-foreground/5">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos os status</SelectItem>
-            {REV_STATUSES.map((s) => (
-              <SelectItem key={s} value={s}>
-                {s.charAt(0).toUpperCase() + s.slice(1)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Download size={16} />
+          Gerar CSV
+        </Button>
       </div>
 
       <div className="bg-secondary-foreground/[0.03] border border-secondary-foreground/10 rounded-lg overflow-hidden">
@@ -372,41 +411,60 @@ const ContatosTab = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col md:flex-row gap-3 md:items-center">
-        <div className="relative flex-1 max-w-sm">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40"
-            size={16}
-          />
-          <Input
-            placeholder="Buscar por nome ou email..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
+      <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+        <div className="flex flex-col md:flex-row gap-3 md:items-center flex-1">
+          <div className="relative flex-1 max-w-sm">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40"
+              size={16}
+            />
+            <Input
+              placeholder="Buscar por nome ou email..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              className="pl-9 bg-secondary-foreground/5"
+            />
+          </div>
+          <Select
+            value={statusFilter}
+            onValueChange={(v) => {
+              setStatusFilter(v);
               setPage(1);
             }}
-            className="pl-9 bg-secondary-foreground/5"
-          />
+          >
+            <SelectTrigger className="w-[180px] bg-secondary-foreground/5">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os status</SelectItem>
+              {CON_STATUSES.map((s) => (
+                <SelectItem key={s} value={s}>
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <Select
-          value={statusFilter}
-          onValueChange={(v) => {
-            setStatusFilter(v);
-            setPage(1);
-          }}
+        <Button
+          onClick={() =>
+            downloadCSV(
+              "leads-fale-conosco",
+              filtered.map((c) => ({
+                nome: c.nome,
+                email: c.email,
+                telefone: c.whatsapp ?? "",
+              }))
+            )
+          }
+          variant="outline"
+          disabled={filtered.length === 0}
         >
-          <SelectTrigger className="w-[180px] bg-secondary-foreground/5">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos os status</SelectItem>
-            {CON_STATUSES.map((s) => (
-              <SelectItem key={s} value={s}>
-                {s.charAt(0).toUpperCase() + s.slice(1)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Download size={16} />
+          Gerar CSV
+        </Button>
       </div>
 
       <div className="bg-secondary-foreground/[0.03] border border-secondary-foreground/10 rounded-lg overflow-hidden">
@@ -527,24 +585,6 @@ const NewsletterTab = ({
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
-  const exportCSV = () => {
-    // Substack-compatible: email, first_name
-    const rows = [
-      ["email", "first_name"],
-      ...filtered.map((n) => [n.email, n.nome.split(" ")[0]]),
-    ];
-    const csv = rows
-      .map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","))
-      .join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `newsletter-substack-${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
@@ -563,9 +603,22 @@ const NewsletterTab = ({
             className="pl-9 bg-secondary-foreground/5"
           />
         </div>
-        <Button onClick={exportCSV} variant="outline" disabled={filtered.length === 0}>
+        <Button
+          onClick={() =>
+            downloadCSV(
+              "leads-newsletter",
+              filtered.map((n) => ({
+                nome: n.nome,
+                email: n.email,
+                telefone: n.telefone ?? "",
+              }))
+            )
+          }
+          variant="outline"
+          disabled={filtered.length === 0}
+        >
           <Download size={16} />
-          Exportar CSV (Substack)
+          Gerar CSV
         </Button>
       </div>
 
