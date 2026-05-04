@@ -111,36 +111,34 @@ const NewsletterPopup = () => {
 
   return (
     <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300"
+      className="fixed inset-0 z-[100] flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-300 overflow-y-auto"
       onClick={close}
     >
       <div
-        className="relative w-full max-w-md bg-[#0a0a0a] border border-foreground/10 rounded-lg overflow-hidden shadow-[0_20px_60px_rgba(38,173,151,0.15)] animate-in zoom-in-95 duration-300"
+        className="relative w-full max-w-md my-auto bg-[#0a0a0a] border border-foreground/10 rounded-lg overflow-hidden shadow-[0_20px_60px_rgba(38,173,151,0.15)] animate-in zoom-in-95 duration-300 max-h-[calc(100vh-1.5rem)] flex flex-col"
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Close */}
         <button
           aria-label="Fechar"
           onClick={close}
-          className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-white/5 hover:bg-white/10 text-foreground/70 hover:text-foreground flex items-center justify-center transition-colors"
+          className="absolute top-3 right-3 z-20 w-10 h-10 rounded-full bg-black/70 hover:bg-black border border-white/25 text-white flex items-center justify-center transition-colors backdrop-blur-sm shadow-lg"
         >
-          <X size={18} />
+          <X size={20} />
         </button>
 
-        {/* Header gradient */}
-        <div className="relative h-32 bg-gradient-to-br from-[#26ad97] via-[#0f6b5f] to-[#0a0a0a] flex items-center justify-center overflow-hidden">
+        <div className="relative h-24 sm:h-28 shrink-0 bg-gradient-to-br from-[#26ad97] via-[#0f6b5f] to-[#0a0a0a] flex items-center justify-center overflow-hidden">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(255,255,255,0.15),transparent_60%)]" />
           {success === "new" || success === "already" ? (
-            <CheckCircle2 size={56} className="text-white relative z-[1]" strokeWidth={1.5} />
+            <CheckCircle2 size={48} className="text-white relative z-[1]" strokeWidth={1.5} />
           ) : (
             <div className="relative z-[1] flex items-center gap-3">
-              <Mail size={42} className="text-white" strokeWidth={1.5} />
-              <Gift size={42} className="text-white" strokeWidth={1.5} />
+              <Mail size={36} className="text-white" strokeWidth={1.5} />
+              <Gift size={36} className="text-white" strokeWidth={1.5} />
             </div>
           )}
         </div>
 
-        <div className="p-6 md:p-7">
+        <div className="p-5 sm:p-6 overflow-y-auto flex-1">
           {success === "new" ? (
             <div className="text-center space-y-3">
               <h2 className="font-heading text-2xl uppercase tracking-wider text-foreground">
@@ -178,14 +176,14 @@ const NewsletterPopup = () => {
               </p>
               <div className="text-[13px] text-foreground/75 leading-relaxed mb-5 space-y-2.5 border-l-2 border-[#26ad97]/60 pl-3">
                 <p>
-                  Sabe quando você encontra aquele parceirão de treino ou de trilha no fim de semana e ele pergunta:
-                  <span className="text-foreground/90"> “como você melhorou tanto nos últimos meses?”</span>
+                  Sabe quando o parceirão de treino te pergunta:{" "}
+                  <span className="text-foreground font-semibold">“como você melhorou tanto?”</span>
                 </p>
                 <p>
-                  Aí você responde: <span className="text-foreground/90">“Simples, parceiro. Me inscrevi no jornalzinho semanal da <span className="text-[#26ad97] font-bold">RT Brasil MOTOREX</span> e toda quarta às 10h recebo conteúdo exclusivo de campeonatos, produtos oficiais <span className="text-[#26ad97] font-bold">MOTOREX</span> que turbinam a moto e dicas de ouro de performance direto dos pilotos parceiros: Lorenzo Ricken, Otávio 05, Rodrigo Galiotto e Marcelo Galiotto.”</span>
+                  Você responde: <span className="text-foreground">“Me inscrevi no jornalzinho semanal da <span className="text-[#26ad97] font-bold">RT Brasil MOTOREX</span>. Toda <span className="font-semibold">quarta às 10h</span> recebo conteúdo <span className="font-semibold">exclusivo</span> de campeonatos, produtos oficiais <span className="text-[#26ad97] font-bold">MOTOREX</span> e dicas de <span className="font-semibold">performance</span> direto dos pilotos parceiros: <span className="text-[#26ad97] font-bold">Lorenzo Ricken</span>, <span className="text-[#26ad97] font-bold">Otávio 05</span>, <span className="text-[#26ad97] font-bold">Rodrigo Galiotto</span> e <span className="text-[#26ad97] font-bold">Marcelo Galiotto</span>.”</span>
                 </p>
                 <p className="text-foreground/90">
-                  Viu como é fácil? E ainda garantimos um brinde de <span className="text-[#26ad97] font-bold">10% OFF</span> pra você. 🤘
+                  Fácil, né? E ainda garantimos seu <span className="text-[#26ad97] font-bold">10% OFF</span> de boas-vindas. 🤘
                 </p>
               </div>
 
