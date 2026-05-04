@@ -585,24 +585,6 @@ const NewsletterTab = ({
   const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
 
-  const exportCSV = () => {
-    // Substack-compatible: email, first_name
-    const rows = [
-      ["email", "first_name"],
-      ...filtered.map((n) => [n.email, n.nome.split(" ")[0]]),
-    ];
-    const csv = rows
-      .map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(","))
-      .join("\n");
-    const blob = new Blob([csv], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `newsletter-substack-${new Date().toISOString().slice(0, 10)}.csv`;
-    a.click();
-    URL.revokeObjectURL(url);
-  };
-
   return (
     <div className="space-y-4">
       <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
@@ -621,9 +603,22 @@ const NewsletterTab = ({
             className="pl-9 bg-secondary-foreground/5"
           />
         </div>
-        <Button onClick={exportCSV} variant="outline" disabled={filtered.length === 0}>
+        <Button
+          onClick={() =>
+            downloadCSV(
+              "leads-newsletter",
+              filtered.map((n) => ({
+                nome: n.nome,
+                email: n.email,
+                telefone: n.telefone ?? "",
+              }))
+            )
+          }
+          variant="outline"
+          disabled={filtered.length === 0}
+        >
           <Download size={16} />
-          Exportar CSV (Substack)
+          Gerar CSV
         </Button>
       </div>
 
