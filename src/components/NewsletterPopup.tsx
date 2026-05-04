@@ -30,10 +30,6 @@ const NewsletterPopup = () => {
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-
-    const subscribed = localStorage.getItem(STORAGE_SUBSCRIBED);
-    if (subscribed === "true") return;
-
     const t = setTimeout(() => setOpen(true), DELAY_MS);
     return () => clearTimeout(t);
   }, []);
