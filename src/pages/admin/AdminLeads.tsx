@@ -251,41 +251,60 @@ const RevendedoresTab = ({
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col md:flex-row gap-3 md:items-center">
-        <div className="relative flex-1 max-w-sm">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40"
-            size={16}
-          />
-          <Input
-            placeholder="Buscar por nome, email ou empresa..."
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
+      <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
+        <div className="flex flex-col md:flex-row gap-3 md:items-center flex-1">
+          <div className="relative flex-1 max-w-sm">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40"
+              size={16}
+            />
+            <Input
+              placeholder="Buscar por nome, email ou empresa..."
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
+                setPage(1);
+              }}
+              className="pl-9 bg-secondary-foreground/5"
+            />
+          </div>
+          <Select
+            value={statusFilter}
+            onValueChange={(v) => {
+              setStatusFilter(v);
               setPage(1);
             }}
-            className="pl-9 bg-secondary-foreground/5"
-          />
+          >
+            <SelectTrigger className="w-[180px] bg-secondary-foreground/5">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Todos os status</SelectItem>
+              {REV_STATUSES.map((s) => (
+                <SelectItem key={s} value={s}>
+                  {s.charAt(0).toUpperCase() + s.slice(1)}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
-        <Select
-          value={statusFilter}
-          onValueChange={(v) => {
-            setStatusFilter(v);
-            setPage(1);
-          }}
+        <Button
+          onClick={() =>
+            downloadCSV(
+              "leads-revendedores",
+              filtered.map((r) => ({
+                nome: r.nome,
+                email: r.email,
+                telefone: r.whatsapp ?? "",
+              }))
+            )
+          }
+          variant="outline"
+          disabled={filtered.length === 0}
         >
-          <SelectTrigger className="w-[180px] bg-secondary-foreground/5">
-            <SelectValue placeholder="Status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">Todos os status</SelectItem>
-            {REV_STATUSES.map((s) => (
-              <SelectItem key={s} value={s}>
-                {s.charAt(0).toUpperCase() + s.slice(1)}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
+          <Download size={16} />
+          Gerar CSV
+        </Button>
       </div>
 
       <div className="bg-secondary-foreground/[0.03] border border-secondary-foreground/10 rounded-lg overflow-hidden">
