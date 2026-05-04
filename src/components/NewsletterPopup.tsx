@@ -176,14 +176,14 @@ const NewsletterPopup = () => {
               </p>
               <div className="text-[13px] text-foreground/75 leading-relaxed mb-5 space-y-2.5 border-l-2 border-[#26ad97]/60 pl-3">
                 <p>
-                  Sabe quando você encontra aquele parceirão de treino ou de trilha no fim de semana e ele pergunta:
-                  <span className="text-foreground/90"> “como você melhorou tanto nos últimos meses?”</span>
+                  Sabe quando o parceirão de treino te pergunta:{" "}
+                  <span className="text-foreground font-semibold">“como você melhorou tanto?”</span>
                 </p>
                 <p>
-                  Aí você responde: <span className="text-foreground/90">“Simples, parceiro. Me inscrevi no jornalzinho semanal da <span className="text-[#26ad97] font-bold">RT Brasil MOTOREX</span> e toda quarta às 10h recebo conteúdo exclusivo de campeonatos, produtos oficiais <span className="text-[#26ad97] font-bold">MOTOREX</span> que turbinam a moto e dicas de ouro de performance direto dos pilotos parceiros: Lorenzo Ricken, Otávio 05, Rodrigo Galiotto e Marcelo Galiotto.”</span>
+                  Você responde: <span className="text-foreground">“Me inscrevi no jornalzinho semanal da <span className="text-[#26ad97] font-bold">RT Brasil MOTOREX</span>. Toda <span className="font-semibold">quarta às 10h</span> recebo conteúdo <span className="font-semibold">exclusivo</span> de campeonatos, produtos oficiais <span className="text-[#26ad97] font-bold">MOTOREX</span> e dicas de <span className="font-semibold">performance</span> direto dos pilotos parceiros: <span className="text-[#26ad97] font-bold">Lorenzo Ricken</span>, <span className="text-[#26ad97] font-bold">Otávio 05</span>, <span className="text-[#26ad97] font-bold">Rodrigo Galiotto</span> e <span className="text-[#26ad97] font-bold">Marcelo Galiotto</span>.”</span>
                 </p>
                 <p className="text-foreground/90">
-                  Viu como é fácil? E ainda garantimos um brinde de <span className="text-[#26ad97] font-bold">10% OFF</span> pra você. 🤘
+                  Fácil, né? E ainda garantimos seu <span className="text-[#26ad97] font-bold">10% OFF</span> de boas-vindas. 🤘
                 </p>
               </div>
 
