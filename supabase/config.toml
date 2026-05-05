@@ -3,3 +3,6 @@ verify_jwt = false
 
 [functions.send-newsletter-welcome]
 verify_jwt = false
+
+[functions.seo-audit]
+verify_jwt = false
