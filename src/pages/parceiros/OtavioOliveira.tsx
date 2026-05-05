@@ -297,7 +297,6 @@ const OtavioOliveira = () => {
         description="Guia de trilhas off-road, piloto KTM 350 SX-F e embaixador RT Brasil MOTOREX em Minas Gerais."
         path="/parceiros/otavio-oliveira"
       />
-    <div className="bg-secondary text-secondary-foreground">
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative min-h-[80vh] md:h-screen max-h-[1080px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
