@@ -2,6 +2,7 @@ import { ChevronRight } from "lucide-react";
 import SEO from "@/components/SEO";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { SITE_URL } from "@/lib/seo-config";
+import { MX } from "@/lib/highlight-motorex";
 
 const faqs = [
   {
@@ -71,13 +72,15 @@ const FAQ = () => {
         <section className="relative py-16 md:py-24 mesh-gradient">
           <div className="container relative z-10 text-center">
             <AnimateOnScroll animation="blur-in">
-              <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Suporte</span>
+              <span className="font-heading uppercase text-motorex text-xs tracking-[0.3em]">Suporte</span>
               <h1 className="font-heading text-[clamp(2.25rem,5vw,4rem)] font-bold mt-3 mb-5 leading-[0.95]">
-                Perguntas <span className="text-gradient">Frequentes</span>
+                Perguntas <span className="text-motorex">Frequentes</span>
               </h1>
-              <p className="text-muted-foreground max-w-xl mx-auto">
-                As dúvidas mais comuns sobre RT Brasil, MOTOREX e nossos serviços.
+              <p className="text-foreground/80 max-w-xl mx-auto">
+                As dúvidas mais comuns sobre <span className="text-motorex font-semibold">RT Brasil</span>,{" "}
+                <span className="text-motorex font-bold">MOTOREX</span> e nossos serviços.
               </p>
+              <div className="mx-auto mt-6 h-1 w-16 rounded-full bg-motorex" />
             </AnimateOnScroll>
           </div>
         </section>
@@ -87,16 +90,18 @@ const FAQ = () => {
             {faqs.map((f) => (
               <details
                 key={f.q}
-                className="group glass-card rounded-lg p-4 md:p-5 border border-foreground/[0.06]"
+                className="group glass-card rounded-lg p-4 md:p-5 border border-foreground/[0.06] open:border-motorex/40 transition-colors"
               >
-                <summary className="cursor-pointer font-heading text-base md:text-lg font-semibold list-none flex items-center justify-between gap-4">
+                <summary className="cursor-pointer font-heading text-base md:text-lg font-semibold list-none flex items-center justify-between gap-4 text-foreground">
                   <span>{f.q}</span>
                   <ChevronRight
                     size={18}
-                    className="text-primary transition-transform group-open:rotate-90 flex-shrink-0"
+                    className="text-motorex transition-transform group-open:rotate-90 flex-shrink-0"
                   />
                 </summary>
-                <p className="text-muted-foreground text-sm md:text-base mt-3 leading-relaxed">{f.a}</p>
+                <p className="text-foreground/85 text-sm md:text-base mt-3 leading-relaxed">
+                  <MX>{f.a}</MX>
+                </p>
               </details>
             ))}
           </div>
