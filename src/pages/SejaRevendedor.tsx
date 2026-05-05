@@ -7,6 +7,7 @@ import { CheckCircle, Loader2 } from "lucide-react";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import SEO from "@/components/SEO";
 
 const SejaRevendedor = () => {
   const [submitted, setSubmitted] = useState(false);
