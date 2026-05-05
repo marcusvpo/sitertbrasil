@@ -12,6 +12,8 @@ import { getProductImageUrl } from "@/lib/image-utils";
 import { useIsMobile } from "@/hooks/use-mobile";
 import ProductDocumentation from "@/components/ProductDocumentation";
 import ProductRating from "@/components/ProductRating";
+import SEO from "@/components/SEO";
+import { SITE_URL } from "@/lib/seo-config";
 
 const ProductDetail = () => {
   const { slug } = useParams();
@@ -56,9 +58,55 @@ const ProductDetail = () => {
   }
 
   const images = product.images?.sort((a, b) => a.sort_order - b.sort_order) || [];
+  const primaryImage = images[0] ? getProductImageUrl(images[0]) : `${SITE_URL}/images/og-default.jpg`;
+  const productUrl = `${SITE_URL}/motorex/${product.slug}`;
+  const plainDesc = (product.description || "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim()
+    .slice(0, 155);
+
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    image: images.map((i) => getProductImageUrl(i)),
+    description: plainDesc || `${product.name} — MOTOREX, lubrificante suíço de alta performance.`,
+    sku: product.slug,
+    brand: { "@type": "Brand", name: "MOTOREX" },
+    category: product.category?.name,
+    offers: product.price
+      ? {
+          "@type": "Offer",
+          url: productUrl,
+          priceCurrency: "BRL",
+          price: Number(product.price).toFixed(2),
+          availability: "https://schema.org/InStock",
+          seller: { "@type": "Organization", name: "RT Brasil MOTOREX" },
+        }
+      : undefined,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Catálogo", item: `${SITE_URL}/motorex` },
+      { "@type": "ListItem", position: 3, name: product.name, item: productUrl },
+    ],
+  };
 
   return (
     <div className="relative">
+      <SEO
+        title={`${product.name} | MOTOREX`}
+        description={plainDesc || `${product.name} — lubrificante MOTOREX da distribuidora oficial RT Brasil.`}
+        path={`/motorex/${product.slug}`}
+        image={primaryImage}
+        type="product"
+        jsonLd={[productSchema, breadcrumbSchema]}
+      />
       <div aria-hidden className="ambient-canvas-product" />
       <div className="relative z-10">
         <section className="relative py-8 md:py-14 min-h-[60vh] overflow-x-hidden">

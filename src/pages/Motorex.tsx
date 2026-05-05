@@ -11,6 +11,8 @@ import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 import { getProductImageUrl } from "@/lib/image-utils";
 import ProductRating from "@/components/ProductRating";
+import SEO from "@/components/SEO";
+import { SITE_URL } from "@/lib/seo-config";
 
 /* Shimmer skeleton for loading state */
 const ProductSkeleton = () => (
@@ -75,8 +77,23 @@ const Motorex = () => {
     return matchesSearch && matchesCategory && matchesVolume;
   });
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Catálogo MOTOREX", item: `${SITE_URL}/motorex` },
+    ],
+  };
+
   return (
     <div className="relative">
+      <SEO
+        title="Catálogo MOTOREX | Óleos e Lubrificantes para Motos"
+        description="Linha completa MOTOREX: óleos 4T, 2T, suspensão, corrente, freio e limpeza. Tecnologia suíça para motocross, enduro e trilha. Compre direto da distribuidora oficial."
+        path="/motorex"
+        jsonLd={breadcrumbSchema}
+      />
       <div aria-hidden className="ambient-canvas-product" />
       <div className="relative z-10">
       {/* Banner */}

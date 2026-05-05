@@ -7,6 +7,7 @@ import { Phone, Mail, Instagram, MapPin, CheckCircle, Send, Loader2 } from "luci
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import SEO from "@/components/SEO";
 
 const contactCards = [
   { icon: Phone, label: "WhatsApp", value: "(16) 99796-4255", href: "https://wa.me/5516997964255" },
@@ -48,6 +49,11 @@ const CentralAtendimento = () => {
 
   return (
     <div className="relative">
+      <SEO
+        title="Central de Atendimento | RT Brasil MOTOREX"
+        description="Fale com a RT Brasil: WhatsApp, e-mail e endereço. Suporte para revendedores e clientes finais MOTOREX em todo o Brasil."
+        path="/central-atendimento"
+      />
       <div aria-hidden className="ambient-canvas-page" />
       <div className="relative z-10">
       {/* ── Header ── */}

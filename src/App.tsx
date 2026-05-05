@@ -26,6 +26,9 @@ const OtavioOliveira = lazy(() => import("./pages/parceiros/OtavioOliveira"));
 const Depoimentos = lazy(() => import("./pages/Depoimentos"));
 const Blog = lazy(() => import("./pages/Blog"));
 const CentralAtendimento = lazy(() => import("./pages/CentralAtendimento"));
+const Guia = lazy(() => import("./pages/Guia"));
+const Glossario = lazy(() => import("./pages/Glossario"));
+const FAQ = lazy(() => import("./pages/FAQ"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
 const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 const AdminProductForm = lazy(() => import("./pages/admin/AdminProductForm"));
@@ -72,6 +75,9 @@ const App = () => (
               <Route path="/depoimentos" element={<Depoimentos />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/central-atendimento" element={<CentralAtendimento />} />
+              <Route path="/guia/qual-oleo-motocross-trilha-enduro" element={<Guia />} />
+              <Route path="/glossario" element={<Glossario />} />
+              <Route path="/faq" element={<FAQ />} />
             </Route>
 
             {/* Admin */}

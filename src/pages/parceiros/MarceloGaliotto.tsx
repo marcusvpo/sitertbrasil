@@ -3,6 +3,7 @@ import { Trophy, Instagram, ChevronLeft, Medal, Star, Flame, Zap, ChevronDown, F
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
+import SEO from "@/components/SEO";
 
 const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
 const img = (name: string) =>
@@ -291,6 +292,11 @@ const RoostSpray = ({ side = "left" }: { side?: "left" | "right" }) => (
 const MarceloGaliotto = () => {
   return (
     <div className="bg-secondary text-secondary-foreground">
+      <SEO
+        title="Marcelo Galiotto | Piloto MOTOREX RT Brasil"
+        description="Campeão Sul Brasileiro e múltiplo campeão Gaúcho de Motocross. Conheça Marcelo Galiotto, piloto parceiro RT Brasil MOTOREX."
+        path="/parceiros/marcelo-galiotto"
+      />
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative min-h-[80vh] md:h-screen max-h-[1080px] flex items-end overflow-hidden">
         <div className="absolute inset-0">

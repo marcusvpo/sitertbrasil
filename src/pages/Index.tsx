@@ -10,6 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { useCart } from "@/contexts/CartContext";
 import type { Product, ProductCategory, ProductImage } from "@/types/database";
 import { getProductImageUrl } from "@/lib/image-utils";
+import SEO from "@/components/SEO";
+import { ORGANIZATION_JSONLD, SITE_URL } from "@/lib/seo-config";
 
 const testimonials = [
   { name: "André Ferreira", role: "Piloto Profissional", stars: 5, text: "Desde que comecei a usar MOTOREX, minha moto nunca teve tanta performance. Produto de qualidade incomparável." },
@@ -56,8 +58,26 @@ const Index = () => {
     },
   });
 
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "RT Brasil MOTOREX",
+    url: SITE_URL,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${SITE_URL}/motorex?busca={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
+  };
+
   return (
     <div className="relative">
+      <SEO
+        title="RT Brasil MOTOREX | Lubrificantes Suíços para Motocross e Trilha"
+        description="Distribuidora oficial MOTOREX no Brasil. Óleos e lubrificantes suíços de alta performance para motocross, enduro, trilha e off-road. Seja revendedor."
+        path="/"
+        jsonLd={[ORGANIZATION_JSONLD, websiteSchema]}
+      />
       {/* Painterly ambient background — paints the green MOTOREX blooms organically */}
       <div aria-hidden className="ambient-canvas" />
 

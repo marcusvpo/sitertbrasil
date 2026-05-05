@@ -25,9 +25,16 @@ const values = [
   { icon: Globe, title: "Alcance", text: "Uma rede global com presença local e atendimento personalizado." },
 ];
 
+import SEO from "@/components/SEO";
+
 const QuemSomos = () => {
   return (
     <div className="relative">
+      <SEO
+        title="Quem Somos | RT Brasil — Distribuidora Oficial MOTOREX"
+        description="Conheça a RT Brasil, distribuidora oficial MOTOREX no Brasil. Tecnologia suíça desde 1917, lubrificantes premium para motocross, trilha e enduro."
+        path="/quem-somos"
+      />
       <div aria-hidden className="ambient-canvas-page" />
       <div className="relative z-10">
       {/* Banner */}
