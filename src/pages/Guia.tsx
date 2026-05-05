@@ -358,13 +358,13 @@ const Section = ({
 }) => (
   <section id={id} className="scroll-mt-24 mt-12 first:mt-0">
     <div className="flex items-center gap-3 mb-4">
-      <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-        <Icon size={20} className="text-primary" />
+      <div className="w-10 h-10 rounded-lg bg-motorex/15 border border-motorex/30 flex items-center justify-center">
+        <Icon size={20} className="text-motorex" />
       </div>
-      <h2 className="font-heading text-xl md:text-2xl font-bold m-0">{title}</h2>
+      <h2 className="font-heading text-xl md:text-2xl font-bold m-0 text-foreground">{title}</h2>
     </div>
-    <div className="space-y-3 text-foreground/80 leading-relaxed [&_strong]:text-foreground [&_a]:text-primary [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2">
-      {children}
+    <div className="space-y-3 text-foreground/85 leading-relaxed [&_strong]:text-foreground [&_strong]:font-semibold [&_em]:text-motorex [&_em]:not-italic [&_a]:text-motorex [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-2 [&_ul]:marker:text-motorex">
+      <MX>{children}</MX>
     </div>
   </section>
 );
