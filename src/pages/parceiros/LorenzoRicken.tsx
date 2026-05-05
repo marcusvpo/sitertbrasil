@@ -3,6 +3,7 @@ import { Trophy, Instagram, ChevronLeft, Medal, Star, Flame, Zap, ChevronDown, F
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
+import SEO from "@/components/SEO";
 
 const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
 const img = (name: string) =>
