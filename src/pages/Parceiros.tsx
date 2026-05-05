@@ -161,6 +161,7 @@ const Parceiros = () => {
         </AnimateOnScroll>
       </div>
     </section>
+    </>
   );
 };
 
