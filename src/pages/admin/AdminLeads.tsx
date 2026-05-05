@@ -1,36 +1,56 @@
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { Input } from "@/components/ui/input";
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { Search, Download, MessageCircle, Mail, User, Calendar, Tag } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 import {
-  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
-} from "@/components/ui/table";
-import {
-  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
-} from "@/components/ui/select";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription,
-} from "@/components/ui/dialog";
-import { Search, Download, Mail, Users, MessageSquare, Eye } from "lucide-react";
-import type {
-  RevendedorSubmission,
-  ContatoSubmission,
-  NewsletterSubmission,
-} from "@/types/database";
+  DndContext, DragEndEvent, DragOverlay, PointerSensor, useSensor, useSensors,
+  useDraggable, useDroppable, closestCorners,
+} from "@dnd-kit/core";
+import { useAuth } from "@/hooks/useAuth";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
-const PAGE_SIZE = 20;
+type Lead = {
+  id: string;
+  source: "revendedor" | "contato" | "newsletter";
+  nome: string;
+  email: string;
+  phone: string | null;
+  extra: string | null;
+  created_at: string;
+  status: string;
+  score: number;
+};
 
-const downloadCSV = (
-  filename: string,
-  rows: Array<{ nome: string; email: string; telefone: string }>
-) => {
-  const header = ["nome", "email", "telefone"];
+const STATUSES = [
+  { id: "novo", label: "Novo", color: "bg-blue-500/10 text-blue-300 border-blue-500/30" },
+  { id: "contatado", label: "Contatado", color: "bg-amber-500/10 text-amber-300 border-amber-500/30" },
+  { id: "qualificado", label: "Qualificado", color: "bg-purple-500/10 text-purple-300 border-purple-500/30" },
+  { id: "convertido", label: "Convertido", color: "bg-green-500/10 text-green-300 border-green-500/30" },
+  { id: "perdido", label: "Perdido", color: "bg-red-500/10 text-red-300 border-red-500/30" },
+];
+
+const SOURCE_BADGES: Record<string, string> = {
+  revendedor: "bg-primary/10 text-primary",
+  contato: "bg-cyan-500/10 text-cyan-300",
+  newsletter: "bg-fuchsia-500/10 text-fuchsia-300",
+};
+
+const downloadCSV = (rows: Lead[]) => {
+  const header = ["nome", "email", "telefone", "origem", "status", "criado_em"];
   const csv = [
     header,
-    ...rows.map((r) => [r.nome, r.email, r.telefone]),
+    ...rows.map((r) => [
+      r.nome, r.email, r.phone ?? "", r.source, r.status,
+      new Date(r.created_at).toISOString(),
+    ]),
   ]
     .map((r) => r.map((c) => `"${String(c ?? "").replace(/"/g, '""')}"`).join(","))
     .join("\n");
@@ -38,685 +58,406 @@ const downloadCSV = (
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
-  a.download = `${filename}-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.download = `leads-${new Date().toISOString().slice(0, 10)}.csv`;
   a.click();
   URL.revokeObjectURL(url);
 };
 
-const formatDate = (iso: string) =>
-  new Date(iso).toLocaleString("pt-BR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-    hour: "2-digit",
-    minute: "2-digit",
-  });
+const LeadCard = ({ lead, onOpen }: { lead: Lead; onOpen: (l: Lead) => void }) => {
+  const { attributes, listeners, setNodeRef, isDragging } = useDraggable({ id: `${lead.source}:${lead.id}` });
+  return (
+    <div
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      onClick={() => onOpen(lead)}
+      className={`bg-secondary border border-secondary-foreground/10 rounded-md p-3 cursor-grab active:cursor-grabbing hover:border-primary/40 transition-colors ${
+        isDragging ? "opacity-30" : ""
+      }`}
+    >
+      <div className="flex items-start justify-between mb-2">
+        <p className="text-secondary-foreground text-sm font-medium truncate flex-1">{lead.nome}</p>
+        <Badge className={`text-[9px] uppercase border-0 ${SOURCE_BADGES[lead.source]}`}>
+          {lead.source}
+        </Badge>
+      </div>
+      <p className="text-secondary-foreground/40 text-xs truncate">{lead.email}</p>
+      {lead.phone && <p className="text-secondary-foreground/40 text-xs truncate">{lead.phone}</p>}
+      <p className="text-secondary-foreground/30 text-[10px] mt-2">
+        {format(new Date(lead.created_at), "dd/MM HH:mm", { locale: ptBR })}
+      </p>
+    </div>
+  );
+};
 
-const StatCard = ({
-  label,
-  value,
-  icon: Icon,
-  loading,
-}: {
-  label: string;
-  value: number;
-  icon: any;
-  loading: boolean;
-}) => (
-  <div className="bg-secondary-foreground/5 border border-secondary-foreground/10 rounded-lg p-4 flex items-center gap-4">
-    <div className="w-12 h-12 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
-      <Icon size={22} />
+const Column = ({
+  status, leads, onOpen,
+}: { status: typeof STATUSES[0]; leads: Lead[]; onOpen: (l: Lead) => void }) => {
+  const { setNodeRef, isOver } = useDroppable({ id: status.id });
+  return (
+    <div
+      ref={setNodeRef}
+      className={`flex-1 min-w-[260px] bg-secondary-foreground/[0.03] border rounded-lg p-3 transition-colors ${
+        isOver ? "border-primary/50 bg-primary/5" : "border-secondary-foreground/10"
+      }`}
+    >
+      <div className="flex items-center justify-between mb-3">
+        <span className={`text-xs font-heading uppercase tracking-wider px-2 py-1 rounded border ${status.color}`}>
+          {status.label}
+        </span>
+        <span className="text-secondary-foreground/40 text-xs">{leads.length}</span>
+      </div>
+      <div className="space-y-2 max-h-[calc(100vh-280px)] overflow-y-auto">
+        {leads.map((l) => (
+          <LeadCard key={`${l.source}-${l.id}`} lead={l} onOpen={onOpen} />
+        ))}
+        {leads.length === 0 && (
+          <p className="text-secondary-foreground/30 text-xs text-center py-8">vazio</p>
+        )}
+      </div>
     </div>
-    <div>
-      <p className="text-xs uppercase tracking-wider text-secondary-foreground/50 font-heading">
-        {label}
-      </p>
-      <p className="text-2xl font-bold text-secondary-foreground">
-        {loading ? "—" : value}
-      </p>
-    </div>
-  </div>
-);
+  );
+};
 
 const AdminLeads = () => {
   const qc = useQueryClient();
+  const { toast } = useToast();
+  const { user } = useAuth();
+  const [search, setSearch] = useState("");
+  const [filterSource, setFilterSource] = useState<string>("all");
+  const [openLead, setOpenLead] = useState<Lead | null>(null);
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 4 } }));
 
-  const revendedoresQ = useQuery({
-    queryKey: ["leads-revendedores"],
+  const { data: leads = [] } = useQuery({
+    queryKey: ["leads-unified"],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from("revendedor_submissions")
+        .from("leads_unified" as any)
         .select("*")
         .order("created_at", { ascending: false });
       if (error) throw error;
-      return data as RevendedorSubmission[];
+      return data as unknown as Lead[];
     },
   });
 
-  const contatosQ = useQuery({
-    queryKey: ["leads-contatos"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("contato_submissions")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as ContatoSubmission[];
-    },
-  });
-
-  const newsletterQ = useQuery({
-    queryKey: ["leads-newsletter"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("newsletter_submissions")
-        .select("*")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      return data as NewsletterSubmission[];
-    },
-  });
+  // Realtime: refresh on new submissions
+  useEffect(() => {
+    const ch = supabase
+      .channel("leads-realtime")
+      .on("postgres_changes", { event: "*", schema: "public", table: "revendedor_submissions" }, () =>
+        qc.invalidateQueries({ queryKey: ["leads-unified"] }))
+      .on("postgres_changes", { event: "*", schema: "public", table: "contato_submissions" }, () =>
+        qc.invalidateQueries({ queryKey: ["leads-unified"] }))
+      .on("postgres_changes", { event: "*", schema: "public", table: "newsletter_submissions" }, () =>
+        qc.invalidateQueries({ queryKey: ["leads-unified"] }))
+      .on("postgres_changes", { event: "*", schema: "public", table: "lead_status" }, () =>
+        qc.invalidateQueries({ queryKey: ["leads-unified"] }))
+      .subscribe();
+    return () => { supabase.removeChannel(ch); };
+  }, [qc]);
 
   const updateStatus = useMutation({
-    mutationFn: async ({
-      table,
-      id,
-      status,
-    }: {
-      table: "revendedor_submissions" | "contato_submissions" | "newsletter_submissions";
-      id: string;
-      status: string;
-    }) => {
-      const { error } = await supabase.from(table).update({ status }).eq("id", id);
+    mutationFn: async ({ source, source_id, status }: { source: string; source_id: string; status: string }) => {
+      const { error } = await supabase
+        .from("lead_status")
+        .upsert({ source, source_id, status, updated_at: new Date().toISOString() }, { onConflict: "source,source_id" });
       if (error) throw error;
+      await supabase.from("lead_events").insert({
+        source, source_id, event_type: "status_change", payload: { to: status },
+      });
     },
-    onSuccess: (_, vars) => {
-      const key =
-        vars.table === "revendedor_submissions"
-          ? "leads-revendedores"
-          : vars.table === "contato_submissions"
-            ? "leads-contatos"
-            : "leads-newsletter";
-      qc.invalidateQueries({ queryKey: [key] });
-    },
+    onSuccess: () => qc.invalidateQueries({ queryKey: ["leads-unified"] }),
   });
 
-  const totalRev = revendedoresQ.data?.length ?? 0;
-  const totalCon = contatosQ.data?.length ?? 0;
-  const totalNews = newsletterQ.data?.length ?? 0;
+  const filtered = useMemo(() => {
+    return leads.filter((l) => {
+      if (filterSource !== "all" && l.source !== filterSource) return false;
+      if (!search) return true;
+      const q = search.toLowerCase();
+      return (
+        l.nome?.toLowerCase().includes(q) ||
+        l.email?.toLowerCase().includes(q) ||
+        l.phone?.toLowerCase().includes(q)
+      );
+    });
+  }, [leads, filterSource, search]);
+
+  const grouped = useMemo(() => {
+    const map: Record<string, Lead[]> = {};
+    STATUSES.forEach((s) => (map[s.id] = []));
+    filtered.forEach((l) => {
+      const st = STATUSES.find((s) => s.id === l.status) ? l.status : "novo";
+      map[st].push(l);
+    });
+    return map;
+  }, [filtered]);
+
+  const handleDragEnd = (e: DragEndEvent) => {
+    setDraggingId(null);
+    const overId = e.over?.id as string | undefined;
+    if (!overId) return;
+    const [source, source_id] = String(e.active.id).split(":");
+    if (!STATUSES.find((s) => s.id === overId)) return;
+    updateStatus.mutate({ source, source_id, status: overId });
+  };
+
+  const draggingLead = draggingId
+    ? leads.find((l) => `${l.source}:${l.id}` === draggingId)
+    : null;
 
   return (
-    <div className="p-6 md:p-8 space-y-6 max-w-[1400px]">
-      <div>
-        <h1 className="text-3xl font-heading uppercase tracking-wider text-secondary-foreground">
-          Leads & Cadastros
-        </h1>
-        <p className="text-secondary-foreground/50 text-sm mt-1">
-          Acompanhe todos os formulários preenchidos no site.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <StatCard
-          label="Revendedores"
-          value={totalRev}
-          icon={Users}
-          loading={revendedoresQ.isLoading}
-        />
-        <StatCard
-          label="Fale Conosco"
-          value={totalCon}
-          icon={MessageSquare}
-          loading={contatosQ.isLoading}
-        />
-        <StatCard
-          label="Newsletter"
-          value={totalNews}
-          icon={Mail}
-          loading={newsletterQ.isLoading}
-        />
-      </div>
-
-      <Tabs defaultValue="revendedores" className="w-full">
-        <TabsList className="grid w-full max-w-md grid-cols-3">
-          <TabsTrigger value="revendedores">Revendedores</TabsTrigger>
-          <TabsTrigger value="contatos">Fale Conosco</TabsTrigger>
-          <TabsTrigger value="newsletter">Newsletter</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="revendedores" className="mt-6">
-          <RevendedoresTab
-            data={revendedoresQ.data ?? []}
-            loading={revendedoresQ.isLoading}
-            onStatusChange={(id, status) =>
-              updateStatus.mutate({ table: "revendedor_submissions", id, status })
-            }
-          />
-        </TabsContent>
-
-        <TabsContent value="contatos" className="mt-6">
-          <ContatosTab
-            data={contatosQ.data ?? []}
-            loading={contatosQ.isLoading}
-            onStatusChange={(id, status) =>
-              updateStatus.mutate({ table: "contato_submissions", id, status })
-            }
-          />
-        </TabsContent>
-
-        <TabsContent value="newsletter" className="mt-6">
-          <NewsletterTab
-            data={newsletterQ.data ?? []}
-            loading={newsletterQ.isLoading}
-          />
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-};
-
-// ---------------- Revendedores ----------------
-
-const REV_STATUSES = ["novo", "contatado", "convertido", "descartado"];
-
-const RevendedoresTab = ({
-  data,
-  loading,
-  onStatusChange,
-}: {
-  data: RevendedorSubmission[];
-  loading: boolean;
-  onStatusChange: (id: string, status: string) => void;
-}) => {
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [page, setPage] = useState(1);
-
-  const filtered = useMemo(
-    () =>
-      data.filter((r) => {
-        const matchesSearch =
-          !search ||
-          r.nome.toLowerCase().includes(search.toLowerCase()) ||
-          r.email.toLowerCase().includes(search.toLowerCase()) ||
-          (r.empresa ?? "").toLowerCase().includes(search.toLowerCase());
-        const matchesStatus = statusFilter === "all" || r.status === statusFilter;
-        return matchesSearch && matchesStatus;
-      }),
-    [data, search, statusFilter]
-  );
-
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-        <div className="flex flex-col md:flex-row gap-3 md:items-center flex-1">
-          <div className="relative flex-1 max-w-sm">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40"
-              size={16}
-            />
-            <Input
-              placeholder="Buscar por nome, email ou empresa..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(1);
-              }}
-              className="pl-9 bg-secondary-foreground/5"
-            />
-          </div>
-          <Select
-            value={statusFilter}
-            onValueChange={(v) => {
-              setStatusFilter(v);
-              setPage(1);
-            }}
-          >
-            <SelectTrigger className="w-[180px] bg-secondary-foreground/5">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os status</SelectItem>
-              {REV_STATUSES.map((s) => (
-                <SelectItem key={s} value={s}>
-                  {s.charAt(0).toUpperCase() + s.slice(1)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+    <div className="p-6 md:p-8 space-y-5">
+      <div className="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h1 className="font-heading text-2xl uppercase text-secondary-foreground">Leads · CRM</h1>
+          <p className="text-secondary-foreground/50 text-sm">{filtered.length} leads · arraste para mudar status</p>
         </div>
-        <Button
-          onClick={() =>
-            downloadCSV(
-              "leads-revendedores",
-              filtered.map((r) => ({
-                nome: r.nome,
-                email: r.email,
-                telefone: r.whatsapp ?? "",
-              }))
-            )
-          }
-          variant="outline"
-          disabled={filtered.length === 0}
-        >
-          <Download size={16} />
-          Gerar CSV
-        </Button>
-      </div>
-
-      <div className="bg-secondary-foreground/[0.03] border border-secondary-foreground/10 rounded-lg overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-secondary-foreground/10">
-              <TableHead>Nome</TableHead>
-              <TableHead>Empresa</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>WhatsApp</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Data</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-secondary-foreground/50">
-                  Carregando...
-                </TableCell>
-              </TableRow>
-            ) : paginated.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-secondary-foreground/50">
-                  Nenhum cadastro encontrado.
-                </TableCell>
-              </TableRow>
-            ) : (
-              paginated.map((r) => (
-                <TableRow key={r.id} className="border-secondary-foreground/10">
-                  <TableCell className="font-medium">{r.nome}</TableCell>
-                  <TableCell>{r.empresa || "—"}</TableCell>
-                  <TableCell>
-                    <a href={`mailto:${r.email}`} className="text-primary hover:underline">
-                      {r.email}
-                    </a>
-                  </TableCell>
-                  <TableCell>{r.whatsapp || "—"}</TableCell>
-                  <TableCell>
-                    <Select
-                      value={r.status}
-                      onValueChange={(v) => onStatusChange(r.id, v)}
-                    >
-                      <SelectTrigger className="w-[140px] h-8 bg-secondary-foreground/5">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {REV_STATUSES.map((s) => (
-                          <SelectItem key={s} value={s}>
-                            {s.charAt(0).toUpperCase() + s.slice(1)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell className="text-secondary-foreground/60 text-xs">
-                    {formatDate(r.created_at)}
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
-      <Pagination page={page} totalPages={totalPages} setPage={setPage} total={filtered.length} />
-    </div>
-  );
-};
-
-// ---------------- Contatos ----------------
-
-const CON_STATUSES = ["novo", "respondido", "arquivado"];
-
-const ContatosTab = ({
-  data,
-  loading,
-  onStatusChange,
-}: {
-  data: ContatoSubmission[];
-  loading: boolean;
-  onStatusChange: (id: string, status: string) => void;
-}) => {
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("all");
-  const [page, setPage] = useState(1);
-  const [viewing, setViewing] = useState<ContatoSubmission | null>(null);
-
-  const filtered = useMemo(
-    () =>
-      data.filter((c) => {
-        const matchesSearch =
-          !search ||
-          c.nome.toLowerCase().includes(search.toLowerCase()) ||
-          c.email.toLowerCase().includes(search.toLowerCase());
-        const matchesStatus = statusFilter === "all" || c.status === statusFilter;
-        return matchesSearch && matchesStatus;
-      }),
-    [data, search, statusFilter]
-  );
-
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-        <div className="flex flex-col md:flex-row gap-3 md:items-center flex-1">
-          <div className="relative flex-1 max-w-sm">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40"
-              size={16}
-            />
-            <Input
-              placeholder="Buscar por nome ou email..."
-              value={search}
-              onChange={(e) => {
-                setSearch(e.target.value);
-                setPage(1);
-              }}
-              className="pl-9 bg-secondary-foreground/5"
-            />
-          </div>
-          <Select
-            value={statusFilter}
-            onValueChange={(v) => {
-              setStatusFilter(v);
-              setPage(1);
-            }}
-          >
-            <SelectTrigger className="w-[180px] bg-secondary-foreground/5">
-              <SelectValue placeholder="Status" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">Todos os status</SelectItem>
-              {CON_STATUSES.map((s) => (
-                <SelectItem key={s} value={s}>
-                  {s.charAt(0).toUpperCase() + s.slice(1)}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" onClick={() => downloadCSV(filtered)} className="border-secondary-foreground/20">
+            <Download size={16} className="mr-2" /> Exportar CSV
+          </Button>
         </div>
-        <Button
-          onClick={() =>
-            downloadCSV(
-              "leads-fale-conosco",
-              filtered.map((c) => ({
-                nome: c.nome,
-                email: c.email,
-                telefone: c.whatsapp ?? "",
-              }))
-            )
-          }
-          variant="outline"
-          disabled={filtered.length === 0}
-        >
-          <Download size={16} />
-          Gerar CSV
-        </Button>
       </div>
 
-      <div className="bg-secondary-foreground/[0.03] border border-secondary-foreground/10 rounded-lg overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-secondary-foreground/10">
-              <TableHead>Nome</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>WhatsApp</TableHead>
-              <TableHead>Mensagem</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Data</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-secondary-foreground/50">
-                  Carregando...
-                </TableCell>
-              </TableRow>
-            ) : paginated.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={6} className="text-center py-8 text-secondary-foreground/50">
-                  Nenhum cadastro encontrado.
-                </TableCell>
-              </TableRow>
-            ) : (
-              paginated.map((c) => (
-                <TableRow key={c.id} className="border-secondary-foreground/10">
-                  <TableCell className="font-medium">{c.nome}</TableCell>
-                  <TableCell>
-                    <a href={`mailto:${c.email}`} className="text-primary hover:underline">
-                      {c.email}
-                    </a>
-                  </TableCell>
-                  <TableCell>{c.whatsapp || "—"}</TableCell>
-                  <TableCell className="max-w-[300px]">
-                    <button
-                      onClick={() => setViewing(c)}
-                      className="text-left flex items-center gap-2 group"
-                    >
-                      <span className="truncate text-secondary-foreground/80 group-hover:text-secondary-foreground">
-                        {c.mensagem.length > 60 ? c.mensagem.slice(0, 60) + "..." : c.mensagem}
-                      </span>
-                      <Eye size={14} className="text-secondary-foreground/40 shrink-0" />
-                    </button>
-                  </TableCell>
-                  <TableCell>
-                    <Select value={c.status} onValueChange={(v) => onStatusChange(c.id, v)}>
-                      <SelectTrigger className="w-[140px] h-8 bg-secondary-foreground/5">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {CON_STATUSES.map((s) => (
-                          <SelectItem key={s} value={s}>
-                            {s.charAt(0).toUpperCase() + s.slice(1)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </TableCell>
-                  <TableCell className="text-secondary-foreground/60 text-xs">
-                    {formatDate(c.created_at)}
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
-
-      <Pagination page={page} totalPages={totalPages} setPage={setPage} total={filtered.length} />
-
-      <Dialog open={!!viewing} onOpenChange={(o) => !o && setViewing(null)}>
-        <DialogContent className="max-w-lg">
-          <DialogHeader>
-            <DialogTitle>Mensagem de {viewing?.nome}</DialogTitle>
-            <DialogDescription>
-              {viewing?.email} {viewing?.whatsapp ? `• ${viewing.whatsapp}` : ""}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="bg-muted p-4 rounded-md text-sm whitespace-pre-wrap">
-            {viewing?.mensagem}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Enviado em {viewing && formatDate(viewing.created_at)}
-          </p>
-        </DialogContent>
-      </Dialog>
-    </div>
-  );
-};
-
-// ---------------- Newsletter ----------------
-
-const NewsletterTab = ({
-  data,
-  loading,
-}: {
-  data: NewsletterSubmission[];
-  loading: boolean;
-}) => {
-  const [search, setSearch] = useState("");
-  const [page, setPage] = useState(1);
-
-  const filtered = useMemo(
-    () =>
-      data.filter(
-        (n) =>
-          !search ||
-          n.nome.toLowerCase().includes(search.toLowerCase()) ||
-          n.email.toLowerCase().includes(search.toLowerCase())
-      ),
-    [data, search]
-  );
-
-  const paginated = filtered.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE));
-
-  return (
-    <div className="space-y-4">
-      <div className="flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
-        <div className="relative flex-1 max-w-sm">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/40"
-            size={16}
-          />
+      <div className="flex items-center gap-3 flex-wrap">
+        <div className="relative flex-1 min-w-[240px]">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/30" size={16} />
           <Input
-            placeholder="Buscar por nome ou email..."
             value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            className="pl-9 bg-secondary-foreground/5"
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Buscar nome, email, telefone..."
+            className="pl-10 bg-secondary-foreground/5 border-secondary-foreground/20 text-secondary-foreground"
           />
         </div>
-        <Button
-          onClick={() =>
-            downloadCSV(
-              "leads-newsletter",
-              filtered.map((n) => ({
-                nome: n.nome,
-                email: n.email,
-                telefone: n.telefone ?? "",
-              }))
-            )
-          }
-          variant="outline"
-          disabled={filtered.length === 0}
-        >
-          <Download size={16} />
-          Gerar CSV
-        </Button>
+        <div className="flex bg-secondary-foreground/5 border border-secondary-foreground/10 rounded-md p-0.5">
+          {["all", "revendedor", "contato", "newsletter"].map((s) => (
+            <button
+              key={s}
+              onClick={() => setFilterSource(s)}
+              className={`px-3 py-1.5 text-xs font-heading uppercase tracking-wider rounded transition-colors ${
+                filterSource === s
+                  ? "bg-primary text-primary-foreground"
+                  : "text-secondary-foreground/60 hover:text-secondary-foreground"
+              }`}
+            >
+              {s === "all" ? "Todos" : s}
+            </button>
+          ))}
+        </div>
       </div>
 
-      <div className="bg-secondary-foreground/[0.03] border border-secondary-foreground/10 rounded-lg overflow-hidden">
-        <Table>
-          <TableHeader>
-            <TableRow className="border-secondary-foreground/10">
-              <TableHead>Nome</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Telefone</TableHead>
-              <TableHead>Cupom Enviado</TableHead>
-              <TableHead>Data</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {loading ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-secondary-foreground/50">
-                  Carregando...
-                </TableCell>
-              </TableRow>
-            ) : paginated.length === 0 ? (
-              <TableRow>
-                <TableCell colSpan={5} className="text-center py-8 text-secondary-foreground/50">
-                  Nenhum inscrito ainda.
-                </TableCell>
-              </TableRow>
-            ) : (
-              paginated.map((n) => (
-                <TableRow key={n.id} className="border-secondary-foreground/10">
-                  <TableCell className="font-medium">{n.nome}</TableCell>
-                  <TableCell>
-                    <a href={`mailto:${n.email}`} className="text-primary hover:underline">
-                      {n.email}
-                    </a>
-                  </TableCell>
-                  <TableCell>{n.telefone}</TableCell>
-                  <TableCell>
-                    {n.cupom_enviado ? (
-                      <Badge variant="default" className="bg-green-600/20 text-green-500 hover:bg-green-600/20">
-                        ✓ Enviado
-                      </Badge>
-                    ) : (
-                      <Badge variant="secondary">Pendente</Badge>
-                    )}
-                  </TableCell>
-                  <TableCell className="text-secondary-foreground/60 text-xs">
-                    {formatDate(n.created_at)}
-                  </TableCell>
-                </TableRow>
-              ))
-            )}
-          </TableBody>
-        </Table>
-      </div>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragStart={(e) => setDraggingId(String(e.active.id))}
+        onDragEnd={handleDragEnd}
+        onDragCancel={() => setDraggingId(null)}
+      >
+        <div className="flex gap-3 overflow-x-auto pb-4">
+          {STATUSES.map((s) => (
+            <Column key={s.id} status={s} leads={grouped[s.id]} onOpen={setOpenLead} />
+          ))}
+        </div>
+        <DragOverlay>
+          {draggingLead && (
+            <div className="bg-secondary border border-primary/50 rounded-md p-3 shadow-2xl rotate-2">
+              <p className="text-secondary-foreground text-sm font-medium">{draggingLead.nome}</p>
+              <p className="text-secondary-foreground/40 text-xs">{draggingLead.email}</p>
+            </div>
+          )}
+        </DragOverlay>
+      </DndContext>
 
-      <Pagination page={page} totalPages={totalPages} setPage={setPage} total={filtered.length} />
+      <LeadDrawer
+        lead={openLead}
+        onClose={() => setOpenLead(null)}
+        onStatusChange={(status) => {
+          if (!openLead) return;
+          updateStatus.mutate({ source: openLead.source, source_id: openLead.id, status });
+          setOpenLead({ ...openLead, status });
+          toast({ title: "Status atualizado" });
+        }}
+        userId={user?.id}
+      />
     </div>
   );
 };
 
-// ---------------- Pagination ----------------
-
-const Pagination = ({
-  page,
-  totalPages,
-  setPage,
-  total,
+const LeadDrawer = ({
+  lead, onClose, onStatusChange, userId,
 }: {
-  page: number;
-  totalPages: number;
-  setPage: (p: number) => void;
-  total: number;
-}) => (
-  <div className="flex items-center justify-between text-sm text-secondary-foreground/60">
-    <span>{total} registro(s)</span>
-    <div className="flex items-center gap-2">
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={page <= 1}
-        onClick={() => setPage(page - 1)}
-      >
-        Anterior
-      </Button>
-      <span>
-        {page} / {totalPages}
-      </span>
-      <Button
-        variant="outline"
-        size="sm"
-        disabled={page >= totalPages}
-        onClick={() => setPage(page + 1)}
-      >
-        Próxima
-      </Button>
-    </div>
-  </div>
-);
+  lead: Lead | null;
+  onClose: () => void;
+  onStatusChange: (s: string) => void;
+  userId?: string;
+}) => {
+  const qc = useQueryClient();
+  const { toast } = useToast();
+  const [note, setNote] = useState("");
+
+  const { data: notes = [] } = useQuery({
+    queryKey: ["lead-notes", lead?.source, lead?.id],
+    queryFn: async () => {
+      if (!lead) return [];
+      const { data } = await supabase
+        .from("lead_notes")
+        .select("*")
+        .eq("source", lead.source)
+        .eq("source_id", lead.id)
+        .order("created_at", { ascending: false });
+      return data ?? [];
+    },
+    enabled: !!lead,
+  });
+
+  const { data: events = [] } = useQuery({
+    queryKey: ["lead-events", lead?.source, lead?.id],
+    queryFn: async () => {
+      if (!lead) return [];
+      const { data } = await supabase
+        .from("lead_events")
+        .select("*")
+        .eq("source", lead.source)
+        .eq("source_id", lead.id)
+        .order("created_at", { ascending: false })
+        .limit(20);
+      return data ?? [];
+    },
+    enabled: !!lead,
+  });
+
+  const addNote = async () => {
+    if (!lead || !note.trim()) return;
+    const { error } = await supabase.from("lead_notes").insert({
+      source: lead.source, source_id: lead.id, body: note.trim(), author_id: userId,
+    });
+    if (error) {
+      toast({ title: "Erro", description: error.message, variant: "destructive" });
+      return;
+    }
+    await supabase.from("lead_events").insert({
+      source: lead.source, source_id: lead.id, event_type: "note_added",
+    });
+    setNote("");
+    qc.invalidateQueries({ queryKey: ["lead-notes", lead.source, lead.id] });
+    qc.invalidateQueries({ queryKey: ["lead-events", lead.source, lead.id] });
+  };
+
+  if (!lead) return null;
+  const wa = lead.phone?.replace(/\D/g, "");
+  const waLink = wa ? `https://wa.me/${wa.length === 11 ? "55" + wa : wa}` : null;
+
+  return (
+    <Sheet open={!!lead} onOpenChange={(o) => !o && onClose()}>
+      <SheetContent className="bg-secondary border-secondary-foreground/20 text-secondary-foreground w-full sm:max-w-lg overflow-y-auto">
+        <SheetHeader>
+          <SheetTitle className="text-secondary-foreground font-heading uppercase">{lead.nome}</SheetTitle>
+        </SheetHeader>
+
+        <div className="space-y-5 mt-5">
+          <div className="space-y-2 text-sm">
+            <div className="flex items-center gap-2 text-secondary-foreground/70">
+              <Mail size={14} /> {lead.email}
+            </div>
+            {lead.phone && (
+              <div className="flex items-center gap-2 text-secondary-foreground/70">
+                <MessageCircle size={14} /> {lead.phone}
+              </div>
+            )}
+            <div className="flex items-center gap-2 text-secondary-foreground/70">
+              <Tag size={14} />
+              <Badge className={`text-[9px] uppercase border-0 ${SOURCE_BADGES[lead.source]}`}>{lead.source}</Badge>
+            </div>
+            <div className="flex items-center gap-2 text-secondary-foreground/70">
+              <Calendar size={14} /> {format(new Date(lead.created_at), "dd/MM/yyyy HH:mm", { locale: ptBR })}
+            </div>
+            {lead.extra && (
+              <div className="bg-secondary-foreground/5 border border-secondary-foreground/10 rounded p-3 text-secondary-foreground/80 text-xs">
+                {lead.extra}
+              </div>
+            )}
+          </div>
+
+          {/* Status pills */}
+          <div>
+            <p className="text-xs font-heading uppercase tracking-wider text-secondary-foreground/40 mb-2">Status</p>
+            <div className="flex flex-wrap gap-2">
+              {STATUSES.map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => onStatusChange(s.id)}
+                  className={`px-3 py-1 text-xs font-heading uppercase tracking-wider rounded border transition-colors ${
+                    lead.status === s.id ? s.color : "border-secondary-foreground/10 text-secondary-foreground/40 hover:text-secondary-foreground"
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Quick actions */}
+          <div className="grid grid-cols-2 gap-2">
+            {waLink && (
+              <Button asChild variant="outline" className="border-green-500/30 text-green-400 hover:bg-green-500/10">
+                <a href={waLink} target="_blank" rel="noreferrer">
+                  <MessageCircle size={14} className="mr-2" /> WhatsApp
+                </a>
+              </Button>
+            )}
+            <Button asChild variant="outline" className="border-primary/30 text-primary hover:bg-primary/10">
+              <a href={`mailto:${lead.email}`}>
+                <Mail size={14} className="mr-2" /> Email
+              </a>
+            </Button>
+          </div>
+
+          {/* Notes */}
+          <div>
+            <p className="text-xs font-heading uppercase tracking-wider text-secondary-foreground/40 mb-2">Anotações</p>
+            <Textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              placeholder="Adicionar nota..."
+              className="bg-secondary-foreground/5 border-secondary-foreground/20 text-secondary-foreground"
+            />
+            <Button onClick={addNote} disabled={!note.trim()} size="sm" className="mt-2 font-heading uppercase tracking-wider">
+              Adicionar
+            </Button>
+            <div className="space-y-2 mt-3">
+              {notes.map((n: any) => (
+                <div key={n.id} className="bg-secondary-foreground/5 border border-secondary-foreground/10 rounded p-3 text-sm">
+                  <p className="text-secondary-foreground/80">{n.body}</p>
+                  <p className="text-secondary-foreground/30 text-xs mt-1">
+                    {format(new Date(n.created_at), "dd/MM HH:mm", { locale: ptBR })}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Timeline */}
+          <div>
+            <p className="text-xs font-heading uppercase tracking-wider text-secondary-foreground/40 mb-2">Timeline</p>
+            <div className="space-y-1.5">
+              {events.map((e: any) => (
+                <div key={e.id} className="flex items-center gap-2 text-xs text-secondary-foreground/60">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                  <span className="font-mono">{e.event_type}</span>
+                  {e.payload?.to && <span className="text-primary">→ {e.payload.to}</span>}
+                  <span className="ml-auto text-secondary-foreground/30">
+                    {format(new Date(e.created_at), "dd/MM HH:mm", { locale: ptBR })}
+                  </span>
+                </div>
+              ))}
+              {events.length === 0 && <p className="text-secondary-foreground/30 text-xs">sem eventos</p>}
+            </div>
+          </div>
+        </div>
+      </SheetContent>
+    </Sheet>
+  );
+};
 
 export default AdminLeads;
