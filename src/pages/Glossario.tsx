@@ -1,6 +1,7 @@
 import SEO from "@/components/SEO";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { SITE_URL } from "@/lib/seo-config";
+import { MX } from "@/lib/highlight-motorex";
 
 const terms = [
   {
@@ -107,14 +108,16 @@ const Glossario = () => {
         <section className="relative py-16 md:py-24 mesh-gradient">
           <div className="container relative z-10 text-center">
             <AnimateOnScroll animation="blur-in">
-              <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">Conhecimento</span>
+              <span className="font-heading uppercase text-motorex text-xs tracking-[0.3em]">Conhecimento</span>
               <h1 className="font-heading text-[clamp(2.25rem,5vw,4rem)] font-bold mt-3 mb-5 leading-[0.95]">
-                Glossário <span className="text-gradient">Técnico</span>
+                Glossário <span className="text-motorex">Técnico</span>
               </h1>
-              <p className="text-muted-foreground max-w-xl mx-auto">
-                Os termos da engenharia de lubrificantes, explicados de forma direta. Da viscosidade SAE ao TBN — entenda
-                o que está escrito no rótulo da sua MOTOREX.
+              <p className="text-foreground/80 max-w-xl mx-auto">
+                Os termos da engenharia de lubrificantes, explicados de forma direta. Da viscosidade SAE ao TBN —
+                entenda o que está escrito no rótulo da sua{" "}
+                <span className="text-motorex font-bold">MOTOREX</span>.
               </p>
+              <div className="mx-auto mt-6 h-1 w-16 rounded-full bg-motorex" />
             </AnimateOnScroll>
           </div>
         </section>
@@ -125,10 +128,12 @@ const Glossario = () => {
               <div
                 key={t.term}
                 id={t.term.toLowerCase().replace(/[^a-z0-9]+/g, "-")}
-                className="glass-card rounded-lg p-5 md:p-6 border border-foreground/[0.06] scroll-mt-24"
+                className="glass-card rounded-lg p-5 md:p-6 border border-foreground/[0.06] border-l-2 border-l-motorex/70 hover:border-l-motorex transition-colors scroll-mt-24"
               >
-                <dt className="font-heading text-lg md:text-xl font-bold text-primary mb-2">{t.term}</dt>
-                <dd className="text-foreground/80 text-sm md:text-base leading-relaxed">{t.def}</dd>
+                <dt className="font-heading text-lg md:text-xl font-bold text-motorex mb-2">{t.term}</dt>
+                <dd className="text-foreground/85 text-sm md:text-base leading-relaxed">
+                  <MX>{t.def}</MX>
+                </dd>
               </div>
             ))}
           </dl>
