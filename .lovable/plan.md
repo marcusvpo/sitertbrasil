@@ -1,171 +1,153 @@
+# Plano de Ação SEO — RT Brasil MOTOREX (Aprovado)
 
-## Visão geral
+Decisões confirmadas:
+- Pré-render: **react-snap** (grátis)
+- OG image: **eu componho** a partir dos assets existentes
+- Conteúdo (pillar/glossário/categorias): **autorizado eu rascunhar** com base em referências MOTOREX
+- Calculadora de óleo: **adiada** (sem tabela de compatibilidade — fica para fase futura quando você levantar os dados)
+- Domínio: **rtbrasilimport.com.br** já conectado via Lovable hosting
 
-1. Nova tabela `newsletter_submissions` no Supabase (SQL para você executar).
-2. Popup de newsletter na tela `/blog` com formulário (Nome, Email, Telefone) e mensagem de agradecimento.
-3. Lógica para não exibir o popup para quem já se inscreveu (localStorage + checagem no banco por email).
-4. Nova tela `/admin/leads` com 3 abas: **Revendedores**, **Fale Conosco**, **Newsletter**.
-5. Edge Function `send-newsletter-welcome` que dispara email com o cupom **NEWS10** + link Substack assim que um novo registro entra na tabela.
-6. Investigação do Substack API → recomendação abaixo.
-
----
-
-## ⚠️ Sobre a API do Substack — Importante
-
-O **Substack NÃO possui API pública oficial** para inscrever assinantes externamente. O que existe:
-
-- **Importação manual via CSV**: você exporta os emails coletados e importa no painel do Substack (Settings → Import subscribers). Funciona, mas é manual.
-- **API não-oficial (substack-api no GitHub)**: usada por terceiros para *ler* posts. **Não permite criar subscribers** de forma confiável (precisa de cookies de sessão, quebra com frequência, viola ToS).
-- **RSS do Substack**: útil só para *exibir* posts no seu site, não para inscrever ninguém.
-
-**Minha recomendação:** Coletamos o email no **nosso banco** (fonte da verdade), enviamos o cupom pelo nosso email transacional, e periodicamente você exporta um CSV da tela `/admin/leads → Newsletter` e importa no Substack manualmente (5 minutos, 1x por semana). Isso é mais confiável do que depender de scraping.
-
-→ Vou adicionar um botão **"Exportar CSV"** na aba Newsletter do admin justamente para facilitar essa importação no Substack.
+> Observação técnica: como o site roda em Lovable hosting (não Vercel), o `vercel.json` não tem efeito. SPA routing já é nativo. O `sitemap.xml` será gerado **em build time** como arquivo estático (script Node lendo Supabase + rotas) e gravado em `public/sitemap.xml` — solução mais simples e robusta que edge function. Vou remover o `vercel.json` que ficou pendente.
 
 ---
 
-## 1. SQL para você executar no Supabase
+## SPRINT 1 — Fundação SEO On-Page (PR único)
 
-Vou gerar um arquivo `sql/migration_newsletter_submissions.sql` no projeto com este conteúdo (para você rodar no SQL Editor do Supabase):
+### 1.1 Sistema de meta tags dinâmicas
+- Instalar `react-helmet-async`, envolver app com `<HelmetProvider>`.
+- Criar `src/components/SEO.tsx` reutilizável: title, description, canonical, og:title, og:description, og:image, og:type, og:url, twitter card, robots.
+- Criar `src/lib/seo-config.ts` com defaults (site name, base URL `https://www.rtbrasilimport.com.br`, OG default).
 
-```sql
-CREATE TABLE IF NOT EXISTS public.newsletter_submissions (
-  id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-  nome text NOT NULL,
-  email text NOT NULL UNIQUE,
-  telefone text NOT NULL,
-  cupom_enviado boolean NOT NULL DEFAULT false,
-  email_enviado_at timestamptz,
-  status text NOT NULL DEFAULT 'novo', -- novo | enviado | exportado_substack
-  created_at timestamptz NOT NULL DEFAULT now()
-);
+### 1.2 Aplicar `<SEO />` em todas as páginas públicas
+Títulos otimizados (≤60 chars) e descrições (≤155 chars) únicos para:
+- `/` Home: `Motorex: Motocross, Trilha e Enduro | RT Brasil`
+- `/motorex` catálogo
+- `/motorex/:slug` produto (dinâmico do Supabase: nome + categoria + preço)
+- `/quem-somos`, `/seja-revendedor`, `/parceiros`, `/depoimentos`, `/blog`, `/central-atendimento`
+- `/blog/:slug` post (title/description/og:image do post)
+- `/parceiros/:piloto` cada página dos pilotos
 
-CREATE INDEX IF NOT EXISTS idx_newsletter_created_at
-  ON public.newsletter_submissions (created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_newsletter_email
-  ON public.newsletter_submissions (email);
+### 1.3 Atualizar `index.html`
+- Title/description fallback novos.
+- Substituir `og:image` da Lovable pela imagem oficial composta (item 1.7).
+- Adicionar `<link rel="canonical">` base.
 
-ALTER TABLE public.newsletter_submissions ENABLE ROW LEVEL SECURITY;
+### 1.4 JSON-LD Organization + LocalBusiness (na Home)
+Componente injeta script com: nome, CNPJ 00.913.926/0001-78, endereço completo, telefone, e-mail, fundação, logo, sameAs (Instagram), areaServed Brasil.
 
--- Visitantes podem se inscrever
-CREATE POLICY "anyone can insert newsletter"
-  ON public.newsletter_submissions FOR INSERT
-  TO anon, authenticated WITH CHECK (true);
+### 1.5 JSON-LD Product (em `/motorex/:slug`)
+Schema Product com name, image, description, brand=MOTOREX, sku, offers (price BRL, availability InStock, priceValidUntil).
 
--- Anon pode checar se um email já existe (para a lógica do popup)
-CREATE POLICY "anyone can check email existence"
-  ON public.newsletter_submissions FOR SELECT
-  TO anon, authenticated USING (true);
+### 1.6 JSON-LD BlogPosting + BreadcrumbList
+- BlogPosting em `/blog/:slug`.
+- BreadcrumbList em `/motorex`, `/motorex/:slug`, `/blog/:slug`, `/parceiros/:slug`.
+- Componente visual `<Breadcrumbs />` opcional (recomendo para UX + SEO).
 
--- Admins podem atualizar/deletar
-CREATE POLICY "admins can update newsletter"
-  ON public.newsletter_submissions FOR UPDATE
-  TO authenticated USING (public.has_role(auth.uid(), 'admin'));
+### 1.7 OG Image oficial (composta por mim)
+Vou compor `public/images/og-default.jpg` 1200x630 usando logo MOTOREX + foto motocross do hero + faixa cyan da identidade. Salvo no repo.
+
+### 1.8 Alt text auditado
+Varredura em Index, Motorex, ProductDetail, Blog, HomeCarousel, banners, NewsletterPopup. Produtos do banco usam `nome + categoria` como alt automaticamente.
+
+### 1.9 Fix slug "suspencao" → "suspensao"
+- Migration SQL atualizando o slug da categoria.
+- Adicionar redirect client-side em `App.tsx` (rota `/motorex/categoria/suspencao` → 301 visual via `<Navigate replace>`).
+
+---
+
+## SPRINT 2 — Discoverability (sitemap + robots)
+
+### 2.1 Sitemap.xml gerado em build
+- Script `scripts/generate-sitemap.mjs` que:
+  - Lê produtos ativos e posts publicados via cliente Supabase.
+  - Inclui rotas estáticas (home, motorex, quem-somos, blog, parceiros, pilotos individuais, central-atendimento, depoimentos, seja-revendedor).
+  - Gera `public/sitemap.xml` com `<lastmod>`, `<changefreq>`, `<priority>`.
+- Rodar via `prebuild` no `package.json`.
+
+### 2.2 robots.txt
+Atualizar `public/robots.txt`:
+```
+User-agent: *
+Allow: /
+Disallow: /admin
+Sitemap: https://www.rtbrasilimport.com.br/sitemap.xml
 ```
 
-> Nota: a policy de SELECT pública é necessária para o popup checar duplicidade pelo email antes de inserir. Os campos sensíveis (telefone, nome) ficam expostos via API, mas como a chave é o email (que o usuário já fornece para checar), o risco é baixo. Se preferir mais privacidade, posso trocar por uma RPC `check_newsletter_email_exists(email)` SECURITY DEFINER que só retorna boolean — me avise.
+### 2.3 Remover `vercel.json`
+Não faz nada no Lovable hosting — limpeza.
 
 ---
 
-## 2. Popup Newsletter no `/blog`
+## SPRINT 3 — Pré-render (react-snap)
 
-**Componente novo:** `src/components/NewsletterPopup.tsx`
+### 3.1 Setup react-snap
+- Instalar `react-snap` + Puppeteer.
+- Configurar `package.json`:
+  - `"postbuild": "react-snap"`
+  - Bloco `"reactSnap"` com lista de rotas (estáticas + dinâmicas vindas do Supabase via script auxiliar).
+- Ajustar `src/main.tsx` para usar `hydrateRoot` quando detectar HTML pré-renderizado.
+- Garantir compatibilidade com Helmet (react-helmet-async já suporta).
 
-Comportamento:
-- Aparece após **8 segundos** na página `/blog` (delay para não ser intrusivo).
-- **Não aparece** se:
-  - `localStorage.getItem('newsletter_subscribed') === 'true'` (já assinou neste device), OU
-  - `localStorage.getItem('newsletter_dismissed_at')` for menor que 7 dias atrás (fechou recentemente).
-- Modal centralizado com a estética **Dark Premium** (preto `#0a0a0a`, accent ciano `#009DDF`, Oswald headings, botões com `btn-clip`).
-- Banner visual no topo do modal (gradiente + ícone de envelope).
+### 3.2 Tratamento de rotas dinâmicas
+- Pré-gerar HTML de cada produto e cada post do blog (lista vinda do Supabase no momento do build).
+- Páginas admin e checkout ficam fora do snap.
 
-**Conteúdo do popup:**
-- Título: "ENTRE NA NEWSLETTER MOTOREX"
-- Texto: *"Inscreva-se e receba conteúdo exclusivo de motocross, lubrificação e novidades. Como boas-vindas, ganhe **10% OFF** na sua primeira compra com o cupom **NEWS10**."*
-- Campos: Nome, Email, Telefone (validação Zod: nome 2-100 chars, email válido, telefone 10-15 dígitos).
-- Botão "QUERO MEU CUPOM".
-- Após submit → tela de agradecimento dentro do modal: *"Obrigado, [Nome]! 🎉 Em instantes você receberá o cupom **NEWS10** no seu email. Confira também a caixa de spam."* + botão fechar.
-
-**Lógica de submit:**
-1. Valida com Zod.
-2. Verifica se email já existe (`select count from newsletter_submissions where email = ?`).
-3. Se existir → mostra "Você já está inscrito! 😊" e marca localStorage.
-4. Se novo → insert, marca localStorage `newsletter_subscribed=true`, e a edge function dispara o email automaticamente (via webhook do Supabase, ver seção 4).
-5. Mostra tela de agradecimento.
-
-Botão "X" para fechar grava `newsletter_dismissed_at` no localStorage.
+### 3.3 Validação
+- Verificar que Googlebot recebe HTML completo (View Source mostra meta tags + conteúdo).
+- Testar via Rich Results Test do Google após deploy.
 
 ---
 
-## 3. Tela `/admin/leads`
+## SPRINT 4 — Conteúdo Estratégico (eu rascunho, você revisa)
 
-**Arquivo novo:** `src/pages/admin/AdminLeads.tsx`
-**Rota:** adicionar em `src/App.tsx` → `<Route path="/admin/leads" element={<AdminLeads />} />`
-**Sidebar:** adicionar item em `src/components/AdminLayout.tsx` (ícone `Users` do lucide-react, label "Leads", entre Vitrine e Categorias).
+Pesquiso referências oficiais MOTOREX (motorex.com), Motul, Manual do Motocross, FIM, e documentação técnica antes de redigir.
 
-**Layout:**
-- Header com título "Leads & Cadastros" + contador total.
-- 3 cards no topo com totais de cada fonte (Revendedores: X | Fale Conosco: Y | Newsletter: Z).
-- **Tabs** (`@/components/ui/tabs`):
-  - **Revendedores**: tabela com Nome, Empresa, Email, WhatsApp, Status, Data. Ações: mudar status (dropdown novo/contatado/convertido/descartado).
-  - **Fale Conosco**: tabela com Nome, Email, WhatsApp, Mensagem (truncada, expand on click), Status, Data.
-  - **Newsletter**: tabela com Nome, Email, Telefone, "Cupom Enviado" (✓/✗), Data. Botão **"Exportar CSV"** no canto superior direito que baixa todos os emails em formato compatível com a importação do Substack (`email,first_name`).
-- Busca global por nome/email em cada tab.
-- Filtro por status.
-- Paginação simples (20 por página).
-- Ordenação por data desc por padrão.
+### 4.1 Pillar Page — `/guia/qual-oleo-motocross-trilha-enduro`
+- 2.500-3.000 palavras estruturadas: hero + índice ancorado + seções (4T vs 2T, viscosidade, JASO, normas, marcas).
+- Tabela responsiva por marca de moto: KTM, Husqvarna, Honda CRF, Yamaha YZ/WR, Kawasaki KX, GasGas, Beta, Sherco.
+- CTAs cruzados para produtos do catálogo.
+- Schema `Article` + `FAQPage` (FAQs no fim).
 
-Cada tab usa React Query para buscar do Supabase com refetch automático.
+### 4.2 Glossário Técnico — `/glossario`
+Termos com âncoras: JASO MA / MA2, API SP/SN, viscosidade SAE 10W40/15W50/5W40, base sintética PAO/Ester, base mineral, base semi-sintética, ZDDP, ponto de fulgor, NLGI (graxa), DOT (fluido de freio), Motul vs Motorex (comparativo neutro), additive package. Schema `DefinedTerm` + `DefinedTermSet`.
 
----
+### 4.3 Headers descritivos por categoria
+Em `/motorex` (filtro por categoria), bloco intro 400-600 palavras antes do grid:
+- Óleo de motor 4T
+- Óleo de motor 2T
+- Suspensão (fork oil, shock oil)
+- Corrente (lubrificantes/limpadores)
+- Limpeza e manutenção
+- Fluidos (freio, refrigeração)
 
-## 4. Edge Function `send-newsletter-welcome`
+### 4.4 Página de marca MOTOREX Suíça
+Reformular `/quem-somos` adicionando seção "MOTOREX — Tecnologia Suíça desde 1917": história, fábrica em Langenthal, certificações, parcerias FIM/MotoGP, diferenciação no mercado brasileiro. Schema `Brand`.
 
-**Arquivo novo:** `supabase/functions/send-newsletter-welcome/index.ts`
-
-**Trigger:** Webhook do Supabase Database → `newsletter_submissions` INSERT → invoca esta function.
-
-> Você precisará configurar o webhook no painel Supabase (Database → Webhooks → Create) apontando para esta função. Vou deixar instruções claras no chat após implementar.
-
-**O que faz:**
-1. Recebe payload com `record` (linha inserida).
-2. Valida que tem email/nome.
-3. Envia email HTML via **Lovable Emails** (infra padrão do projeto, sem precisar de API key externa).
-   - **Pré-requisito:** Domínio de email configurado em Lovable Cloud → Emails. Se ainda não estiver, vou guiar o setup no momento da implementação.
-4. Email contém:
-   - Saudação personalizada (Olá [Nome]).
-   - Cupom em destaque: **NEWS10** — 10% OFF na primeira compra.
-   - CTA "Visitar nossa Substack" → https://substack.com/@rtbrasilmotorex
-   - CTA "Ver produtos MOTOREX" → /motorex
-   - Nota: "Use o cupom no checkout. Válido para uma compra por cliente."
-5. Após envio bem-sucedido, atualiza `cupom_enviado=true` e `email_enviado_at=now()` na tabela.
-
-Template visual segue o **Dark Premium** (mas com background branco no email body, regra obrigatória do email infra).
+### 4.5 FAQ Page — `/faq`
+Perguntas comuns coletadas dos formulários e CTAs. Schema `FAQPage` (Rich Result no Google).
 
 ---
 
-## 5. Arquivos editados/criados
+## SPRINT 5 — Calculadora de Óleo (ADIADA)
 
-**Novos:**
-- `sql/migration_newsletter_submissions.sql` (você executa manualmente)
-- `src/components/NewsletterPopup.tsx`
-- `src/pages/admin/AdminLeads.tsx`
-- `supabase/functions/send-newsletter-welcome/index.ts`
-- `supabase/functions/_shared/transactional-email-templates/newsletter-welcome.tsx` (se Lovable Emails for usado)
-
-**Editados:**
-- `src/App.tsx` — adicionar rota `/admin/leads` e lazy import.
-- `src/components/AdminLayout.tsx` — adicionar item "Leads" na sidebar.
-- `src/pages/Blog.tsx` — montar o `<NewsletterPopup />` no final do JSX.
-- `src/types/database.ts` — adicionar interfaces `RevendedorSubmission`, `ContatoSubmission`, `NewsletterSubmission`.
+Aguarda você reunir tabela de compatibilidade marca/modelo/ano → SKU recomendado. Quando tiver, eu construo a UI interativa em `/calculadora-oleo`.
 
 ---
 
-## Resumo do que você precisa fazer manualmente
+## FORA DO MEU ALCANCE — Você precisa fazer
 
-1. **Executar o SQL** que vou gerar em `sql/migration_newsletter_submissions.sql` no SQL Editor do Supabase.
-2. **Configurar o webhook** no Supabase (Database → Webhooks) para chamar `send-newsletter-welcome` em INSERT na tabela. Vou te passar a URL exata após o deploy.
-3. **Configurar domínio de email** em Lovable Cloud → Emails (se ainda não tiver). Vou abrir o diálogo de setup automaticamente quando chegar nessa etapa.
-4. **Importação no Substack**: 1x por semana, baixar CSV no /admin/leads → Newsletter e importar no painel Substack.
+1. **Google Search Console** — verificar `rtbrasilimport.com.br`, submeter `https://www.rtbrasilimport.com.br/sitemap.xml`. Posso te passar o passo a passo.
+2. **Google Analytics 4** — criar property, me enviar o `G-XXXXXXX` que eu instalo no `index.html`.
+3. **Google Business Profile** — cadastrar a empresa em Jaboticabal-SP (impacta SEO local).
+4. **Bing Webmaster Tools** — opcional, mesmo sitemap.
+5. **Backlinks** — solicitar listagem em motorex.com (parceiros internacionais), associações de motociclismo, parceiros revendedores.
+6. **Revisão dos conteúdos** que eu rascunhar nos sprints 4.1-4.5 antes de publicar.
+7. **Tabela da calculadora de óleo** (quando quiser destravar Sprint 5).
 
-Quer que eu prossiga? Algum ajuste no fluxo (ex: mudar tempo do popup, adicionar campo, trocar a SELECT pública por RPC mais privada)?
+---
+
+## Ordem de execução
+
+Vou rodar Sprint 1 → 2 → 3 → 4 em sequência, fazendo commits por sprint para você acompanhar. Sprint 4 pode ser pausado/aprovado por página antes de seguir.
+
+**Pronto para começar pelo Sprint 1 assim que você aprovar este plano.**
