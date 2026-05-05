@@ -3,7 +3,7 @@ export const SITE_NAME = "RT Brasil MOTOREX";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/images/og-default.jpg`;
 
 export const DEFAULT_TITLE =
-  "RT Brasil MOTOREX | Lubrificantes Suíços para Motocross e Trilha";
+  "RT Brasil MOTOREX | Óleos Suíços p/ Moto";
 export const DEFAULT_DESCRIPTION =
   "Distribuidora oficial MOTOREX no Brasil. Óleos e lubrificantes suíços de alta performance para motocross, enduro, trilha e off-road. Seja revendedor.";
 
