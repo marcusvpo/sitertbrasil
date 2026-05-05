@@ -4,6 +4,7 @@ import SEO from "@/components/SEO";
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { SITE_URL } from "@/lib/seo-config";
 import { Button } from "@/components/ui/button";
+import { MX } from "@/lib/highlight-motorex";
 
 const faqs = [
   {
@@ -88,25 +89,27 @@ const Guia = () => {
         <section className="relative py-16 md:py-24 mesh-gradient">
           <div className="container relative z-10 max-w-4xl">
             <AnimateOnScroll animation="blur-in">
-              <span className="font-heading uppercase text-primary text-xs tracking-[0.3em]">
-                Guia Técnico MOTOREX
+              <span className="font-heading uppercase text-motorex text-xs tracking-[0.3em]">
+                Guia Técnico <span className="font-bold">MOTOREX</span>
               </span>
               <h1 className="font-heading text-[clamp(2rem,5.5vw,4rem)] font-bold mt-3 mb-5 leading-[0.95]">
-                Qual <span className="text-gradient">Óleo</span> Usar em Motocross, Trilha e Enduro
+                Qual <span className="text-motorex">Óleo</span> Usar em Motocross, Trilha e Enduro
               </h1>
-              <p className="text-muted-foreground text-base md:text-lg leading-relaxed max-w-2xl">
-                A escolha do lubrificante é a decisão técnica que mais impacta a vida útil e a performance do seu motor.
-                Este guia traz o que você precisa saber para acertar — direto da engenharia MOTOREX, marca oficial dos
-                campeonatos mundiais FIM.
+              <div className="h-1 w-20 rounded-full bg-motorex mb-6" />
+              <p className="text-foreground/85 text-base md:text-lg leading-relaxed max-w-2xl">
+                A escolha do <span className="text-motorex font-semibold">lubrificante</span> é a decisão técnica que
+                mais impacta a vida útil e a performance do seu motor. Este guia traz o que você precisa saber para
+                acertar — direto da engenharia <span className="text-motorex font-bold">MOTOREX</span>, marca oficial
+                dos campeonatos mundiais FIM.
               </p>
             </AnimateOnScroll>
           </div>
         </section>
 
         {/* Index */}
-        <section className="py-8 border-y border-foreground/[0.06]">
+        <section className="py-8 border-y border-motorex/20">
           <div className="container max-w-4xl">
-            <p className="font-heading uppercase text-xs tracking-wider text-muted-foreground mb-4">Neste guia</p>
+            <p className="font-heading uppercase text-xs tracking-wider text-motorex mb-4">Neste guia</p>
             <ul className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
               {[
                 ["#diferenca", "1. Diferença entre 4T e 2T"],
@@ -121,9 +124,9 @@ const Guia = () => {
                 <li key={h}>
                   <a
                     href={h}
-                    className="flex items-center gap-2 py-2 text-foreground/80 hover:text-primary transition-colors"
+                    className="flex items-center gap-2 py-2 text-foreground/85 hover:text-motorex transition-colors"
                   >
-                    <ChevronRight size={14} className="text-primary" />
+                    <ChevronRight size={14} className="text-motorex" />
                     {t}
                   </a>
                 </li>
@@ -241,15 +244,15 @@ const Guia = () => {
                     ["Sherco SE / SEF", "4T e 2T enduro", "Cross Power 4T 10W50 / Cross Power 2T"],
                   ].map(([m, t, r]) => (
                     <tr key={m} className="border-b border-foreground/[0.06]">
-                      <td className="py-2 px-3">{m}</td>
-                      <td className="py-2 px-3 text-muted-foreground">{t}</td>
-                      <td className="py-2 px-3 text-primary font-semibold">{r}</td>
+                      <td className="py-2 px-3 text-foreground/90"><MX>{m}</MX></td>
+                      <td className="py-2 px-3 text-foreground/70">{t}</td>
+                      <td className="py-2 px-3 text-motorex font-semibold"><MX>{r}</MX></td>
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-muted-foreground italic mt-3">
+            <p className="text-xs text-foreground/60 italic mt-3">
               Tabela orientativa. Confirme sempre a viscosidade no manual oficial da sua moto e ano de fabricação.
             </p>
           </Section>
@@ -299,33 +302,36 @@ const Guia = () => {
 
           <section id="faq" className="not-prose mt-16">
             <h2 className="font-heading uppercase text-2xl md:text-3xl font-bold mb-6">
-              Perguntas <span className="text-gradient">frequentes</span>
+              Perguntas <span className="text-motorex">frequentes</span>
             </h2>
             <div className="space-y-4">
               {faqs.map((f) => (
                 <details
                   key={f.q}
-                  className="group glass-card rounded-lg p-4 md:p-5 border border-foreground/[0.06]"
+                  className="group glass-card rounded-lg p-4 md:p-5 border border-foreground/[0.06] open:border-motorex/40 transition-colors"
                 >
-                  <summary className="cursor-pointer font-heading text-base md:text-lg font-semibold list-none flex items-center justify-between gap-4">
+                  <summary className="cursor-pointer font-heading text-base md:text-lg font-semibold list-none flex items-center justify-between gap-4 text-foreground">
                     <span>{f.q}</span>
                     <ChevronRight
                       size={18}
-                      className="text-primary transition-transform group-open:rotate-90 flex-shrink-0"
+                      className="text-motorex transition-transform group-open:rotate-90 flex-shrink-0"
                     />
                   </summary>
-                  <p className="text-muted-foreground text-sm mt-3 leading-relaxed">{f.a}</p>
+                  <p className="text-foreground/85 text-sm mt-3 leading-relaxed">
+                    <MX>{f.a}</MX>
+                  </p>
                 </details>
               ))}
             </div>
           </section>
 
-          <div className="not-prose mt-16 text-center glass-card rounded-lg p-8 border border-primary/20">
+          <div className="not-prose mt-16 text-center glass-card rounded-lg p-8 border border-motorex/30">
             <h2 className="font-heading text-2xl md:text-3xl font-bold mb-3">
-              Pronto para escolher o <span className="text-gradient">óleo certo</span>?
+              Pronto para escolher o <span className="text-motorex">óleo certo</span>?
             </h2>
-            <p className="text-muted-foreground mb-6 max-w-md mx-auto">
-              Veja a linha completa MOTOREX disponível na distribuidora oficial RT Brasil.
+            <p className="text-foreground/80 mb-6 max-w-md mx-auto">
+              Veja a linha completa <span className="text-motorex font-bold">MOTOREX</span> disponível na distribuidora
+              oficial RT Brasil.
             </p>
             <Button asChild size="lg" className="btn-clip">
               <Link to="/motorex">
