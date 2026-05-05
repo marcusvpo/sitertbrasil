@@ -297,7 +297,6 @@ const MarceloGaliotto = () => {
         description="Campeão Sul Brasileiro e múltiplo campeão Gaúcho de Motocross. Conheça Marcelo Galiotto, piloto parceiro RT Brasil MOTOREX."
         path="/parceiros/marcelo-galiotto"
       />
-    <div className="bg-secondary text-secondary-foreground">
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative min-h-[80vh] md:h-screen max-h-[1080px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
