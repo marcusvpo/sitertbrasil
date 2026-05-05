@@ -9,6 +9,7 @@ import GlareCard from "@/components/GlareCard";
 import type { BlogPost } from "@/types/database";
 import { getBlogCoverUrl } from "@/lib/image-utils";
 import NewsletterPopup from "@/components/NewsletterPopup";
+import SEO from "@/components/SEO";
 
 const formatDate = (iso: string) => {
   try {
@@ -71,11 +72,16 @@ const Blog = () => {
 
   return (
     <>
+      <SEO
+        title="Blog MOTOREX | Dicas, Performance e Manutenção de Motos"
+        description="Conteúdo exclusivo MOTOREX: guias técnicos sobre óleos, manutenção, performance e bastidores dos pilotos parceiros da RT Brasil."
+        path="/blog"
+      />
       {/* Banner */}
       <section className="relative w-full overflow-hidden">
         <img
           src="/images/banner-motorex.jpg"
-          alt="Blog RT Brasil"
+          alt="Blog RT Brasil — artigos sobre lubrificantes MOTOREX"
           className="w-full h-auto block"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent" />

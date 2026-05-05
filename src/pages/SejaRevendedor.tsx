@@ -46,6 +46,11 @@ const SejaRevendedor = () => {
 
   return (
     <div className="relative">
+      <SEO
+        title="Seja Revendedor MOTOREX | Lojas e Mecânicas | RT Brasil"
+        description="Torne-se revendedor oficial MOTOREX no Brasil. Margens atrativas, suporte técnico, treinamento e a marca mais respeitada do motocross mundial."
+        path="/seja-revendedor"
+      />
       <div aria-hidden className="ambient-canvas-page" />
       <div className="relative z-10">
       {/* Banner */}

@@ -56,8 +56,16 @@ const partners: Partner[] = [
   },
 ];
 
+import SEO from "@/components/SEO";
+
 const Parceiros = () => {
   return (
+    <>
+    <SEO
+      title="Parceiros e Pilotos MOTOREX | RT Brasil"
+      description="Conheça os pilotos e revendedores parceiros da RT Brasil MOTOREX: Lorenzo Ricken, Otávio Oliveira, Rodrigo Galiotto e Marcelo Galiotto."
+      path="/parceiros"
+    />
     <section className="bg-secondary text-secondary-foreground py-8 md:py-16 min-h-screen">
       <div className="container">
         {/* Header */}

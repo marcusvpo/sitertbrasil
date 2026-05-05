@@ -48,6 +48,11 @@ const CentralAtendimento = () => {
 
   return (
     <div className="relative">
+      <SEO
+        title="Central de Atendimento | RT Brasil MOTOREX"
+        description="Fale com a RT Brasil: WhatsApp, e-mail e endereço. Suporte para revendedores e clientes finais MOTOREX em todo o Brasil."
+        path="/central-atendimento"
+      />
       <div aria-hidden className="ambient-canvas-page" />
       <div className="relative z-10">
       {/* ── Header ── */}

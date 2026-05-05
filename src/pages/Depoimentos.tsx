@@ -44,8 +44,15 @@ const TestimonialCard = ({ d }: { d: typeof depoimentos[0] }) => (
   </div>
 );
 
+import SEO from "@/components/SEO";
+
 const Depoimentos = () => (
   <div className="relative">
+    <SEO
+      title="Depoimentos MOTOREX | O que pilotos e mecânicos dizem"
+      description="Veja o que pilotos, mecânicos e revendedores dizem sobre os lubrificantes MOTOREX distribuídos no Brasil pela RT Brasil."
+      path="/depoimentos"
+    />
     <div aria-hidden className="ambient-canvas-page" />
     <div className="relative z-10">
     {/* ── Header ── */}
