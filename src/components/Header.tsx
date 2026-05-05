@@ -11,6 +11,8 @@ const navItems = [
   { label: "Quem Somos", to: "/quem-somos" },
   { label: "Parceiros", to: "/parceiros" },
   { label: "Blog", to: "/blog" },
+  { label: "Guia", to: "/guia/qual-oleo-motocross-trilha-enduro" },
+  { label: "FAQ", to: "/faq" },
   { label: "Depoimentos", to: "/depoimentos" },
 ];
 
