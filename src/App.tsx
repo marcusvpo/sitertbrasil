@@ -30,6 +30,7 @@ const Guia = lazy(() => import("./pages/Guia"));
 const Glossario = lazy(() => import("./pages/Glossario"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const AdminLogin = lazy(() => import("./pages/AdminLogin"));
+const AdminDashboard = lazy(() => import("./pages/admin/AdminDashboard"));
 const AdminProducts = lazy(() => import("./pages/admin/AdminProducts"));
 const AdminProductForm = lazy(() => import("./pages/admin/AdminProductForm"));
 const AdminCategories = lazy(() => import("./pages/admin/AdminCategories"));
@@ -37,6 +38,7 @@ const AdminVitrine = lazy(() => import("./pages/admin/AdminVitrine"));
 const AdminBlog = lazy(() => import("./pages/admin/AdminBlog"));
 const AdminBlogForm = lazy(() => import("./pages/admin/AdminBlogForm"));
 const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
+const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -83,8 +85,8 @@ const App = () => (
             {/* Admin */}
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route element={<AdminLayout />}>
-              <Route path="/admin" element={<AdminProducts />} />
-              <Route path="/admin/products/new" element={<AdminProductForm />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/produtos" element={<AdminProducts />} />
               <Route path="/admin/products/:id" element={<AdminProductForm />} />
               <Route path="/admin/vitrine" element={<AdminVitrine />} />
               <Route path="/admin/categories" element={<AdminCategories />} />
@@ -92,6 +94,11 @@ const App = () => (
               <Route path="/admin/blog/new" element={<AdminBlogForm />} />
               <Route path="/admin/blog/:id" element={<AdminBlogForm />} />
               <Route path="/admin/leads" element={<AdminLeads />} />
+              <Route path="/admin/seo" element={<AdminPlaceholder title="SEO Center" phase="Fase 2" />} />
+              <Route path="/admin/funil" element={<AdminPlaceholder title="Funil de Conversão" phase="Fase 3" />} />
+              <Route path="/admin/realtime" element={<AdminPlaceholder title="Tempo Real" phase="Fase 3" />} />
+              <Route path="/admin/trafego" element={<AdminPlaceholder title="Tráfego (GA4)" phase="Fase 3" />} />
+              <Route path="/admin/ecommerce" element={<AdminPlaceholder title="E-commerce (Yampi)" phase="Fase 3" />} />
             </Route>
 
             <Route path="*" element={<NotFound />} />

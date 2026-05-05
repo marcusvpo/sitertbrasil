@@ -5,33 +5,31 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, RefreshCw } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { Pencil, Search, Eye, EyeOff, RefreshCw, Lock, CheckCircle2, AlertTriangle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { Product } from "@/types/database";
 import {
   Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
 } from "@/components/ui/table";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose,
-} from "@/components/ui/dialog";
-
 import { getProductImageUrl } from "@/lib/image-utils";
 
 const AdminProducts = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
-  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
+  const [lastSync, setLastSync] = useState<{ total: number; created: number; updated: number; at: Date } | null>(null);
 
   const handleSyncYampi = async () => {
     setSyncing(true);
     try {
       const { data, error } = await supabase.functions.invoke("sync-yampi");
       if (error) throw error;
+      setLastSync({ total: data.total, created: data.created, updated: data.updated, at: new Date() });
       toast({
         title: "Sincronização concluída",
-        description: `${data.total} produtos processados (${data.created} novos, ${data.updated} atualizados)`,
+        description: `${data.total} produtos (${data.created} novos, ${data.updated} atualizados)`,
       });
       queryClient.invalidateQueries({ queryKey: ["admin-products"] });
     } catch (err: any) {
@@ -57,22 +55,6 @@ const AdminProducts = () => {
     },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const product = products.find((p) => p.id === id);
-      if (product?.images?.length) {
-        const paths = product.images.map((img: any) => img.storage_path);
-        await supabase.storage.from("products").remove(paths);
-      }
-      const { error } = await supabase.from("products").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
-      setDeleteId(null);
-    },
-  });
-
   const toggleActive = useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
       const { error } = await supabase.from("products").update({ is_active }).eq("id", id);
@@ -87,33 +69,65 @@ const AdminProducts = () => {
       p.category?.name?.toLowerCase().includes(search.toLowerCase())
   );
 
+  const withoutYampi = products.filter((p) => !p.yampi_id).length;
 
   return (
-    <div className="p-6 md:p-8">
-      <div className="flex items-center justify-between mb-6">
+    <div className="p-6 md:p-8 space-y-5">
+      <div className="flex items-center justify-between">
         <div>
-          <h1 className="font-heading text-2xl uppercase text-secondary-foreground">Produtos</h1>
-          <p className="text-secondary-foreground/50 text-sm">{products.length} produtos cadastrados</p>
+          <h1 className="font-heading text-2xl uppercase text-secondary-foreground">Catálogo</h1>
+          <p className="text-secondary-foreground/50 text-sm flex items-center gap-2">
+            <Lock size={12} /> Cadastro 100% gerenciado pela Yampi · {products.length} produtos
+          </p>
         </div>
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            className="font-heading uppercase tracking-wider border-primary/30 text-primary hover:bg-primary/10"
-            onClick={handleSyncYampi}
-            disabled={syncing}
-          >
-            <RefreshCw size={18} className={`mr-2 ${syncing ? "animate-spin" : ""}`} />
-            {syncing ? "Sincronizando..." : "Sincronizar Yampi"}
-          </Button>
-          <Button asChild className="font-heading uppercase tracking-wider">
-            <Link to="/admin/products/new">
-              <Plus size={18} className="mr-2" /> Novo Produto
-            </Link>
-          </Button>
-        </div>
+        <Button
+          variant="outline"
+          className="font-heading uppercase tracking-wider border-primary/30 text-primary hover:bg-primary/10"
+          onClick={handleSyncYampi}
+          disabled={syncing}
+        >
+          <RefreshCw size={18} className={`mr-2 ${syncing ? "animate-spin" : ""}`} />
+          {syncing ? "Sincronizando..." : "Sincronizar Yampi"}
+        </Button>
       </div>
 
-      <div className="relative mb-4">
+      {/* Sync status */}
+      <div className="grid md:grid-cols-3 gap-4">
+        <Card className="bg-secondary-foreground/5 border-secondary-foreground/10 p-4">
+          <div className="text-secondary-foreground/40 text-xs font-heading uppercase tracking-wider mb-1">
+            Última sincronização
+          </div>
+          <div className="text-secondary-foreground text-sm flex items-center gap-2">
+            {lastSync ? (
+              <>
+                <CheckCircle2 size={14} className="text-green-400" />
+                {lastSync.at.toLocaleString("pt-BR")} · {lastSync.total} itens
+              </>
+            ) : (
+              <span className="text-secondary-foreground/40">Nenhuma nesta sessão</span>
+            )}
+          </div>
+        </Card>
+        <Card className="bg-secondary-foreground/5 border-secondary-foreground/10 p-4">
+          <div className="text-secondary-foreground/40 text-xs font-heading uppercase tracking-wider mb-1">
+            Produtos ativos
+          </div>
+          <div className="text-secondary-foreground text-2xl font-heading">
+            {products.filter((p) => p.is_active).length}
+          </div>
+        </Card>
+        <Card className="bg-secondary-foreground/5 border-secondary-foreground/10 p-4">
+          <div className="text-secondary-foreground/40 text-xs font-heading uppercase tracking-wider mb-1 flex items-center gap-1">
+            {withoutYampi > 0 && <AlertTriangle size={12} className="text-amber-400" />}
+            Sem Yampi ID
+          </div>
+          <div className={`text-2xl font-heading ${withoutYampi > 0 ? "text-amber-400" : "text-secondary-foreground"}`}>
+            {withoutYampi}
+          </div>
+        </Card>
+      </div>
+
+      <div className="relative">
         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-foreground/30" size={18} />
         <Input
           placeholder="Buscar produtos..."
@@ -136,7 +150,7 @@ const AdminProducts = () => {
                 <TableHead className="text-secondary-foreground/50">Preço</TableHead>
                 <TableHead className="text-secondary-foreground/50">Volume</TableHead>
                 <TableHead className="text-secondary-foreground/50">Status</TableHead>
-                <TableHead className="text-secondary-foreground/50 text-right">Ações</TableHead>
+                <TableHead className="text-secondary-foreground/50 text-right">Editar SEO</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -192,21 +206,11 @@ const AdminProducts = () => {
                     </button>
                   </TableCell>
                   <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button asChild variant="ghost" size="icon" className="text-secondary-foreground/60 hover:text-primary">
-                        <Link to={`/admin/products/${product.id}`}>
-                          <Pencil size={16} />
-                        </Link>
-                      </Button>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="text-secondary-foreground/60 hover:text-destructive"
-                        onClick={() => setDeleteId(product.id)}
-                      >
-                        <Trash2 size={16} />
-                      </Button>
-                    </div>
+                    <Button asChild variant="ghost" size="icon" className="text-secondary-foreground/60 hover:text-primary">
+                      <Link to={`/admin/products/${product.id}`}>
+                        <Pencil size={16} />
+                      </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}
@@ -221,32 +225,6 @@ const AdminProducts = () => {
           </Table>
         </div>
       )}
-
-      {/* Delete dialog */}
-      <Dialog open={!!deleteId} onOpenChange={() => setDeleteId(null)}>
-        <DialogContent className="bg-secondary border-secondary-foreground/20">
-          <DialogHeader>
-            <DialogTitle className="text-secondary-foreground">Excluir produto</DialogTitle>
-            <DialogDescription className="text-secondary-foreground/50">
-              Tem certeza? Esta ação não pode ser desfeita. As imagens do produto também serão removidas.
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button variant="outline" className="border-secondary-foreground/20 text-secondary-foreground">
-                Cancelar
-              </Button>
-            </DialogClose>
-            <Button
-              variant="destructive"
-              onClick={() => deleteId && deleteMutation.mutate(deleteId)}
-              disabled={deleteMutation.isPending}
-            >
-              {deleteMutation.isPending ? "Excluindo..." : "Excluir"}
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };
