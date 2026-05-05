@@ -6,6 +6,7 @@ import {
   DEFAULT_TITLE,
   DEFAULT_DESCRIPTION,
 } from "@/lib/seo-config";
+import { useSeoOverride } from "@/hooks/useSeoOverride";
 
 interface SEOProps {
   title?: string;
@@ -26,7 +27,12 @@ const SEO = ({
   noindex = false,
   jsonLd,
 }: SEOProps) => {
-  const fullTitle = title
+  const override = useSeoOverride(path);
+  const finalTitle = override?.title || title;
+  const finalDescription = override?.description || description;
+  const finalImage = override?.og_image || image;
+  const finalNoindex = override?.noindex ?? noindex;
+  const fullTitle = finalTitle
     ? title.length > 60
       ? title
       : `${title} | ${SITE_NAME}`
