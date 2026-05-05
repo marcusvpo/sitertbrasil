@@ -296,6 +296,11 @@ const RoostSpray = ({ side = "left" }: { side?: "left" | "right" }) => (
 const LorenzoRicken = () => {
   return (
     <div className="bg-secondary text-secondary-foreground">
+      <SEO
+        title="Lorenzo Ricken | Piloto MOTOREX RT Brasil"
+        description="Bicampeão Brasileiro e Catarinense de Motocross 50cc. Conheça Lorenzo Ricken, piloto parceiro RT Brasil MOTOREX."
+        path="/parceiros/lorenzo-ricken"
+      />
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative min-h-[80vh] md:h-screen max-h-[1080px] flex items-end overflow-hidden">
         <div className="absolute inset-0">
