@@ -58,21 +58,7 @@ const AdminProducts = () => {
     },
   });
 
-  const deleteMutation = useMutation({
-    mutationFn: async (id: string) => {
-      const product = products.find((p) => p.id === id);
-      if (product?.images?.length) {
-        const paths = product.images.map((img: any) => img.storage_path);
-        await supabase.storage.from("products").remove(paths);
-      }
-      const { error } = await supabase.from("products").delete().eq("id", id);
-      if (error) throw error;
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["admin-products"] });
-      setDeleteId(null);
-    },
-  });
+  // Delete removido — produtos são gerenciados 100% pela Yampi.
 
   const toggleActive = useMutation({
     mutationFn: async ({ id, is_active }: { id: string; is_active: boolean }) => {
