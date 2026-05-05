@@ -33,13 +33,13 @@ const SEO = ({
   const finalImage = override?.og_image || image;
   const finalNoindex = override?.noindex ?? noindex;
   const fullTitle = finalTitle
-    ? title.length > 60
-      ? title
-      : `${title} | ${SITE_NAME}`
+    ? finalTitle.length > 60
+      ? finalTitle
+      : `${finalTitle} | ${SITE_NAME}`
     : DEFAULT_TITLE;
-  const desc = description ?? DEFAULT_DESCRIPTION;
+  const desc = finalDescription ?? DEFAULT_DESCRIPTION;
   const url = `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
-  const ogImage = image ?? DEFAULT_OG_IMAGE;
+  const ogImage = finalImage ?? DEFAULT_OG_IMAGE;
   const schemas = Array.isArray(jsonLd) ? jsonLd : jsonLd ? [jsonLd] : [];
 
   return (
@@ -47,7 +47,8 @@ const SEO = ({
       <title>{fullTitle}</title>
       <meta name="description" content={desc} />
       <link rel="canonical" href={url} />
-      {noindex && <meta name="robots" content="noindex,nofollow" />}
+      {finalNoindex && <meta name="robots" content="noindex,nofollow" />}
+      {override?.keywords && <meta name="keywords" content={override.keywords} />}
 
       <meta property="og:type" content={type} />
       <meta property="og:site_name" content={SITE_NAME} />
