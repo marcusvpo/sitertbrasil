@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
-import { Plus, Pencil, Trash2, Search, Eye, EyeOff, RefreshCw } from "lucide-react";
+import { Pencil, Search, Eye, EyeOff, RefreshCw, Lock, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import type { Product } from "@/types/database";
 import {
@@ -21,14 +21,15 @@ const AdminProducts = () => {
   const queryClient = useQueryClient();
   const { toast } = useToast();
   const [search, setSearch] = useState("");
-  const [deleteId, setDeleteId] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
+  const [lastSync, setLastSync] = useState<{ total: number; created: number; updated: number; at: Date } | null>(null);
 
   const handleSyncYampi = async () => {
     setSyncing(true);
     try {
       const { data, error } = await supabase.functions.invoke("sync-yampi");
       if (error) throw error;
+      setLastSync({ total: data.total, created: data.created, updated: data.updated, at: new Date() });
       toast({
         title: "Sincronização concluída",
         description: `${data.total} produtos processados (${data.created} novos, ${data.updated} atualizados)`,
