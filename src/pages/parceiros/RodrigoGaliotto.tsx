@@ -3,6 +3,7 @@ import { Trophy, Instagram, ChevronLeft, Medal, Star, Flame, Zap, ChevronDown, F
 import AnimateOnScroll from "@/components/AnimateOnScroll";
 import { Button } from "@/components/ui/button";
 import { useEffect, useRef, useState } from "react";
+import SEO from "@/components/SEO";
 
 const SUPABASE_URL = "https://rxafivyrobvcsfglovsz.supabase.co";
 const img = (name: string) =>
@@ -295,6 +296,12 @@ const RoostSpray = ({ side = "left" }: { side?: "left" | "right" }) => (
 
 const RodrigoGaliotto = () => {
   return (
+    <div className="bg-secondary text-secondary-foreground">
+      <SEO
+        title="Rodrigo Galiotto | Piloto MOTOREX RT Brasil"
+        description="4x Campeão Gaúcho e Campeão Sul Brasileiro de Motocross MX3/MX4. Conheça Rodrigo Galiotto, piloto parceiro RT Brasil MOTOREX."
+        path="/parceiros/rodrigo-galiotto"
+      />
     <div className="bg-secondary text-secondary-foreground">
       {/* ═══════════ HERO ═══════════ */}
       <section className="relative min-h-[80vh] md:h-screen max-h-[1080px] flex items-end overflow-hidden">
