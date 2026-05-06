@@ -73,8 +73,8 @@ const Index = () => {
   return (
     <div className="relative">
       <SEO
-        title="RT Brasil MOTOREX | Lubrificantes Suíços para Motocross e Trilha"
-        description="Distribuidora oficial MOTOREX no Brasil. Óleos e lubrificantes suíços de alta performance para motocross, enduro, trilha e off-road. Seja revendedor."
+        title="RT Brasil MOTOREX | Lubrificantes Suíços para Off-Road e Trilha"
+        description="Distribuidora oficial MOTOREX no Brasil. Óleos e lubrificantes suíços de alta performance para off-road, enduro, trilha e motocross. Seja revendedor."
         path="/"
         jsonLd={[ORGANIZATION_JSONLD, websiteSchema]}
       />
@@ -90,7 +90,7 @@ const Index = () => {
             <source srcSet="/images/hero-motocross.webp" type="image/webp" />
             <img
               src="/images/hero-motocross.jpg"
-              alt="Motocross em ação"
+              alt="Piloto off-road em ação"
               width={1920}
               height={1080}
               fetchPriority="high"
@@ -129,8 +129,8 @@ const Index = () => {
             </AnimateOnScroll>
             <AnimateOnScroll animation="fade-up" delay={200}>
               <h1 className="font-heading text-[clamp(3rem,8vw,8rem)] font-bold leading-[0.9] mb-6">
-                Performance Máxima Para Quem Vive o{" "}
-                <span className="text-gradient">Motocross</span>
+                Performance máxima para quem vive o{" "}
+                <span className="text-gradient">OFF ROAD!</span>
               </h1>
             </AnimateOnScroll>
             <AnimateOnScroll animation="fade-up" delay={400}>
