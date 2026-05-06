@@ -87,7 +87,6 @@ const Index = () => {
         {/* Background image with parallax feel */}
         <div className="absolute inset-0">
           <picture>
-            <source srcSet="/images/hero-motocross.webp" type="image/webp" />
             <img
               src="/images/hero-motocross.jpg"
               alt="Piloto off-road em ação"
