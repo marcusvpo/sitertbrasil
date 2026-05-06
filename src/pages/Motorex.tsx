@@ -90,7 +90,7 @@ const Motorex = () => {
     <div className="relative">
       <SEO
         title="Catálogo MOTOREX | Óleos e Lubrificantes para Motos"
-        description="Linha completa MOTOREX: óleos 4T, 2T, suspensão, corrente, freio e limpeza. Tecnologia suíça para motocross, enduro e trilha. Compre direto da distribuidora oficial."
+        description="Linha completa MOTOREX: óleos 4T, 2T, suspensão, corrente, freio e limpeza. Tecnologia suíça para off-road, enduro e trilha. Compre direto da distribuidora oficial."
         path="/motorex"
         jsonLd={breadcrumbSchema}
       />
