@@ -20,7 +20,7 @@ const Footer = () => {
             />
             <p className="text-white/70 text-sm leading-relaxed max-w-xs">
               Distribuidora oficial <span className="text-white font-semibold">MOTOREX</span> no Brasil. Lubrificantes de alta
-              performance para motocross, enduro e off-road.
+              performance para off-road, enduro e trilha.
             </p>
           </div>
 
