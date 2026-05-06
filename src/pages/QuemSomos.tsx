@@ -20,7 +20,7 @@ const stats = [
 
 const values = [
   { icon: Award, title: "Excelência", text: "Produtos desenvolvidos com tecnologia suíça de ponta." },
-  { icon: Heart, title: "Paixão", text: "Movidos pela paixão pelo motocross e esportes off-road." },
+  { icon: Heart, title: "Paixão", text: "Movidos pela paixão pelo off-road e esportes a motor." },
   { icon: Target, title: "Compromisso", text: "Entrega rápida, suporte dedicado e qualidade garantida." },
   { icon: Globe, title: "Alcance", text: "Uma rede global com presença local e atendimento personalizado." },
 ];
@@ -32,7 +32,7 @@ const QuemSomos = () => {
     <div className="relative">
       <SEO
         title="Quem Somos | RT Brasil — Distribuidora Oficial MOTOREX"
-        description="Conheça a RT Brasil, distribuidora oficial MOTOREX no Brasil. Tecnologia suíça desde 1917, lubrificantes premium para motocross, trilha e enduro."
+        description="Conheça a RT Brasil, distribuidora oficial MOTOREX no Brasil. Tecnologia suíça desde 1917, lubrificantes premium para off-road, trilha e enduro."
         path="/quem-somos"
       />
       <div aria-hidden className="ambient-canvas-page" />
@@ -52,7 +52,7 @@ const QuemSomos = () => {
               RT Brasil + <span className="text-motorex">MOTOREX</span>
             </h1>
             <p className="text-foreground/60 text-lg leading-relaxed">
-              A RT Brasil é a distribuidora oficial da <span className="text-motorex font-semibold">MOTOREX</span> no Brasil, trazendo lubrificantes de alta performance com tecnologia suíça para pilotos, mecânicos e apaixonados por motocross.
+              A RT Brasil é a distribuidora oficial da <span className="text-motorex font-semibold">MOTOREX</span> no Brasil, trazendo lubrificantes de alta performance com tecnologia suíça para pilotos, mecânicos e apaixonados por off-road.
             </p>
             <p className="text-muted-foreground/50 text-sm mt-4">
               Rt Brasil Importação e Comércio — CNPJ: 00.913.926/0001-78
