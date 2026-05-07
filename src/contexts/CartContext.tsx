@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { toast } from "@/hooks/use-toast";
+import { trackEvent } from "@/hooks/useTrack";
 import type { Product, ProductImage } from "@/types/database";
 
 export interface CartItem {
