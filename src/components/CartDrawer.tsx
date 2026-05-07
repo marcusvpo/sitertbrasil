@@ -51,6 +51,15 @@ const CartDrawer = () => {
     const url = buildYampiCheckoutUrl(
       valid.map((i) => ({ token: getToken(i.product)!, qty: i.quantity }))
     );
+    import("@/hooks/useTrack").then(({ trackEvent }) =>
+      trackEvent("begin_checkout", {
+        metadata: {
+          items: valid.length,
+          total,
+          products: valid.map((i) => ({ id: i.product.id, qty: i.quantity })),
+        },
+      })
+    );
     window.open(url, "_blank");
   };
 
