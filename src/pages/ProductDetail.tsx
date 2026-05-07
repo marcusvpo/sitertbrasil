@@ -1,7 +1,8 @@
 import { useParams, Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { trackEvent } from "@/hooks/useTrack";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, ChevronLeft, ChevronRight, ShoppingCart, Plus, Minus } from "lucide-react";
