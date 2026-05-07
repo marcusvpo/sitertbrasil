@@ -41,6 +41,7 @@ const AdminBlogForm = lazy(() => import("./pages/admin/AdminBlogForm"));
 const AdminLeads = lazy(() => import("./pages/admin/AdminLeads"));
 const AdminPlaceholder = lazy(() => import("./pages/admin/AdminPlaceholder"));
 const AdminSEO = lazy(() => import("./pages/admin/AdminSEO"));
+const AdminTrafego = lazy(() => import("./pages/admin/AdminTrafego"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient();
@@ -100,7 +101,7 @@ const App = () => (
               <Route path="/admin/seo" element={<AdminSEO />} />
               <Route path="/admin/funil" element={<AdminPlaceholder title="Funil de Conversão" phase="Fase 3" />} />
               <Route path="/admin/realtime" element={<AdminPlaceholder title="Tempo Real" phase="Fase 3" />} />
-              <Route path="/admin/trafego" element={<AdminPlaceholder title="Tráfego (GA4)" phase="Fase 3" />} />
+              <Route path="/admin/trafego" element={<AdminTrafego />} />
               <Route path="/admin/ecommerce" element={<AdminPlaceholder title="E-commerce (Yampi)" phase="Fase 3" />} />
             </Route>
 
