@@ -37,6 +37,15 @@ const ProductDetail = () => {
     },
   });
 
+  useEffect(() => {
+    if (product?.id) {
+      trackEvent("view_product", {
+        product_id: product.id,
+        metadata: { name: product.name, slug: product.slug, price: Number(product.price) || 0 },
+      });
+    }
+  }, [product?.id]);
+
   if (isLoading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
