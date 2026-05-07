@@ -29,10 +29,24 @@ const parseGa4Date = (s: string) =>
   `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}`;
 
 async function callFn(name: string, body: any) {
-  const { data, error } = await supabase.functions.invoke(name, { body });
-  if (error) throw error;
-  if ((data as any)?.error) throw new Error((data as any).error);
-  return data;
+  const { data: { session } } = await supabase.auth.getSession();
+  const res = await fetch(`${SUPABASE_URL}/functions/v1/${name}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      ...(session?.access_token ? { Authorization: `Bearer ${session.access_token}` } : {}),
+    },
+    body: JSON.stringify(body),
+  });
+  const text = await res.text();
+  let parsed: any = null;
+  try { parsed = JSON.parse(text); } catch { /* keep text */ }
+  if (!res.ok) {
+    const msg = parsed?.error || text || `HTTP ${res.status}`;
+    throw new Error(msg);
+  }
+  if (parsed?.error) throw new Error(parsed.error);
+  return parsed;
 }
 
 // ---------- KPI card ----------
