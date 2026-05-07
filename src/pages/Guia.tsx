@@ -139,12 +139,12 @@ const Guia = () => {
         <article className="container max-w-3xl py-16 prose-content">
           <Section id="diferenca" icon={Droplet} title="1. Diferença entre motores 4T e 2T">
             <p>
-              Motores <strong>4 tempos (4T)</strong> — como KTM SX-F, Honda CRF, Yamaha YZ-F, Kawasaki KX-F — têm cárter
+              Motores <strong>4 tempos (4T)</strong> — como os fabricados por KTM, Honda, Yamaha e Kawasaki — têm cárter
               separado: o óleo fica em um reservatório e apenas lubrifica componentes (motor + embreagem + transmissão,
               normalmente em um único banho). Você troca o óleo periodicamente.
             </p>
             <p>
-              Motores <strong>2 tempos (2T)</strong> — KTM SX, Yamaha YZ, GasGas MC — queimam o óleo junto com a mistura
+              Motores <strong>2 tempos (2T)</strong> — fabricados por marcas como KTM, Yamaha e GasGas — queimam o óleo junto com a mistura
               ar-combustível. O lubrificante precisa ter <em>baixa fumaça, baixa cinza e queima limpa</em> para não
               entupir a vela e o pistão. MOTOREX <strong>Cross Power 2T</strong> é o referencial mundial nesta categoria.
             </p>
