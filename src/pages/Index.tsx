@@ -298,7 +298,9 @@ const Index = () => {
           <img src="/images/banner-revendedor.jpg" alt="Seja um Revendedor MOTOREX" loading="lazy" width={1920} height={600} className="w-full h-auto block" />
         </picture>
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        <div className="absolute bottom-0 left-0 p-6 md:p-10">
+        {/* Clickable overlay on mobile — entire section is a link */}
+        <Link to="/seja-revendedor" className="absolute inset-0 z-10 sm:hidden" aria-label="Cadastre-se agora" />
+        <div className="absolute bottom-0 left-0 p-6 md:p-10 hidden sm:block">
           <Button asChild className="font-heading uppercase tracking-wider bg-motorex hover:bg-motorex/90 text-white border-beam hover-glow">
             <Link to="/seja-revendedor">Cadastre-se agora <ArrowRight className="ml-2" size={16} /></Link>
           </Button>
